@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ออกแบบกล่องลูกฟูก — UX Preview V2</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700;800&display=swap">
+
+<style>
+:root{
+  --bg:#f5f6f4;--card:#fff;--ink:#17212b;--muted:#68757f;--line:#dfe4e1;
+  --brand:#1f3a68;--brand2:#163052;--kraft:#b8864b;--green:#2e7d4f;
+  --green-bg:#eaf5ed;--amber:#b26a00;--red:#c62828;--red-bg:#fff0ef;
+  --shadow:0 4px 18px rgba(23,33,43,.07);--radius:14px
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Sarabun","Noto Sans Thai",system-ui,sans-serif;line-height:1.55}
+main{max-width:1180px;margin:auto;padding:28px 18px 56px}
+h1{font-size:2rem;line-height:1.2;margin:0;font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.1rem;margin:0;font-weight:800}
+h3{font-size:1rem;margin:0;font-weight:800}
+.sub{color:var(--muted);margin:7px 0 22px}
+.topbar{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:18px}
+.reset{font:inherit;color:var(--red);background:#fff;border:1px solid #e5b6b2;border-radius:9px;padding:7px 12px;cursor:pointer}
+.layout{display:grid;grid-template-columns:minmax(0,470px) minmax(0,1fr);gap:18px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.panel{padding:18px}
+.step{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.stepno{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--brand);color:#fff;font-weight:800}
+.step small{display:block;color:var(--muted);font-weight:400}
+.type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.type-card{border:1.5px solid var(--line);border-radius:11px;padding:11px 12px;background:#fff;cursor:pointer;text-align:left;transition:.15s}
+.type-card:hover{border-color:#a9b7c8;transform:translateY(-1px)}
+.type-card.active{border-color:var(--brand);background:#f2f6fb;box-shadow:0 0 0 2px rgba(31,58,104,.08)}
+.type-card b{display:block;font-size:.93rem}
+.type-card span{display:block;color:var(--muted);font-size:.76rem;margin-top:2px}
+.moretypes{margin-top:8px;width:100%;font:inherit;color:var(--brand);background:#fff;border:0;text-decoration:underline;cursor:pointer;padding:4px}
+.hidden{display:none!important}
+.choice-tabs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:10px;padding:3px;background:#f5f6f4;margin-bottom:14px}
+.choice-tabs button{border:0;background:transparent;border-radius:8px;padding:8px;font:inherit;font-weight:700;color:var(--muted);cursor:pointer}
+.choice-tabs button.active{background:#fff;color:var(--brand);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.field{margin-bottom:12px}
+label{display:block;font-size:.84rem;color:var(--muted);margin-bottom:5px;font-weight:600}
+.dims{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+input,select{width:100%;font:inherit;color:var(--ink);background:#fff;border:1px solid #cfd7d4;border-radius:9px;padding:10px 11px}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--brand);outline-offset:1px}
+.diminput{position:relative}
+.diminput input{font-size:1.08rem;font-weight:700;padding-right:40px}
+.diminput .unit{position:absolute;right:11px;bottom:10px;color:var(--muted);font-size:.8rem}
+.helper{font-size:.78rem;color:var(--muted);margin-top:7px}
+.quick{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.quick button{font:inherit;font-size:.78rem;color:var(--ink);background:#f7f8f7;border:1px solid var(--line);border-radius:99px;padding:4px 9px;cursor:pointer}
+.checkrow{display:flex;gap:8px;align-items:flex-start;margin:11px 0;font-size:.9rem}
+.checkrow input{width:auto;margin-top:4px}
+.advanced{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
+.advanced summary{cursor:pointer;font-weight:800}
+.primary{width:100%;border:0;border-radius:10px;padding:11px 14px;background:var(--brand);color:#fff;font:inherit;font-weight:800;cursor:pointer;box-shadow:0 2px 0 var(--brand2)}
+.primary:hover{filter:brightness(1.06)}
+.secondary{font:inherit;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:9px;padding:8px 12px;cursor:pointer}
+.result{position:sticky;top:16px}
+.result-head{padding:18px 18px 14px;border-bottom:1px solid var(--line)}
+.result-head .eyebrow{font-size:.78rem;color:var(--green);font-weight:800;text-transform:uppercase}
+.result-main{padding:18px}
+.recommend{border:2px solid var(--green);background:var(--green-bg);border-radius:14px;padding:16px}
+.recommend .label{color:var(--green);font-size:.82rem;font-weight:800}
+.recommend .size{font-size:2rem;font-weight:800;line-height:1.2;margin:4px 0 7px}
+.recommend .meta{color:#42544a;font-size:.85rem}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin:9px 0}
+.badge{font-size:.74rem;padding:3px 8px;border-radius:99px;color:#fff;background:#66757f}
+.badge.ok{background:var(--green)}.badge.warn{background:var(--amber)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.actions button{font:inherit;font-weight:800;border:0;border-radius:9px;padding:8px 13px;cursor:pointer}
+.actions .use{background:var(--brand);color:#fff}
+.actions .ghost{background:#fff;color:var(--brand);border:1px solid #b8c3d0}
+.alternatives{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.alt{border:1px solid var(--line);border-radius:11px;padding:11px}
+.alt b{display:block}.alt span{font-size:.82rem;color:var(--muted)}
+.alt button{margin-top:7px;font:inherit;font-size:.78rem;background:#fff;border:1px solid var(--line);border-radius:7px;padding:5px 9px;cursor:pointer}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:9px}
+.stat b{display:block;font-size:.98rem}.stat span{display:block;font-size:.74rem;color:var(--muted)}
+.viewer{margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
+.viewer summary{cursor:pointer;font-weight:800}
+.stage{height:270px!important;background:#f3f4f2;border-radius:12px;position:relative;overflow:hidden;cursor:grab;touch-action:pan-y}
+.stage:active{cursor:grabbing}
+.persp{position:absolute;inset:0;perspective:900px;display:flex;align-items:center;justify-content:center}
+.box{position:relative;width:0;height:0;transform-style:preserve-3d;--a:90deg;--lift:0px;--lip:90deg;--ear:90deg;transition:--a .25s ease,--lift .25s ease,--lip .25s ease,--ear .25s ease}
+.f{position:absolute;left:50%;top:50%;border:1.5px solid #6b4a22;background:var(--c);transform-style:preserve-3d}.fl{transform-origin:50% 100%}
+.hint{position:absolute;left:10px;bottom:8px;color:var(--muted);font-size:.75rem}
+.viewer-controls{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.viewer-controls button{font:inherit;font-size:.8rem;border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 9px;cursor:pointer}
+.viewer-controls .main{background:var(--brand);color:#fff;border-color:var(--brand)}
+.ang{margin-top:8px}.ang label{display:flex;justify-content:space-between}.pre{display:flex;gap:5px;margin-top:6px}.pre button{flex:1}
+.comparison{margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
+.comparison summary{cursor:pointer;font-weight:800}
+.tw{overflow:auto;margin-top:16px}
+table{border-collapse:collapse;width:100%;font-size:.85rem}th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line);white-space:nowrap}th{color:var(--muted)}
+tr.row{cursor:pointer}tr.row:hover{background:#f7f8f7}tr.on{background:var(--green-bg)}
+.tag{font-size:.72rem;padding:2px 7px;border-radius:99px;background:var(--kraft);color:#fff}
+.pc{border:1px solid var(--line);border-radius:11px;padding:11px;margin-top:8px}.pc.top{border:2px solid var(--green);background:var(--green-bg)}.pc .nm{font-weight:800;font-size:1.05rem}.pc.bad{border:2px solid var(--red);background:var(--red-bg);color:var(--red)}
+.pc button,.match button{font:inherit;font-weight:800;font-size:.82rem;color:#fff;background:var(--brand);border:0;border-radius:8px;padding:7px 11px;cursor:pointer;margin-top:8px}
+.match{margin-bottom:10px;padding:12px;border-radius:11px;background:var(--green-bg);border:1px solid var(--green)}
+.match .big{font-size:1.5rem;font-weight:800}.match .lb{font-size:.8rem;color:var(--muted)}
+.err,.warn{color:var(--red);font-size:.8rem;font-weight:700}
+.note{font-size:.78rem;color:var(--muted);margin-top:7px}
+details.info{margin-top:10px}details.info summary{cursor:pointer;font-size:.8rem;color:var(--muted)}
+.prod{border-top:0;padding:0;margin:0}
+.clrall,.clrbox{font:inherit;font-size:.78rem;color:var(--red);background:#fff;border:1px solid #e5b6b2;border-radius:7px;padding:5px 9px;cursor:pointer}
+#pres{margin-top:10px}
+#stats{grid-template-columns:repeat(3,1fr);display:grid;gap:8px}
+#match{display:block}
+#cmp{min-width:460px!important}
+.cmp{background:#f4f5f3;border-radius:10px;overflow:auto}
+#cmp text{fill:var(--ink);font-family:inherit}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.chip{display:inline-flex;border:1px solid var(--line);border-radius:99px;overflow:hidden;background:#fff}.chip button{font:inherit;font-size:.75rem;background:none;border:0;padding:4px 8px;cursor:pointer}.chip button+button{border-left:1px solid var(--line)}
+@media(max-width:860px){.layout{grid-template-columns:1fr}.result{position:static}.topbar{align-items:flex-start}.alternatives{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){main{padding:18px 12px 40px}h1{font-size:1.55rem}.type-grid{grid-template-columns:1fr}.dims{gap:6px}.info-grid{grid-template-columns:1fr}.alternatives{grid-template-columns:1fr}.topbar{display:block}.reset{margin-top:10px}}
+/* Hide legacy duplicate shell; JS remains intact. */
+.legacy-only{display:none!important}
+.btnrow{display:flex;gap:8px;margin-top:14px}
+.btnrow .primary{flex:1;margin-top:0!important}
+.btnrow .secondary{white-space:nowrap}
+.type-card{padding:11px 12px}.type-grid{grid-template-columns:repeat(2,1fr)}
+@media(min-width:901px){#showResult{display:none}.btnrow .secondary{flex:1}}
+.bd{display:inline-block;font-size:.78rem;padding:2px 9px;border-radius:99px;color:#fff;margin:1px 4px 1px 0;white-space:nowrap}
+.bd.ok{background:#2e7d4f}.bd.no{background:#b26a00}.bd.un{background:#66757f}
+.fee{font-weight:700;margin:4px 0 8px}
+.ask{color:#b3261e;font-weight:700}
+.exo{border:1px dashed #68757f;border-radius:10px;padding:10px 12px;margin-top:12px;background:#fff}
+.exo .lb{font-weight:600;color:var(--ink)}
+.exo button{font:inherit;font-weight:700;font-size:.88rem;color:#fff;background:#1f3a68;border:0;border-radius:7px;padding:6px 14px;box-shadow:0 2px 0 #14264a;cursor:pointer}
+.exo button::after{content:" →"}
+.advanced>div{display:grid;gap:12px}
+.advanced .field{margin:0}
+.advanced .dims{margin:0}
+.grid2f{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end}
+.advanced input{width:100%;min-width:0}
+.advanced details>summary{cursor:pointer;font-weight:700}
+.stage{height:400px!important}
+.persp{padding-top:70px}
+</style>
+
+</head>
+<body>
+
+<main>
+  <div class="topbar">
+    <div>
+      <h1>ออกแบบกล่องลูกฟูก</h1>
+      <p class="sub">บอกเราว่าจะใส่อะไรในกล่อง แล้วระบบช่วยหาขนาดที่เหมาะให้</p>
+    </div>
+    <button class="reset" id="clrAll" type="button">↺ ล้างข้อมูลทั้งหมด</button>
+  </div>
+
+  <div class="layout">
+    <section class="card">
+      <div class="panel">
+        <div class="step"><div class="stepno">1</div><div><h2>เลือกประเภทกล่อง</h2><small>เลือกแบบที่ต้องการก่อน ระบบจะใช้ขนาดมาตรฐานของแบบนั้น</small></div></div>
+
+        <div class="type-grid" id="typeCards">
+          <button class="type-card active" data-type="rsc"><b>กล่องฝาชน</b></button>
+          <button class="type-card" data-type="mailer"><b>กล่องไปรษณีย์</b></button>
+          <button class="type-card" data-type="ear"><b>กล่องหูช้าง</b></button>
+          <button class="type-card" data-type="lock"><b>ฝาเสียบก้นขัด</b></button>
+          <button class="type-card" data-type="tuck"><b>ฝาเสียบบน–ล่าง</b></button>
+          <button class="type-card" data-type="handle"><b>กล่องหูหิ้ว</b></button>
+          <button class="type-card" data-type="pizza"><b>กล่องพิซซ่า</b></button>
+          <button class="type-card" data-type="tele"><b>กล่องฝาครอบ</b></button>
+          <button class="type-card" data-type="doc"><b>กล่องเอกสาร</b></button>
+          <button class="type-card" data-type="shoe"><b>กล่องรองเท้า</b></button>
+        </div>
+        
+        <select id="type" class="hidden">
+          <option value="rsc">กล่องฝาชน</option><option value="mailer">กล่องไดคัทไปรษณีย์</option>
+          <option value="ear">กล่องไดคัทหูช้าง</option><option value="lock">กล่องฝาเสียบก้นขัด</option>
+          <option value="tuck">กล่องฝาเสียบบนล่าง</option><option value="handle">กล่องหูหิ้ว</option>
+          <option value="pizza">กล่องพิซซ่า</option><option value="tele">กล่องฝาครอบ (กล่อง + ฝา)</option>
+          <option value="doc">กล่องเอกสาร</option><option value="shoe">กล่องรองเท้า</option>
+        </select>
+        
+
+        <div style="margin-top:22px">
+          <div class="step"><div class="stepno">2</div><div><h2>บอกขนาดที่คุณมี</h2><small>ถ้ารู้ขนาดสินค้า ให้กรอกตรงนี้ ระบบจะช่วยเลือกกล่องให้</small></div><div style="margin-left:auto;width:132px"><select id="unit" aria-label="หน่วยความยาว" style="padding:7px 9px"><option value="cm">ซม. (cm)</option><option value="mm">มม. (mm)</option><option value="in">นิ้ว (in)</option></select></div></div>
+
+          <div class="choice-tabs">
+            <button id="boxMode" class="active" type="button">ขนาดกล่อง</button>
+            <button id="productMode" type="button">ขนาดสินค้า</button>
+          </div>
+
+          <div id="productFields">
+            <div class="dims">
+              <div class="diminput"><label>กว้าง</label><input id="pw" type="number" min="0" step=".5" placeholder="เช่น 17"><span class="unit u">ซม.</span></div>
+              <div class="diminput"><label>ยาว</label><input id="pl" type="number" min="0" step=".5" placeholder="เช่น 25"><span class="unit u">ซม.</span></div>
+              <div class="diminput"><label>สูง</label><input id="ph" type="number" min="0" step=".5" placeholder="เช่น 9"><span class="unit u">ซม.</span></div>
+            </div>
+            <div class="helper">กรอกเป็นขนาดของสินค้า ไม่รวมความหนาของกล่อง</div>
+            <div class="quick">
+              <button type="button" data-fill="17,25,9">ตัวอย่าง 17 × 25 × 9</button>
+              <button type="button" data-fill="20,30,11">ตัวอย่าง 20 × 30 × 11</button>
+            </div>
+            <label class="checkrow"><input id="rot" type="checkbox"> <span><b>อนุญาตให้หมุนสินค้า</b><br><small class="helper">ระบบจะลองสลับด้านเพื่อหากล่องที่ใส่ได้</small></span></label>
+            <label class="checkrow"><input id="pup" type="checkbox" disabled> <span>แต่ต้องตั้งตามแนวสูง (ห้ามนอน/คว่ำ)</span></label>
+
+            <details class="advanced">
+              <summary>ตั้งค่าขั้นสูง</summary>
+              <div style="margin-top:12px">
+                <details>
+                  <summary style="cursor:pointer;font-weight:700">ใส่หลายชิ้นในกล่องเดียว</summary>
+                  <div class="dims" style="margin-top:9px">
+                    <div class="field"><label>เรียงตามกว้าง (ชิ้น)</label><input id="nx" type="number" min="1" value="1"></div>
+                    <div class="field"><label>เรียงตามยาว (ชิ้น)</label><input id="ny" type="number" min="1" value="1"></div>
+                    <div class="field"><label>ซ้อนกี่ชั้น</label><input id="nz" type="number" min="1" value="1"></div>
+                  </div>
+                  <div class="field"><label>ช่องว่างระหว่างชิ้น ต่อช่อง (<span class="u">ซม.</span>)</label><input id="pgap" type="number" min="0" step=".5" value="0"></div>
+                </details>
+                <div class="grid2f"><div class="field"><label for="pcl">เผื่อด้านข้าง (<span class="u">ซม.</span>)</label><input id="pcl" type="number" min="0" step=".5" value="0"></div><div class="field"><label for="ptop">เผื่อด้านบน (<span class="u">ซม.</span>)</label><input id="ptop" type="number" min="0" step=".5" value="0"></div></div>
+                <div class="helper" style="margin-top:-4px">เผื่อด้านข้างคิดให้ทั้งซ้าย/ขวา/หน้า/หลัง ด้านละค่านี้ · ด้านบน 0 = ปิดฝาพอดี · ด้านล่างไม่คิดเผื่อ</div>
+              </div>
+            </details>
+          </div>
+
+          <div id="boxFields" class="hidden">
+            <div class="dims">
+              <div class="diminput"><label>กว้าง</label><input id="w" type="number" min="1" step=".5" placeholder="เช่น 17"><span class="unit u">ซม.</span></div>
+              <div class="diminput"><label>ยาว</label><input id="l" type="number" min="1" step=".5" placeholder="เช่น 25"><span class="unit u">ซม.</span></div>
+              <div class="diminput"><label>สูง</label><input id="h" type="number" min="1" step=".5" placeholder="เช่น 9"><span class="unit u">ซม.</span></div>
+            </div>
+            <div class="helper">ระบบจะตรวจว่าขนาดนี้ตรงกับขนาดมาตรฐานที่มีหรือควรสั่งผลิต</div>
+            <div id="err"></div>
+            <div id="typeNote" style="display:none"></div>
+          </div>
+
+          <div class="btnrow"><button class="primary" id="showResult" type="button">ดูขนาดกล่องที่แนะนำ →</button><button id="clrProd" type="button" class="secondary hidden">ล้างขนาดสินค้า</button><button id="clrBox" type="button" class="secondary hidden">ล้างขนาดกล่อง</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card result" id="resultCard">
+      <div class="result-head">
+        <div class="eyebrow">ผลลัพธ์</div>
+        <h2>ขนาดที่แนะนำ</h2>
+        <div class="note">ผลลัพธ์จะอัปเดตตามข้อมูลที่กรอก</div>
+      </div>
+      <div class="result-main">
+        <div id="pres"><div class="note">กรอกขนาดสินค้าก่อน เพื่อดูกล่องที่เหมาะ</div></div>
+
+        <div id="match" style="margin-top:12px">
+          <div class="note">เมื่อกรอกข้อมูล ระบบจะแสดงขนาดมาตรฐานที่ตรงหรือใกล้เคียงตรงนี้</div>
+        </div>
+
+        <div id="stats" class="info-grid" style="display:none"></div>
+
+        <details class="viewer" open>
+          <summary>ดูภาพกล่อง 3 มิติ</summary>
+          <div id="viewLbl" class="note" style="margin-top:6px"></div>
+          <div style="height:8px"></div>
+          <div class="stage" id="stage"><div class="persp"><div class="box" id="box"></div></div><div class="hint">ลากเพื่อหมุนกล่อง</div></div>
+          <div class="viewer-controls">
+            <button class="main" id="tog" type="button">เปิดกล่อง</button>
+            <button id="rst" type="button">รีเซ็ตมุมมอง</button>
+            <button id="bot" type="button">ดูก้นกล่อง</button>
+            <button id="spin" type="button">หมุนอัตโนมัติ</button>
+          </div>
+          <div class="ang"><label for="deg">มุมเปิดฝา <b id="degv">0°</b></label><input id="deg" type="range" min="0" max="180" step="5" value="0"><div class="pre"><button type="button" data-d="0">ปิด</button><button type="button" data-d="45">45°</button><button type="button" data-d="90">90°</button><button type="button" data-d="135">135°</button><button type="button" data-d="180">180°</button></div></div>
+        </details>
+
+        <details class="comparison">
+          <summary>เปรียบเทียบหลายขนาด</summary>
+          <div class="ctl" style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">
+            <input id="cname" placeholder="ชื่อกล่อง (ไม่บังคับ)" style="flex:1;min-width:140px">
+            <button id="addCur" class="secondary" type="button">+ เพิ่มขนาดปัจจุบัน</button>
+            <select id="addStd" class="secondary" style="flex:1;min-width:180px"><option value="">+ เพิ่มขนาดมาตรฐาน…</option></select>
+            <button id="clr" class="secondary" type="button">ล้าง</button>
+          </div>
+          <div class="ctl" id="lay" style="display:flex;gap:6px;margin-top:8px"><button type="button" data-m="stack" aria-pressed="true">ซ้อนแนวตั้ง</button><button type="button" data-m="row" aria-pressed="false">เรียงแนวนอน</button></div>
+          <div class="chips" id="chips"></div>
+          <div class="cmp"><svg id="cmp" viewBox="0 0 800 470" role="img" aria-label="เปรียบเทียบขนาดกล่อง"></svg></div>
+        </details>
+      </div>
+    </section>
+  </div>
+
+  <section class="card panel" style="margin-top:18px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+      <div><h2>ขนาดมาตรฐานที่มี</h2><div class="note">กดแถวเพื่อใช้ขนาดนั้น · <span id="stdT"></span></div></div>
+    </div>
+    <div class="tw">
+      <table><thead><tr><th>ชื่อ / เบอร์</th><th>กว้าง</th><th>ยาว</th><th>สูง</th><th>มีดไดคัท</th><th>กระดาษ</th><th></th></tr></thead><tbody id="std"></tbody></table>
+    </div>
+    <div id="exwrap"></div>
+  </section>
+</main>
+
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const oldType=$("type");
+  const cards=[...document.querySelectorAll("#typeCards .type-card,#moreTypeGrid .type-card")];
+  function syncType(v){
+    oldType.value=v;
+    cards.forEach(c=>c.classList.toggle("active",c.dataset.type===v));
+    oldType.dispatchEvent(new Event("input",{bubbles:true}));
+  }
+  cards.forEach(c=>c.addEventListener("click",()=>syncType(c.dataset.type)));
+  
+  const productMode=$("productMode"), boxMode=$("boxMode"), pf=$("productFields"), bf=$("boxFields");
+  function mode(m){
+    const product=m==="product";
+    productMode.classList.toggle("active",product); boxMode.classList.toggle("active",!product);
+    pf.classList.toggle("hidden",!product); bf.classList.toggle("hidden",product);
+    $("pres").style.display=product?"":"none";$("match").style.display=product?"none":"";
+    $("showResult").textContent=product?"ดูขนาดกล่องที่แนะนำ →":"ตรวจสอบขนาดกล่อง →";
+    $("clrProd").classList.toggle("hidden",!product); $("clrBox").classList.toggle("hidden",product);
+    oldType.dispatchEvent(new Event("input",{bubbles:true}));
+  }
+  productMode.onclick=()=>mode("product"); boxMode.onclick=()=>mode("box");
+
+  document.querySelectorAll("[data-fill]").forEach(b=>b.onclick=()=>{
+    b.dataset.fill.split(",").forEach((v,i)=>[$("pw"),$("pl"),$("ph")][i].value=v);
+    $("productMode").click();
+    ["pw","pl","ph"].forEach(id=>$(id).dispatchEvent(new Event("input",{bubbles:true})));
+  });
+  $("rot").addEventListener("change",()=>{$("pup").disabled=!$("rot").checked});
+
+  $("showResult").onclick=()=>{
+    $("resultCard").scrollIntoView({behavior:"smooth",block:"start"});
+  };
+
+  // Make unit conversion available without showing the legacy select.
+  window.__newUxSyncUnit=()=>{ oldType.dispatchEvent(new Event("change",{bubbles:true})); };
+  mode("box");
+})();
+</script>
+
+<script>
+function pr(n,w,l,h,d,p){return ["เบอร์ "+n,w,l,h,d,p||""]}
+var IN=function(n){return n*2.54};
+var LIST={
+rsc:[pr("00",9.75,14,6,0),pr("0",11,17,6,0),pr("0+4",11,17,10,0),pr("A",14,20,6,0),pr("B",17,25,9,1),pr("2B",17,25,18,0),pr("C",20,30,11,1),pr("C+9",20,30,20,0),pr("D",22,35,14,1),pr("E",24,40,17,1),pr("F",30,45,20,0),pr("G",31,36,26,0),pr("M",27,43,20,1),pr("M+",35,45,25,0),pr("H",40,45,34,0),pr("L",40,50,30,1)],
+mailer:[pr("00",9.75,14,6,1,"stock"),pr("0",11,17,6,1,"stock"),pr("0+4",11,17,10,1,"order"),pr("A",14,20,6,1,"stock"),pr("B",17,25,9,1,"stock"),pr("C",20,30,11,1,"stock"),pr("D",22,35,14,1,"stock"),pr("E",24,40,17,1,"stock"),pr("F",30,45,20,1,"order")],
+ear:[pr("0",11,17,6,0),pr("A",14,20,6,1,"stock"),pr("B",17,25,9,1,"stock"),pr("C",20,30,11,1,"stock"),pr("C+9",20,30,20,1,"order"),pr("D",22,35,14,0),pr("E",24,40,17,0),["B5",20,28.5,5,0,""],["B4",28,38,6,0,""],["A5",18,24,6,0,""],["A4",25,34,6,0,""],["A3",32,45,5,0,""],["A3+",37,49,5,0,""]],
+pizza:[[7,1,"stock"],[8,1,"stock"],[9,1,"stock"],[10,1,"stock"],[11,1,"stock"],[12,1,"stock"],[13,1,"stock"],[14,1,"stock"],[15,0,""],[16,1,"order"],[17,0,""],[18,0,""],[19,0,""],[20,1,"order"],[21,1,"order"]].map(function(x){return pr(x[0],IN(x[0]),IN(x[0]),IN(2),x[1],x[2])}),
+tele:[["BK-S",39,50,6.5,0,""],["BK-M",32.5,49.5,9.5,0,""],["BK-L",40,60,10,0,""],["อเนกประสงค์เล็ก",27,35,17.5,1,"stock"],["อเนกประสงค์ใหญ่",24.3,33.4,25.9,1,"stock"]],
+doc:[["กล่องเอกสารเล็ก",35.8,42.3,29.2,1,"stock"],["กล่องเอกสารใหญ่",33,47.5,28,1,"stock"]],
+handle:[["หูหิ้ว S",13,26.5,10,1,"stock"],["หูหิ้ว L",16,30,11,1,"stock"],["หูหิ้วเมล่อน 1 ลูก",19,19,21,1,"stock"],["หูหิ้วเมล่อน 2 ลูก",21.5,35,18,1,"stock"],["หูหิ้วทุเรียน 1 ลูก",25,25,30,1,"stock"]],
+lock:[["ฝาเสียบก้นขัด S",13,20,9.5,1,"stock"],["ฝาเสียบก้นขัด M",14.5,22.5,11.5,1,"stock"],["ฝาเสียบก้นขัด L",16.5,25,12.5,1,"stock"]],
+tuck:[["กล่องฝาเสียบ",24,35,6,1,"stock"]],
+shoe:[["แบบ 1",15.9,30,10.5,1,""],["แบบ 1",17,33,13,1,""],["แบบ 1",20,32,12,1,""],["แบบ 2",14,28,10,1,""],["แบบ 2",18.5,28,9.5,1,""],["แบบ 2",20,33.5,11,1,""],["แบบ 2",21,32.5,12,1,""],["แบบ 2",32,32,14,1,""],["แบบ 2",17,30,11,1,""]]};
+var EXTRA=[["00",9.75,14,6],["0",11,17,6],["0+4",11,17,10],["AA",13,17,7],["A",14,20,6],["2A",14,20,12],["B",17,25,9],["2B",17,25,18],["B+7",17,25,16],["C",20,30,11],["C+9",20,30,20],["CD",15,15,15],["D",22,35,14],["D+11",22,35,25],["E",24,40,17],["2F",31,30,13],["F",30,45,20],["G",31,36,26],["H",40,45,34],["I",45,55,40]],EXL=[],exKey="";
+var STD=LIST.rsc,lastTp="";
+function nm(x){return x[0]}
+function dieB(q){return q[4]==1?'<span class="bd ok">มีมีดไดคัทแล้ว</span>':q[4]==0?'<span class="bd no">ยังไม่มีมีดไดคัท</span>':'<span class="bd un">ยังไม่ระบุสถานะมีด</span>'}
+function papB(q){return q[5]=="stock"?'<span class="bd ok">กระดาษ stock</span>':q[5]=="order"?'<span class="bd no">ต้องสั่งกระดาษ</span>':''}
+var TN={rsc:"ฝาบนและฝาล่างชนกันตรงกลาง มีปีกกาว 3 ซม. ผลิตง่าย ราคาประหยัดที่สุด",mailer:"ไดคัทชิ้นเดียว ฝามีหูพับเข้าด้านข้างและลิ้นล็อกด้านหน้า ไม่ต้องใช้กาวหรือเทป",ear:"ไดคัทชิ้นเดียว ผนังข้างพับสองชั้นและหูฝาล็อกด้านข้าง แข็งแรงกว่าแบบไปรษณีย์",lock:"ฝาบนมีลิ้นเสียบและปีกกันฝุ่น ก้นกล่องพับขัดล็อกเอง ไม่ต้องใช้เทป",tuck:"ฝาบนและล่างเป็นลิ้นเสียบ มีปีกกันฝุ่นข้างละ 2 ชิ้น เปิดปิดซ้ำได้",handle:"มีแผ่นหูหิ้วเจาะช่องบนฝา ควรเลือกลูกฟูกที่แข็งพอรับน้ำหนักของ",pizza:"ไดคัทชิ้นเดียว ฝาติดกับผนังหลัง ปีกข้างและลิ้นหน้าของฝาพับเข้าด้านใน มีรูกลมสำหรับล็อก",tele:"ฝากับตัวกล่องแยกชิ้น ฝาเผื่อ 0.6 ซม. เหมาะกับของพรีเมียม",shoe:"มี 2 แบบ ภาพ 3 มิติและสูตรแผ่นคลี่ใช้แบบกล่อง + ฝาแยกชิ้นไปก่อน (ยังไม่ได้แยกตามแบบ 1 / แบบ 2)",doc:"ฝาติดกับตัวกล่อง ผนังข้างพับสองชั้น เหมาะกับเก็บเอกสาร ใส่ขนาด A4 ได้"};
+var FM={rsc:"ยาวแผ่น = 2×(ยาว+กว้าง)+3 · กว้างแผ่น = สูง+กว้าง",mailer:"ยาวแผ่น = ยาว+2×สูง · กว้างแผ่น = 2×กว้าง+3×สูง",ear:"ยาวแผ่น = ยาว+4×สูง · กว้างแผ่น = 2×กว้าง+3×สูง",lock:"ยาวแผ่น = 2×(ยาว+กว้าง)+1.5 · กว้างแผ่น = สูง+1.85×กว้าง+2",tuck:"ยาวแผ่น = 2×(ยาว+กว้าง)+2 · กว้างแผ่น = สูง+2×กว้าง+4",handle:"ยาวแผ่น = 2×(ยาว+กว้าง)+1.5 · กว้างแผ่น = สูง+กว้าง+8",pizza:"ยาวแผ่น = ยาว+2×สูง · กว้างแผ่น = 2×กว้าง+3×สูง",tele:"ตัว: (ยาว+2×สูง) × (กว้าง+2×สูง) · ฝา: (ยาว+0.6+2h) × (กว้าง+0.6+2h) เมื่อ h = ค่ามากกว่าระหว่าง 3 ซม. กับ 0.4×สูง",shoe:"ตัว: (ยาว+2×สูง) × (กว้าง+2×สูง) · ฝา: (ยาว+0.6+2h) × (กว้าง+0.6+2h) เมื่อ h = ค่ามากกว่าระหว่าง 3 ซม. กับ 0.4×สูง (ค่าประมาณ)",doc:"ยาวแผ่น = ยาว+4×สูง+2 · กว้างแผ่น = 2×กว้าง+3×สูง"};
+var $=function(i){return document.getElementById(i)};
+var u="cm",FU={cm:1,mm:10,in:1/2.54},UL={cm:"ซม.",mm:"มม.",in:"นิ้ว"};
+function fu(n){return (Math.round(n*FU[u]*100)/100).toLocaleString("th-TH")}
+function f(n){return (Math.round(n*10)/10).toLocaleString("th-TH")}
+function calc(W,L,H,type){if(type=="shoe")type="tele";
+ switch(type){
+ case "rsc":return {len:2*(L+W)+3,wid:H+W};
+ case "mailer":return {len:L+2*H,wid:2*W+3*H};
+ case "ear":return {len:L+4*H,wid:2*W+3*H};
+ case "lock":return {len:2*(L+W)+1.5,wid:H+1.85*W+2};
+ case "tuck":return {len:2*(L+W)+2,wid:H+2*W+4};
+ case "handle":return {len:2*(L+W)+1.5,wid:H+W+8};
+ case "pizza":return {len:L+2*H,wid:2*W+3*H};
+ case "doc":return {len:L+4*H+2,wid:2*W+3*H};
+ }
+ var h=Math.max(3,H*0.4);
+ return {len:L+2*H,wid:W+2*H,lid:[L+0.6+2*h,W+0.6+2*h]};
+}
+var rx=-32,ry=-28,deg=0,spin=false;
+function face(w,h,tf,c,cls,inner){return '<div class="f '+(cls||'')+'" style="--c:'+c+';width:'+w+'px;height:'+h+'px;margin:'+(-h/2)+'px 0 0 '+(-w/2)+'px;transform:'+tf+'">'+(inner||'')+'</div>'}
+function flap(w,f,tf,c,inner){return face(w,f,tf,c,"fl",inner).replace('margin:'+(-f/2)+'px 0 0','margin:'+(-f)+'px 0 0')}
+function scene(W,L,H,type){if(type=="shoe")type="tele";
+ var k=135/Math.max(W,L,H),l=L*k,w=W*k,h=H*k,K="#b8864b",S="#a2733c",T="#d8b27f",B="#8f6430";
+ var o=face(l,w,"rotateX(90deg) translateZ("+(-h/2)+"px)",B,"",type=="lock"?'<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%"><polygon points="0,0 100,0 50,36" fill="rgba(255,255,255,.18)"/><polygon points="0,100 100,100 50,64" fill="rgba(255,255,255,.18)"/><path d="M0,0 L50,36 L50,64 L0,100 M100,0 L50,36 M100,100 L50,64" fill="none" stroke="#6b4a22" stroke-width="1.4" vector-effect="non-scaling-stroke"/></svg>':"")
+  +face(l,h,"translateZ("+w/2+"px)",K,"",(type=="mailer"||type=="lock")?'<div style="position:absolute;left:50%;top:0;width:'+Math.max(14,.2*h)+'px;height:'+Math.max(7,.1*h)+'px;margin-left:-'+Math.max(7,.1*h)+'px;background:#4a3318;border-radius:0 0 99px 99px"></div>':"")+face(l,h,"rotateY(180deg) translateZ("+w/2+"px)",K)
+  +face(w,h,"rotateY(90deg) translateZ("+l/2+"px)",S)+face(w,h,"rotateY(-90deg) translateZ("+l/2+"px)",S);
+ if(type=="ear")o+=face(w-2,h-2,"rotateY(90deg) translateZ("+(l/2-3)+"px)",T)+face(w-2,h-2,"rotateY(-90deg) translateZ("+(l/2-3)+"px)",T);
+ if(type=="rsc"){
+  var f=w/2;
+  o+=flap(w,f,"translate3d("+l/2+"px,"+(-h/2+1)+"px,0) rotateY(90deg) rotateX(var(--a))",T)
+   +flap(w,f,"translate3d("+(-l/2)+"px,"+(-h/2+1)+"px,0) rotateY(-90deg) rotateX(var(--a))",T)
+   +flap(l,f,"translate3d(0,"+(-h/2)+"px,"+w/2+"px) rotateX(var(--a))",T)
+   +flap(l,f,"translate3d(0,"+(-h/2)+"px,"+(-w/2)+"px) rotateY(180deg) rotateX(var(--a))",T);
+ }else if(type=="tele"){
+  var hl=Math.max(3,H*0.4)*k,e=4,lw=l+e,ld=w+e;
+  o+='<div class="f" style="--c:transparent;border:0;width:0;height:0;transform:translateY(var(--lift))">'
+   +face(lw,ld,"translateY("+(-h/2)+"px) rotateX(90deg)",T)
+   +face(lw,hl,"translate3d(0,"+(-h/2+hl/2)+"px,"+ld/2+"px)",K)+face(lw,hl,"translate3d(0,"+(-h/2+hl/2)+"px,"+(-ld/2)+"px) rotateY(180deg)",K)
+   +face(ld,hl,"translate3d("+lw/2+"px,"+(-h/2+hl/2)+"px,0) rotateY(90deg)",S)+face(ld,hl,"translate3d("+(-lw/2)+"px,"+(-h/2+hl/2)+"px,0) rotateY(-90deg)",S)
+   +'</div>';
+ }else{
+  if(type=="tuck"||type=="lock")o+=flap(w,w*.6,"translate3d("+l/2+"px,"+(-h/2+1)+"px,0) rotateY(90deg) rotateX(var(--ear))",T)+flap(w,w*.6,"translate3d("+(-l/2)+"px,"+(-h/2+1)+"px,0) rotateY(-90deg) rotateX(var(--ear))",T);
+  var lipH={mailer:.9*h,ear:.9*h,tuck:2*k,lock:2*k,pizza:h,doc:.9*h}[type],in_="";
+  if(lipH){var lw="";if(type=="ear"||type=="mailer"){var ew=Math.min(.9*h,w/2);lw='<div class="f" style="--c:'+T+';left:100%;top:0;margin:0;width:'+ew+'px;height:100%;border-radius:0 '+Math.min(lipH,18)+'px 0 0;border-left:0;transform-origin:0 50%;transform:rotateY(var(--ear))"></div><div class="f" style="--c:'+T+';left:auto;right:100%;top:0;margin:0;width:'+ew+'px;height:100%;border-radius:'+Math.min(lipH,18)+'px 0 0 0;border-right:0;transform-origin:100% 50%;transform:rotateY(calc(var(--ear) * -1))"></div>'}
+  in_+='<div class="f" style="--c:'+T+';left:0;top:auto;bottom:100%;margin:0;width:100%;height:'+lipH+'px;border-radius:'+(type=='ear'?'14px 14px 0 0':'8px 8px 0 0')+';transform-origin:50% 100%;transform:translateY(2px) rotateX(var(--lip))">'+lw+'</div>'}
+  if(type=="mailer"||type=="ear"||type=="pizza"){var r=type=="pizza"?"8px":"45%";var eh=Math.min((type=="ear"?1.05:.9)*h,w/2);
+   in_+='<div class="f" style="--c:'+S+';left:100%;top:0;margin:0;width:'+eh+'px;height:100%;transform-origin:0 50%;transform:translateX('+(-2)+'px) rotateY(var(--ear));border-radius:0 '+r+' '+r+' 0'+(type=='ear'?';clip-path:polygon(0 0,100% 14%,100% 86%,0 100%)':'')+'"></div>'
+    +'<div class="f" style="--c:'+S+';left:auto;right:100%;top:0;margin:0;width:'+eh+'px;height:100%;transform-origin:100% 50%;transform:translateX('+(2)+'px) rotateY(calc(var(--ear) * -1));border-radius:'+r+' 0 0 '+r+''+(type=='ear'?';clip-path:polygon(0 14%,100% 0,100% 100%,0 86%)':'')+'"></div>';}
+  if(type=="handle"){var hh=Math.min(.6*h,3.5*k*1.4);
+   in_+='<div class="f" style="--c:'+K+';left:25%;top:calc(50% - '+hh+'px);margin:0;width:50%;height:'+hh+'px;transform-origin:50% 100%;transform:rotateX(-90deg)"><div style="position:absolute;left:20%;width:60%;top:22%;height:36%;background:#4a3318;border-radius:99px"></div></div>';}
+  o+=flap(l,w,"translate3d(0,"+(-h/2)+"px,"+(-w/2)+"px) rotateY(180deg) rotateX(var(--a))",T,in_);
+ }
+ $("box").innerHTML=o;
+}
+function view(){var d=deg,bx=$("box"),r=Math.min(1,d/45);
+ bx.style.transform="rotateX("+rx+"deg) rotateY("+ry+"deg)";
+ bx.style.setProperty("--a",(90-d)+"deg");var tq=$("type").value,rel=(tq=="ear"||tq=="mailer");bx.style.setProperty("--lip",(rel?90-62*r:90)+"deg");bx.style.setProperty("--ear",(rel?90-70*r:(tq=="lock"?100-70*r:90))+"deg");bx.style.setProperty("--lift",(-d/180*130)+"px");
+ $("deg").value=d;$("degv").textContent=d+"°";$("tog").textContent=d>0?"ปิดกล่อง":"เปิดกล่อง"}
+(function(){
+ var st=$("stage"),d=null;
+ st.addEventListener("pointerdown",function(e){d=[e.clientX,e.clientY];try{st.setPointerCapture(e.pointerId)}catch(x){}});
+ st.addEventListener("pointermove",function(e){if(!d)return;ry+=(e.clientX-d[0])*0.6;rx=Math.max(-85,Math.min(85,rx-(e.clientY-d[1])*0.6));d=[e.clientX,e.clientY];view()});
+ var up=function(){d=null};st.addEventListener("pointerup",up);st.addEventListener("pointercancel",up);
+ $("tog").addEventListener("click",function(){deg=deg>0?0:135;view()});
+ $("deg").addEventListener("input",function(){deg=+this.value;view()});
+ document.querySelectorAll(".pre button").forEach(function(b){b.addEventListener("click",function(){deg=+b.dataset.d;view()})});
+ $("bot").addEventListener("click",function(){rx=62;ry=-28;view()});
+ $("rst").addEventListener("click",function(){rx=-32;ry=-28;view()});
+ $("spin").addEventListener("click",function(){spin=!spin;this.setAttribute("aria-pressed",spin)});
+ (function t(){if(spin&&!d){ry+=0.5;view()}requestAnimationFrame(t)})();
+})();
+var CMP=[],mode="stack";
+function sv(){try{localStorage.setItem("cmp",JSON.stringify(CMP))}catch(e){}}
+(function(){try{var v=JSON.parse(localStorage.getItem("cmp"));if(Array.isArray(v)&&v.length){CMP=v;return}}catch(e){}
+ CMP=STD.filter(function(x){return ["เบอร์ A","เบอร์ B","เบอร์ C","เบอร์ D"].indexOf(x[0])>=0}).map(function(x){return {n:x[0],w:x[1],l:x[2],h:x[3]}})})();
+function dimTxt(b){return fu(b.w)+"×"+fu(b.l)+"×"+fu(b.h)}
+function bx(x,yb,w,h,d,c){var dx=.7*d,dy=.4*d,yt=yb-h,P=function(a){return a.map(function(p){return p[0].toFixed(1)+","+p[1].toFixed(1)}).join(" ")};
+ return '<polygon points="'+P([[x,yt],[x+dx,yt-dy],[x+w+dx,yt-dy],[x+w,yt]])+'" fill="#d8b27f" stroke="#6b4a22"/>'
+ +'<polygon points="'+P([[x+w,yt],[x+w+dx,yt-dy],[x+w+dx,yb-dy],[x+w,yb]])+'" fill="#a2733c" stroke="#6b4a22"/>'
+ +'<rect x="'+x.toFixed(1)+'" y="'+yt.toFixed(1)+'" width="'+w.toFixed(1)+'" height="'+h.toFixed(1)+'" fill="#b8864b" stroke="#6b4a22"/>'}
+function drawCmp(){
+ $("chips").innerHTML=CMP.map(function(b,i){return '<span class="chip"><button type="button" data-i="'+i+'">'+b.n+' · '+dimTxt(b)+'</button><button type="button" data-x="'+i+'" aria-label="ลบ '+b.n+'">×</button></span>'}).join("");
+ var svg=$("cmp"),VW=800,VH=470,pad=24,o="";
+ if(!CMP.length){svg.innerHTML='<text x="400" y="235" text-anchor="middle" style="fill:var(--mute)">เพิ่มกล่องเพื่อเปรียบเทียบขนาด</text>';return}
+ var it=CMP.slice();
+ if(mode=="stack"){
+  it.sort(function(a,b){return b.l*b.w-a.l*a.w});
+  var cum=0,pos=[],mw=0,mdx=0;
+  it.forEach(function(b){var d=.3*b.w;pos.push({b:b,yb:cum,d:d});cum+=b.h+.5*.4*d;mw=Math.max(mw,b.l);mdx=Math.max(mdx,.7*d)});
+  var last=pos[pos.length-1],tot=last.yb+last.b.h+.4*last.d,lab=150,s=Math.min((VW-2*pad-lab)/(mw+mdx),(VH-2*pad)/tot);
+  pos.forEach(function(q){var x=pad+(mw-q.b.l)/2*s,yb=VH-pad-q.yb*s;
+   o+=bx(x,yb,q.b.l*s,q.b.h*s,q.d*s);
+   o+='<text x="'+(pad+(mw+mdx)*s+14)+'" y="'+(yb-q.b.h*s/2)+'" font-size="14" font-weight="700">'+q.b.n+'</text><text x="'+(pad+(mw+mdx)*s+14)+'" y="'+(yb-q.b.h*s/2+16)+'" font-size="12" style="fill:var(--mute)">'+dimTxt(q.b)+' '+UL[u]+'</text>'});
+ }else{
+  it.sort(function(a,b){return b.l-a.l});
+  var xc=0,pos2=[],ml=0,mdy=0,gap=3;
+  it.forEach(function(b){var d=.3*b.h;pos2.push({b:b,x:xc,d:d});xc+=b.w+.7*d+gap;ml=Math.max(ml,b.l);mdy=Math.max(mdy,.4*d)});
+  var totw=xc-gap,s2=Math.min((VW-2*pad)/totw,(VH-2*pad-44)/(ml+mdy)),x0=(VW-totw*s2)/2;
+  pos2.forEach(function(q){var x=x0+q.x*s2,yb=VH-pad-44,cx=x+(q.b.w+.35*q.d)*s2/1;
+   o+=bx(x,yb,q.b.w*s2,q.b.l*s2,q.d*s2);
+   cx=x+(q.b.w*s2+.7*q.d*s2)/2;
+   o+='<text x="'+cx+'" y="'+(yb+18)+'" text-anchor="middle" font-size="13" font-weight="700">'+q.b.n+'</text><text x="'+cx+'" y="'+(yb+34)+'" text-anchor="middle" font-size="11" style="fill:var(--mute)">'+dimTxt(q.b)+'</text>'});
+ }
+ svg.innerHTML=o;
+}
+var LBL="ต่างจากที่กรอก";
+function dmx(q){return fu(q[1])+" × "+fu(q[2])+" × "+fu(q[3])+" "+UL[u]}
+function sg(v){var r=Math.round(v*FU[u]*100)/100;return r==0?"0":(r>0?"+":"−")+Math.abs(r).toLocaleString("th-TH")}
+function pcx(q,i,tag,col,top,xt){return '<div class="pc'+(top?" top":"")+'"><div><span class="tag" style="background:'+col+'">'+tag+'</span> <span class="nm">'+nm(q)+'</span> · '+dmx(q)+'</div>'+(xt||"")+'<div style="margin:6px 0">'+dieB(q)+papB(q)+'</div>'+fee(q)+'<button type="button" data-i="'+i+'">ใช้ขนาดนี้</button></div>'}
+function dtx(d,sw){return '<div style="font-size:.95rem;margin-top:4px">'+LBL+': กว้าง '+sg(d[0])+' · ยาว '+sg(d[1])+' · สูง '+sg(d[2])+' '+UL[u]+(sw?" (สลับกว้าง↔ยาว)":"")+'</div>'+(d.some(function(v){return v<-.06})?'<div class="warn">⚠ บางด้านเล็กกว่าที่ต้องการ ของอาจใส่ไม่พอ</div>':"")}
+function sug(W,L,H){var rot=$("rot").checked,up=$("pup").checked,best=null,fit=[];
+ STD.forEach(function(s,i){if(s[1]==null)return;if(fitG(s,W,L,H,rot,up)){fit.push(i);var v=s[1]*s[2]*s[3];if(!best||v<best.v)best={i:i,v:v}}});
+ var exact=STD.findIndex(function(s){return s[1]!=null&&Math.abs(s[3]-H)<.06&&((Math.abs(s[1]-W)<.06&&Math.abs(s[2]-L)<.06)||(Math.abs(s[1]-L)<.06&&Math.abs(s[2]-W)<.06))});
+ var ni=-1,nd=1e9,nsw=false;
+ STD.forEach(function(s,i){if(s[1]==null)return;var d1=Math.abs(s[1]-W)+Math.abs(s[2]-L)+Math.abs(s[3]-H),d2=rot?Math.abs(s[1]-L)+Math.abs(s[2]-W)+Math.abs(s[3]-H):1e9,d=Math.min(d1,d2);if(d<nd){nd=d;ni=i;nsw=d2<d1}});
+ var close=false,dd=[];
+ if(exact<0&&ni>=0){var q0=STD[ni];dd=[q0[1]-(nsw?L:W),q0[2]-(nsw?W:L),q0[3]-H];close=Math.max.apply(0,dd.map(Math.abs))<=1.5}
+ return {rot:rot,best:best,fit:fit,exact:exact,ni:ni,nsw:nsw,close:close,dd:dd,mi:exact>=0?exact:(close?ni:(best?best.i:-1))}}
+function sugHtml(o,title,lbl,W,L,H){LBL=lbl;var hh=title,best=o.best,ni=o.ni,nsw=o.nsw,dd=o.dd,rot=o.rot;
+ if(o.exact>=0)hh+=pcx(STD[o.exact],o.exact,"ตรงพอดี","#2b7a4b",true);
+ else if(o.close){hh+=pcx(STD[ni],ni,"ใกล้เคียง — เสนอแทน","#c77a0a",true,dtx(dd,nsw));if(dd.some(function(v){return v<-.06})&&best&&best.i!=ni)hh+=pcx(STD[best.i],best.i,"เล็กที่สุดที่ใส่ได้","#66757f",false)}
+ else{hh+='<div class="pc bad">⚙ ต้องเป็นงานสั่งผลิต ออกมีดไดคัทใหม่</div>';var shown=-1;
+  if(best){hh+=pcx(STD[best.i],best.i,"เล็กที่สุดที่ใส่ได้","#66757f",false);shown=best.i}
+  else hh+='<div class="note" style="margin-bottom:8px">ไม่มีขนาดมาตรฐานของประเภทนี้ที่ใส่ได้ครบทุกด้าน</div>';
+  if(ni>=0){var nf=-1,nfd=1e9;o.fit.forEach(function(i){var s=STD[i],d=Math.abs(s[1]-W)+Math.abs(s[2]-L)+Math.abs(s[3]-H);if(d<nfd){nfd=d;nf=i}});var fiv=(!rot&&nf>=0)?nf:ni;
+   if(fiv!=shown){var q1=STD[fiv],ddn=(fiv==ni)?dd:[q1[1]-W,q1[2]-L,q1[3]-H];hh+=pcx(q1,fiv,"ใกล้ที่สุด","#66757f",false,dtx(ddn,(fiv==ni)&&nsw))}}}
+ return hh}
+function draw3d(req,po){var prod=$("productMode").classList.contains("active"),d=null,lb="",tp=$("type").value;
+ if(prod){if(req&&po){if(po.mi>=0){var q=STD[po.mi];d=[q[1],q[2],q[3]];lb="แสดงกล่อง "+nm(q)+" · "+dmx(q)}else{d=[req.w,req.l,req.h].map(function(v){return Math.ceil(v*2-1e-9)/2});lb="แสดงกล่องขนาดที่ควรสั่งผลิต · "+fu(d[0])+" × "+fu(d[1])+" × "+fu(d[2])+" "+UL[u]}}}
+ else{var w=+$("w").value/FU[u],l=+$("l").value/FU[u],h=+$("h").value/FU[u];if(w>0&&l>0&&h>0){d=[w,l,h];lb="แสดงกล่องตามขนาดที่กรอก · "+fu(w)+" × "+fu(l)+" × "+fu(h)+" "+UL[u]}}
+ if(d){scene(d[0],d[1],d[2],tp);view()}else{$("box").innerHTML=""}
+ $("viewLbl").textContent=d?lb:"กรอกขนาดเพื่อดูภาพกล่อง"}
+function buildTable(mi,fit,req,ptop){var tpx=$("type").value;
+ EXL=(tpx=="rsc"||tpx=="mailer"||tpx=="ear"||tpx=="lock"||tpx=="tuck")?EXTRA.filter(function(q){return !STD.some(function(x){return x[1]!=null&&Math.abs(x[1]-q[1])<.06&&Math.abs(x[2]-q[2])<.06&&Math.abs(x[3]-q[3])<.06})}):[];
+ var k2=tpx+"|"+u;
+ if(k2!=exKey){exKey=k2;$("exwrap").innerHTML=EXL.length?'<details style="margin-top:14px"><summary>ขนาดมาตรฐานทั่วไปอื่น ที่ไม่อยู่ในรายการของเรา ('+EXL.length+' ขนาด · ไปรษณีย์ไทย)</summary><table><thead><tr><th>เบอร์</th><th>กว้าง</th><th>ยาว</th><th>สูง</th><th>สถานะ</th></tr></thead><tbody>'+EXL.map(function(q,i){return '<tr class="row" data-x="'+i+'" tabindex="0"><td><b>'+q[0]+'</b></td><td>'+fu(q[1])+'</td><td>'+fu(q[2])+'</td><td>'+fu(q[3])+'</td><td><span class="tag" style="background:#b26a00">ไม่มีมีดไดคัท</span></td></tr>'}).join("")+'</tbody></table><div class="ask" style="margin:8px 0 4px">ทุกขนาดในตารางนี้ไม่มีมีดไดคัท — สอบถามเรื่องการเก็บเงินค่ามีดไดคัทอีกครั้ง</div><div class="note">กดแถวเพื่อใช้ขนาดนี้ · ที่มา: ตารางกล่องไปรษณีย์ไทยมาตรฐาน 20 ขนาด (LazBlog)</div></details>':""}
+ $("std").innerHTML=STD.map(function(s,i){
+  if(s[1]==null)return '<tr><td><b>'+s[0]+'</b></td><td colspan="3" class="note">ยังไม่ระบุขนาด</td><td>'+dieB(s)+'</td><td>'+papB(s)+'</td><td></td></tr>';
+  var cls="row"+(i==mi?" on":"");
+  return '<tr class="'+cls+'" data-i="'+i+'" tabindex="0"><td><b>'+s[0]+'</b></td><td>'+fu(s[1])+'</td><td>'+fu(s[2])+'</td><td>'+fu(s[3])+'</td><td>'+dieB(s)+'</td><td>'+papB(s)+'</td><td>'+(req?((fitsP(s,req)||i==ptop)?'<span class="tag">'+(i==ptop?'แนะนำสำหรับสินค้า':'ใส่สินค้าได้')+'</span>':''):(fit.indexOf(i)>=0?'<span class="tag">ใส่ของได้</span>':''))+'</td></tr>';
+ }).join("");
+}
+function render(){var tp=$("type").value;if(tp!==lastTp){lastTp=tp;STD=LIST[tp];fillStd();$("stdT").textContent=$("type").options[$("type").selectedIndex].text}
+ drawCmp();
+ $("pup").disabled=!$("rot").checked;var req=prodReq();if(req&&!window.__ps){window.__ps=1}if(!req)window.__ps=0;var pf=req?prodFit(req,STD):[],ptop=pf.length?pf[0]:-1;var po=req?sug(req.w,req.l,req.h):null;if(po)ptop=po.mi;draw3d(req,po);$("pres").innerHTML=(req?prodHtml(req,po):"")||'<div class="note">กรอกขนาดสินค้าก่อน เพื่อดูกล่องที่เหมาะ</div>';
+ var W=+$("w").value/FU[u],L=+$("l").value/FU[u],H=+$("h").value/FU[u],type=$("type").value;
+ var ok=W>0&&L>0&&H>0;
+ var emp=[$("w").value,$("l").value,$("h").value].every(function(v){return v===""});$("err").textContent=(ok||emp)?"":"กรอกขนาดกว้าง ยาว สูง ให้มากกว่า 0";
+ if(emp){$("match").className="";$("match").innerHTML='<div class="note">กรอกขนาดกล่องเพื่อดูขนาดมาตรฐานที่ตรงหรือใกล้เคียง</div>';$("stats").innerHTML="";document.querySelectorAll("#std tr.on").forEach(function(r){r.classList.remove("on")});if(!req)document.querySelectorAll("#std .tag").forEach(function(t){t.remove()})}
+ $("typeNote").innerHTML=TN[type]+"<br><b>สูตรแผ่นคลี่ (ซม.):</b> "+FM[type];
+ if(!ok){buildTable(-1,[],req,ptop);return}
+ 
+ var r=calc(W,L,H,type),area=(r.len*r.wid+(r.lid?r.lid[0]*r.lid[1]:0))/10000;
+ var st=[["ขนาดภายใน",fu(W)+" × "+fu(L)+" × "+fu(H)+" "+UL[u]],["แผ่นคลี่ (ยาว × กว้าง)",fu(r.len)+" × "+fu(r.wid)+" "+UL[u]]];
+ if(r.lid)st.push(["แผ่นคลี่ฝา",fu(r.lid[0])+" × "+fu(r.lid[1])+" "+UL[u]]);
+ st.push(["พื้นที่กระดาษ ต่อ 1 ใบ",(Math.round(area*1000)/1000).toLocaleString("th-TH")+" ตร.ม."]);
+ $("stats").innerHTML=st.map(function(s){return '<div class="stat"><b>'+s[1]+'</b><span>'+s[0]+'</span></div>'}).join("");
+ var o=sug(W,L,H),best=o.best,fit=o.fit,exact=o.exact,ni=o.ni,nsw=o.nsw,close=o.close,dd=o.dd,mi=o.mi,rot=o.rot,m=$("match");
+ m.className="";m.innerHTML=sugHtml(o,'<div style="font-weight:700;margin-bottom:6px">กล่องขนาด '+fu(W)+" × "+fu(L)+" × "+fu(H)+" "+UL[u]+' เหมาะกับ</div>',"ต่างจากที่กรอก",W,L,H);
+var tpx=$("type").value;
+ EXL=(tpx=="rsc"||tpx=="mailer"||tpx=="ear"||tpx=="lock"||tpx=="tuck")?EXTRA.filter(function(q){return !STD.some(function(x){return x[1]!=null&&Math.abs(x[1]-q[1])<.06&&Math.abs(x[2]-q[2])<.06&&Math.abs(x[3]-q[3])<.06})}):[];
+ if(EXL.length&&exact<0){var bi=-1,bd=1e9,bw=false;EXL.forEach(function(q,i){var d1=Math.abs(q[1]-W)+Math.abs(q[2]-L)+Math.abs(q[3]-H),d2=Math.abs(q[1]-L)+Math.abs(q[2]-W)+Math.abs(q[3]-H),d=Math.min(d1,d2);if(d<bd){bd=d;bi=i;bw=d2<d1}});
+  var qq=EXL[bi],d3=[qq[1]-(bw?L:W),qq[2]-(bw?W:L),qq[3]-H],mx=Math.max.apply(0,d3.map(Math.abs));
+  if(mx<=1.5)m.innerHTML+='<div class="exo"><div class="lb">'+(mx<.06?"ตรงกับ":"ใกล้เคียง")+' ขนาดมาตรฐานทั่วไป (ไปรษณีย์ไทย) ที่ไม่อยู่ในรายการของเรา</div><div style="margin:4px 0 8px"><b>เบอร์ '+qq[0]+'</b> '+dmx(qq)+(mx<.06?"":' · ต่างจากที่กรอก: กว้าง '+sg(d3[0])+' · ยาว '+sg(d3[1])+' · สูง '+sg(d3[2])+' '+UL[u])+'</div><div style="margin:0 0 6px"><span class="tag" style="background:#b26a00">ไม่มีมีดไดคัท</span></div><div class="ask" style="margin-bottom:8px">สอบถามเรื่องการเก็บเงินค่ามีดไดคัทอีกครั้ง</div><button type="button" data-x="'+bi+'">ใช้ขนาดนี้</button></div>'}
+ buildTable(mi,fit,req,ptop);
+}
+var TL={rsc:"ฝาชน",mailer:"ไดคัทไปรษณีย์",ear:"ไดคัทหูช้าง",lock:"ฝาเสียบก้นขัด",tuck:"ฝาเสียบ",handle:"หูหิ้ว",pizza:"พิซซ่า",tele:"ฝาครอบ/เบเกอรี่",doc:"เอกสาร",shoe:"รองเท้า"};
+function fee(q){return q[4]===0?'<div class="fee">ไม่ต้องเก็บค่ามีดไดคัทจากลูกค้า</div>':""}
+function dmq(q){return fu(q[1])+" × "+fu(q[2])+" × "+fu(q[3])+" "+UL[u]}
+function prodReq(){var a=["pw","pl","ph"].map(function(i){return +$(i).value/FU[u]});if(!a.every(function(v){return v>0}))return null;var c=(+$("pcl").value||0)/FU[u],g=(+$("pgap").value||0)/FU[u],tp=(+$("ptop").value||0)/FU[u],n=["nx","ny","nz"].map(function(i){return Math.max(1,Math.floor(+$(i).value||1))});return {w:n[0]*a[0]+(n[0]-1)*g+2*c,l:n[1]*a[1]+(n[1]-1)*g+2*c,h:n[2]*a[2]+(n[2]-1)*g+tp,up:$("pup").checked,rot:$("rot").checked,n:n,cnt:n[0]*n[1]*n[2],base:a,c:c,g:g}}
+function fitG(q,w,l,h,rot,up){var e=.001;if(q[1]==null)return false;if(!rot)return q[1]>=w-e&&q[2]>=l-e&&q[3]>=h-e;if(up)return q[3]>=h-e&&((q[1]>=w-e&&q[2]>=l-e)||(q[1]>=l-e&&q[2]>=w-e));var n=function(x,y){return x-y},a=[w,l,h].sort(n),b=[q[1],q[2],q[3]].sort(n);return b[0]>=a[0]-e&&b[1]>=a[1]-e&&b[2]>=a[2]-e}
+function fitsP(q,r){return fitG(q,r.w,r.l,r.h,r.rot,r.up)}
+function prodFit(r,list){var o=[];list.forEach(function(q,i){if(fitsP(q,r))o.push(i)});return o.sort(function(a,b){var x=list[a],y=list[b];return x[1]*x[2]*x[3]-y[1]*y[2]*y[3]})}
+function arrSvg(r){var s=Math.min(230/r.l,130/r.w),X=44,Y=8,W=r.w*s,L=r.l*s,o='<svg viewBox="0 0 300 190" style="width:100%;max-width:300px;display:block;margin:0 0 8px" role="img" aria-label="ภาพการเรียงสินค้ามองจากด้านบน">';
+ o+='<rect x="'+X+'" y="'+Y+'" width="'+L+'" height="'+W+'" fill="none" stroke="#66757f" stroke-dasharray="4 3"/>';
+ for(var i=0;i<r.n[0];i++)for(var j=0;j<r.n[1];j++){var x=X+(r.c+j*(r.base[1]+r.g))*s,y=Y+(r.c+i*(r.base[0]+r.g))*s;o+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+(r.base[1]*s).toFixed(1)+'" height="'+(r.base[0]*s).toFixed(1)+'" rx="4" fill="#b8864b" stroke="#6b4a22"/>'}
+ o+='<text x="'+(X+L/2)+'" y="'+(Y+W+16)+'" text-anchor="middle" font-size="12" style="fill:var(--ink)">ยาว '+fu(r.l)+' '+UL[u]+'</text>';
+ o+='<text transform="translate(14,'+(Y+W/2)+') rotate(-90)" text-anchor="middle" font-size="12" style="fill:var(--ink)">กว้าง '+fu(r.w)+' '+UL[u]+'</text>';
+ o+='<text x="'+X+'" y="'+(Y+W+34)+'" font-size="12" style="fill:var(--ink)">มองจากด้านบน · ซ้อน '+r.n[2]+' ชั้น · สูงรวม '+fu(r.h)+' '+UL[u]+'</text></svg>';return o}
+function prodHtml(r,o){if(!r)return "";
+ var h='<div style="font-weight:700;margin-bottom:6px">สินค้า '+(r.cnt>1?r.cnt+" ชิ้น (เรียง "+r.n[0]+" ตามกว้าง × "+r.n[1]+" ตามยาว × "+r.n[2]+" ชั้น) รวม ":"")+fu(r.w)+" × "+fu(r.l)+" × "+fu(r.h)+" "+UL[u]+(r.rot?(r.up?" (หมุนได้ แต่ตั้งตามแนวสูง)":" (หมุนได้)"):"")+' (รวมเผื่อ) เหมาะกับ</div>';
+ if(r.cnt>1)h+=arrSvg(r);
+ h+=sugHtml(o,"","ต่างจากขนาดที่ต้องใช้",r.w,r.l,r.h);if(o.best)return h;
+ var cs=[r.w,r.l,r.h].map(function(v){return Math.ceil(v*2-1e-9)/2});
+ h+='<div class="pc top"><div style="font-weight:700">ขนาดที่ควรสั่งผลิต (ขนาดภายในกล่อง)</div><div class="nm">'+fu(cs[0])+" × "+fu(cs[1])+" × "+fu(cs[2])+" "+UL[u]+'</div><div class="note" style="margin:4px 0 8px">คำนวณจากขนาดสินค้ารวมช่องว่างเผื่อ ปัดขึ้นเป็นทวีคูณของ 0.5 ซม.'+(r.rot?" · เป็นขนาดตามแนวที่กรอก ถ้าวางหมุนแล้วประหยัดกว่า ให้สลับด้านเอง":"")+'</div><button type="button" data-c="'+cs.join(",")+'">ใช้ขนาดนี้</button></div>';
+ var cur=$("type").value,alt=[];
+ Object.keys(LIST).forEach(function(k){if(k==cur)return;var l=LIST[k],f=prodFit(r,l);if(f.length)alt.push(TL[k]+" "+nm(l[f[0]])+" ("+dmq(l[f[0]])+")")});
+ if(alt.length)h+='<div class="note">ประเภทอื่นที่มีขนาดใส่ได้: '+alt.slice(0,4).join(" · ")+'</div>';
+ return h}
+function pick(e){var tr=e.target.closest("tr.row");if(!tr)return;var s=STD[+tr.dataset.i];if(!s||s[1]==null)return;var c=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=c(s[1]);$("l").value=c(s[2]);$("h").value=c(s[3]);render()}
+$("clrAll").addEventListener("click",function(){$("boxMode").click();["w","l","h","pw","pl","ph","cname"].forEach(function(i){$(i).value=""});$("pcl").value="0";$("ptop").value="0";$("pgap").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;render()});
+$("clrBox").addEventListener("click",function(){["w","l","h"].forEach(function(i){$(i).value=""});render()});
+$("clrProd").addEventListener("click",function(){["pw","pl","ph"].forEach(function(i){$(i).value=""});$("pcl").value="0";$("ptop").value="0";$("pgap").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;render()});
+$("std").addEventListener("click",pick);
+$("pres").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.dataset.c){var v=b.dataset.c.split(",").map(Number),f=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=f(v[0]);$("l").value=f(v[1]);$("h").value=f(v[2]);render();return}if(b)pick({target:{closest:function(){return{dataset:{i:b.dataset.i}}}}})});
+function fillX(i){var q=EXL[i];if(!q)return;var c=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=c(q[1]);$("l").value=c(q[2]);$("h").value=c(q[3]);render()}
+$("exwrap").addEventListener("click",function(e){var t=e.target.closest("tr[data-x]");if(t)fillX(+t.dataset.x)});
+$("match").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.dataset.x!==undefined){fillX(+b.dataset.x);return}if(b)pick({target:{closest:function(){return{dataset:{i:b.dataset.i}}}}})});
+$("std").addEventListener("keydown",function(e){if(e.key=="Enter")pick(e)});
+$("unit").addEventListener("change",function(){
+ var cm=["w","l","h"].map(function(i){return +$(i).value/FU[u]}),pc=["pw","pl","ph","pcl","ptop","pgap"].map(function(i){var v=$(i).value;return v===""?null:+v/FU[u]});u=this.value;
+ ["pw","pl","ph","pcl","ptop","pgap"].forEach(function(i,k){var e=$(i);if(pc[k]!==null)e.value=Math.round(pc[k]*FU[u]*100)/100;e.step={cm:.5,mm:5,in:.25}[u]});
+ ["w","l","h"].forEach(function(i,k){var e=$(i);e.value=Math.round(cm[k]*FU[u]*100)/100;e.step={cm:.5,mm:5,in:.25}[u];e.min=0.1});
+ document.querySelectorAll(".u").forEach(function(e){e.textContent=UL[u]});render()});
+["w","l","h","type","rot","pw","pl","ph","pcl","ptop","pgap","nx","ny","nz","pup"].forEach(function(i){$(i).addEventListener("input",render)});
+function fillStd(){$("addStd").innerHTML='<option value="">+ เพิ่มขนาดที่มีของประเภทนี้…</option>';STD.forEach(function(x,i){if(x[1]==null)return;var op=document.createElement("option");op.value=i;op.textContent=nm(x)+" ("+[x[1],x[2],x[3]].map(function(v){return Math.round(v*100)/100}).join("×")+" ซม.)";$("addStd").appendChild(op)})}
+fillStd();
+$("addCur").addEventListener("click",function(){var W=+$("w").value/FU[u],L=+$("l").value/FU[u],H=+$("h").value/FU[u];if(!(W>0&&L>0&&H>0))return;
+ CMP.push({n:$("cname").value.trim()||("กล่อง "+(CMP.length+1)),w:W,l:L,h:H});$("cname").value="";sv();drawCmp()});
+$("addStd").addEventListener("change",function(){if(this.value==="")return;var x=STD[+this.value];CMP.push({n:nm(x),w:x[1],l:x[2],h:x[3]});this.value="";sv();drawCmp()});
+$("clr").addEventListener("click",function(){CMP=[];sv();drawCmp()});
+$("lay").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;mode=b.dataset.m;this.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});drawCmp()});
+$("chips").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+ if(b.dataset.x!==undefined){CMP.splice(+b.dataset.x,1);sv();drawCmp()}
+ else if(b.dataset.i!==undefined){var c=CMP[+b.dataset.i],f=function(v){return Math.round(v*FU[u]*100)/100};$("w").value=f(c.w);$("l").value=f(c.l);$("h").value=f(c.h);render()}});
+render();
+</script>
+</body>
+</body>
+</html>
