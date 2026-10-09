@@ -139,8 +139,30 @@ details.info{margin-top:10px}details.info summary{cursor:pointer;font-size:.8rem
 .advanced details>summary{cursor:pointer;font-weight:700}
 .stage{height:400px!important}
 .persp{padding-top:70px}
+.grid2f{grid-template-columns:repeat(3,1fr)!important}
+.otabw{overflow-x:auto;margin:0 0 8px}
+.otab{width:100%;border-collapse:collapse;font-size:.85rem}
+.otab th,.otab td{text-align:left;padding:6px 8px;border-bottom:1px solid #d5dcd9;vertical-align:top}
+.otab th{color:#66757f;font-weight:600}
+.otab tr.on td{background:#e3f1e6;font-weight:600}
+.otab tr.orow{cursor:pointer}.otab tr.orow:hover td{background:#eef3f0}
+.pc.bad button{padding:4px 10px;margin-left:8px;font-size:.82rem}
 </style>
 
+
+<style>
+#edDlg{border:0;border-radius:14px;padding:0;width:min(860px,96vw);max-height:92vh;box-shadow:0 20px 60px rgba(0,0,0,.3);color:var(--ink);background:var(--card)}
+#edDlg::backdrop{background:rgba(23,33,43,.45)}
+#edDlg .eh{padding:16px 18px;border-bottom:1px solid var(--line)}
+#edDlg .eb{padding:12px 18px;overflow:auto;max-height:60vh}
+#edDlg .ef{padding:12px 18px;border-top:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+#edDlg td,#edDlg th{padding:5px 4px}
+#edDlg input,#edDlg select{padding:7px 8px;font-size:.88rem}
+#edDlg .nm{min-width:130px}#edDlg .num{width:78px}
+#edDlg .del{color:var(--red);border-color:#e5b6b2;padding:6px 9px}
+#edMsg{font-size:.85rem;color:var(--red);min-height:1.2em}
+.sync{font-size:.78rem;color:var(--muted)}
+</style>
 </head>
 <body>
 
@@ -214,8 +236,8 @@ details.info{margin-top:10px}details.info summary{cursor:pointer;font-size:.8rem
                   </div>
                   <div class="field"><label>ช่องว่างระหว่างชิ้น ต่อช่อง (<span class="u">ซม.</span>)</label><input id="pgap" type="number" min="0" step=".5" value="0"></div>
                 </details>
-                <div class="grid2f"><div class="field"><label for="pcl">เผื่อด้านข้าง (<span class="u">ซม.</span>)</label><input id="pcl" type="number" min="0" step=".5" value="0"></div><div class="field"><label for="ptop">เผื่อด้านบน (<span class="u">ซม.</span>)</label><input id="ptop" type="number" min="0" step=".5" value="0"></div></div>
-                <div class="helper" style="margin-top:-4px">เผื่อด้านข้างคิดให้ทั้งซ้าย/ขวา/หน้า/หลัง ด้านละค่านี้ · ด้านบน 0 = ปิดฝาพอดี · ด้านล่างไม่คิดเผื่อ</div>
+                <div class="grid2f"><div class="field"><label for="pcl">เผื่อด้านกว้าง = ความลึก (<span class="u">ซม.</span>)</label><input id="pcl" type="number" min="0" step=".5" value="0"></div><div class="field"><label for="pcll">เผื่อด้านยาว = ความยาว (<span class="u">ซม.</span>)</label><input id="pcll" type="number" min="0" step=".5" value="0"></div><div class="field"><label for="ptop">เผื่อด้านบน (<span class="u">ซม.</span>)</label><input id="ptop" type="number" min="0" step=".5" value="0"></div></div>
+                <div class="helper" style="margin-top:-4px">เผื่อด้านกว้าง = ความลึกของกล่อง · เผื่อด้านยาว = ความยาวของกล่อง · คิดให้ด้านละค่านี้ทั้งสองข้าง · ด้านบน 0 = ปิดฝาพอดี · ด้านล่างไม่คิดเผื่อ</div>
               </div>
             </details>
           </div>
@@ -283,7 +305,7 @@ details.info{margin-top:10px}details.info summary{cursor:pointer;font-size:.8rem
 
   <section class="card panel" style="margin-top:18px">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-      <div><h2>ขนาดมาตรฐานที่มี</h2><div class="note">กดแถวเพื่อใช้ขนาดนั้น · <span id="stdT"></span></div></div>
+      <div><h2>ขนาดมาตรฐานที่มี</h2><div class="note">กดแถวเพื่อใช้ขนาดนั้น · <span id="stdT"></span></div></div><div style="text-align:right"><button id="loginBtn" class="secondary hidden" type="button">🔑 เข้าสู่ระบบเพื่อแก้ไข</button> <button id="edBtn" class="secondary hidden" type="button">⚙ จัดการตารางขนาดมาตรฐาน</button> <button id="seedBtn" class="secondary hidden" type="button">⬆ นำเข้าข้อมูลที่มีอยู่ขึ้น Firebase</button><div class="sync" id="syncNote"></div></div>
     </div>
     <div class="tw">
       <table><thead><tr><th>ชื่อ / เบอร์</th><th>กว้าง</th><th>ยาว</th><th>สูง</th><th>มีดไดคัท</th><th>กระดาษ</th><th></th></tr></thead><tbody id="std"></tbody></table>
@@ -291,6 +313,18 @@ details.info{margin-top:10px}details.info summary{cursor:pointer;font-size:.8rem
     <div id="exwrap"></div>
   </section>
 </main>
+
+<dialog id="edDlg" aria-labelledby="edT">
+  <div class="eh"><h2 id="edT">จัดการตารางขนาดมาตรฐาน</h2>
+    <div class="note">แก้ไขเฉพาะประเภทที่เลือกอยู่ · หน่วยเป็น ซม. · กดบันทึกแล้วทุกคนที่เปิดหน้านี้จะเห็นทันที</div></div>
+  <div class="eb"><table><thead><tr><th>ชื่อ / เบอร์</th><th>กว้าง</th><th>ยาว</th><th>สูง</th><th>มีดไดคัท</th><th>กระดาษ</th><th></th></tr></thead><tbody id="edBody"></tbody></table></div>
+  <div class="ef">
+    <div><button class="secondary" id="edAdd" type="button">+ เพิ่มแถว</button> <button class="secondary" id="edReset" type="button">↩ คืนค่าเริ่มต้นของประเภทนี้</button></div>
+    <div id="edMsg" role="alert"></div>
+    <div><button class="secondary" id="edCancel" type="button">ยกเลิก</button> <button class="primary" id="edSave" type="button" style="width:auto;padding:9px 22px">บันทึก</button></div>
+  </div>
+</dialog>
+
 
 
 <script>
@@ -376,7 +410,7 @@ function calc(W,L,H,type){if(type=="shoe")type="tele";
 var rx=-32,ry=-28,deg=0,spin=false;
 function face(w,h,tf,c,cls,inner){return '<div class="f '+(cls||'')+'" style="--c:'+c+';width:'+w+'px;height:'+h+'px;margin:'+(-h/2)+'px 0 0 '+(-w/2)+'px;transform:'+tf+'">'+(inner||'')+'</div>'}
 function flap(w,f,tf,c,inner){return face(w,f,tf,c,"fl",inner).replace('margin:'+(-f/2)+'px 0 0','margin:'+(-f)+'px 0 0')}
-function scene(W,L,H,type){if(type=="shoe")type="tele";
+function scene(W,L,H,type,pb){if(type=="shoe")type="tele";
  var k=135/Math.max(W,L,H),l=L*k,w=W*k,h=H*k,K="#b8864b",S="#a2733c",T="#d8b27f",B="#8f6430";
  var o=face(l,w,"rotateX(90deg) translateZ("+(-h/2)+"px)",B,"",type=="lock"?'<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%"><polygon points="0,0 100,0 50,36" fill="rgba(255,255,255,.18)"/><polygon points="0,100 100,100 50,64" fill="rgba(255,255,255,.18)"/><path d="M0,0 L50,36 L50,64 L0,100 M100,0 L50,36 M100,100 L50,64" fill="none" stroke="#6b4a22" stroke-width="1.4" vector-effect="non-scaling-stroke"/></svg>':"")
   +face(l,h,"translateZ("+w/2+"px)",K,"",(type=="mailer"||type=="lock")?'<div style="position:absolute;left:50%;top:0;width:'+Math.max(14,.2*h)+'px;height:'+Math.max(7,.1*h)+'px;margin-left:-'+Math.max(7,.1*h)+'px;background:#4a3318;border-radius:0 0 99px 99px"></div>':"")+face(l,h,"rotateY(180deg) translateZ("+w/2+"px)",K)
@@ -407,6 +441,8 @@ function scene(W,L,H,type){if(type=="shoe")type="tele";
    in_+='<div class="f" style="--c:'+K+';left:25%;top:calc(50% - '+hh+'px);margin:0;width:50%;height:'+hh+'px;transform-origin:50% 100%;transform:rotateX(-90deg)"><div style="position:absolute;left:20%;width:60%;top:22%;height:36%;background:#4a3318;border-radius:99px"></div></div>';}
   o+=flap(l,w,"translate3d(0,"+(-h/2)+"px,"+(-w/2)+"px) rotateY(180deg) rotateX(var(--a))",T,in_);
  }
+ if(pb){var pd=pb[0]*k,pl=pb[1]*k,ph=pb[2]*k,C="rgba(30,110,230,.72)";
+  o+='<div class="f" style="--c:transparent;border:0;width:0;height:0;transform:translateY('+(h/2-ph/2)+'px)">'+face(pl,ph,"translateZ("+pd/2+"px)",C)+face(pl,ph,"rotateY(180deg) translateZ("+pd/2+"px)",C)+face(pd,ph,"rotateY(90deg) translateZ("+pl/2+"px)",C)+face(pd,ph,"rotateY(-90deg) translateZ("+pl/2+"px)",C)+face(pl,pd,"rotateX(90deg) translateZ("+ph/2+"px)",C)+'</div>'}
  $("box").innerHTML=o;
 }
 function view(){var d=deg,bx=$("box"),r=Math.min(1,d/45);
@@ -460,32 +496,40 @@ function drawCmp(){
  }
  svg.innerHTML=o;
 }
-var LBL="ต่างจากที่กรอก";
+var ndReq=false,ndOn=false,ndKey="",selKey=null,LBL="ต่างจากที่กรอก";
 function dmx(q){return fu(q[1])+" × "+fu(q[2])+" × "+fu(q[3])+" "+UL[u]}
 function sg(v){var r=Math.round(v*FU[u]*100)/100;return r==0?"0":(r>0?"+":"−")+Math.abs(r).toLocaleString("th-TH")}
-function pcx(q,i,tag,col,top,xt){return '<div class="pc'+(top?" top":"")+'"><div><span class="tag" style="background:'+col+'">'+tag+'</span> <span class="nm">'+nm(q)+'</span> · '+dmx(q)+'</div>'+(xt||"")+'<div style="margin:6px 0">'+dieB(q)+papB(q)+'</div>'+fee(q)+'<button type="button" data-i="'+i+'">ใช้ขนาดนี้</button></div>'}
+function pcx(q,i,tag,col,top,xt){return '<div class="pc'+(top?" top":"")+'"><div><span class="tag" style="background:'+col+'">'+tag+'</span> <span class="nm">'+nm(q)+'</span> · '+dmx(q)+'</div><div class="note" style="margin:2px 0 0">แผ่นคลี่ '+shLb(q)+'</div>'+(xt||"")+'<div style="margin:6px 0">'+dieB(q)+papB(q)+'</div>'+fee(q)+'<button type="button" data-i="'+i+'">ใช้ขนาดนี้</button></div>'}
 function dtx(d,sw){return '<div style="font-size:.95rem;margin-top:4px">'+LBL+': กว้าง '+sg(d[0])+' · ยาว '+sg(d[1])+' · สูง '+sg(d[2])+' '+UL[u]+(sw?" (สลับกว้าง↔ยาว)":"")+'</div>'+(d.some(function(v){return v<-.06})?'<div class="warn">⚠ บางด้านเล็กกว่าที่ต้องการ ของอาจใส่ไม่พอ</div>':"")}
-function sug(W,L,H){var rot=$("rot").checked,up=$("pup").checked,best=null,fit=[];
- STD.forEach(function(s,i){if(s[1]==null)return;if(fitG(s,W,L,H,rot,up)){fit.push(i);var v=s[1]*s[2]*s[3];if(!best||v<best.v)best={i:i,v:v}}});
+function shLb(q){var r=calc(q[1],q[2],q[3],$("type").value),a=areaOf(q);return fu(r.len)+" × "+fu(r.wid)+" "+UL[u]+(r.lid?" + ฝา "+fu(r.lid[0])+" × "+fu(r.lid[1]):"")+" · ใช้กระดาษ "+(Math.round(a/10)/1000).toLocaleString("th-TH")+" ตร.ม./ใบ"}
+function areaOf(q){var r=calc(q[1],q[2],q[3],$("type").value);return r.len*r.wid+(r.lid?r.lid[0]*r.lid[1]:0)}
+function sug(W,L,H,rot0,up0){var rot=rot0===undefined?$("rot").checked:rot0,up=up0===undefined?$("pup").checked:up0,best=null,fit=[];
+ STD.forEach(function(s,i){if(s[1]==null)return;if(fitG(s,W,L,H,rot,up)){fit.push(i);var v=areaOf(s);if(!best||v<best.v)best={i:i,v:v}}});
  var exact=STD.findIndex(function(s){return s[1]!=null&&Math.abs(s[3]-H)<.06&&((Math.abs(s[1]-W)<.06&&Math.abs(s[2]-L)<.06)||(Math.abs(s[1]-L)<.06&&Math.abs(s[2]-W)<.06))});
  var ni=-1,nd=1e9,nsw=false;
  STD.forEach(function(s,i){if(s[1]==null)return;var d1=Math.abs(s[1]-W)+Math.abs(s[2]-L)+Math.abs(s[3]-H),d2=rot?Math.abs(s[1]-L)+Math.abs(s[2]-W)+Math.abs(s[3]-H):1e9,d=Math.min(d1,d2);if(d<nd){nd=d;ni=i;nsw=d2<d1}});
  var close=false,dd=[];
  if(exact<0&&ni>=0){var q0=STD[ni];dd=[q0[1]-(nsw?L:W),q0[2]-(nsw?W:L),q0[3]-H];close=Math.max.apply(0,dd.map(Math.abs))<=1.5}
- return {rot:rot,best:best,fit:fit,exact:exact,ni:ni,nsw:nsw,close:close,dd:dd,mi:exact>=0?exact:(close?ni:(best?best.i:-1))}}
-function sugHtml(o,title,lbl,W,L,H){LBL=lbl;var hh=title,best=o.best,ni=o.ni,nsw=o.nsw,dd=o.dd,rot=o.rot;
+ return {rot:rot,best:best,fit:fit,exact:exact,ni:ni,nsw:nsw,close:close,dd:dd,mi:exact>=0?exact:(close?((dd.some(function(v){return v<-.06})&&best)?best.i:ni):(best?best.i:-1))}}
+function BAN(ns){return '<div class="pc bad">⚙ ต้องเป็นงานสั่งผลิต ออกมีดไดคัทใหม่'+(ns?' <b>ขนาด '+fu(ns[0])+' × '+fu(ns[1])+' × '+fu(ns[2])+' '+UL[u]+'</b> <button type="button" data-nd="1">ดูภาพ 3 มิติ</button>':'')+'</div>'}
+function sugHtml(o,title,lbl,W,L,H,ns){LBL=lbl;var hh=title,best=o.best,ni=o.ni,nsw=o.nsw,dd=o.dd,rot=o.rot;
  if(o.exact>=0)hh+=pcx(STD[o.exact],o.exact,"ตรงพอดี","#2b7a4b",true);
- else if(o.close){hh+=pcx(STD[ni],ni,"ใกล้เคียง — เสนอแทน","#c77a0a",true,dtx(dd,nsw));if(dd.some(function(v){return v<-.06})&&best&&best.i!=ni)hh+=pcx(STD[best.i],best.i,"เล็กที่สุดที่ใส่ได้","#66757f",false)}
- else{hh+='<div class="pc bad">⚙ ต้องเป็นงานสั่งผลิต ออกมีดไดคัทใหม่</div>';var shown=-1;
-  if(best){hh+=pcx(STD[best.i],best.i,"เล็กที่สุดที่ใส่ได้","#66757f",false);shown=best.i}
+ else if(o.close){if(dd.some(function(v){return v<-.06}))hh+=BAN(ns);hh+=pcx(STD[ni],ni,"ใกล้เคียง — เสนอแทน","#c77a0a",true,dtx(dd,nsw));if(dd.some(function(v){return v<-.06})&&best&&best.i!=ni)hh+=pcx(STD[best.i],best.i,"ใช้กระดาษน้อยที่สุด","#66757f",false)}
+ else{hh+=BAN(ns);var shown=-1;
+  if(best){hh+=pcx(STD[best.i],best.i,"ใช้กระดาษน้อยที่สุด","#66757f",false);shown=best.i}
   else hh+='<div class="note" style="margin-bottom:8px">ไม่มีขนาดมาตรฐานของประเภทนี้ที่ใส่ได้ครบทุกด้าน</div>';
   if(ni>=0){var nf=-1,nfd=1e9;o.fit.forEach(function(i){var s=STD[i],d=Math.abs(s[1]-W)+Math.abs(s[2]-L)+Math.abs(s[3]-H);if(d<nfd){nfd=d;nf=i}});var fiv=(!rot&&nf>=0)?nf:ni;
    if(fiv!=shown){var q1=STD[fiv],ddn=(fiv==ni)?dd:[q1[1]-W,q1[2]-L,q1[3]-H];hh+=pcx(q1,fiv,"ใกล้ที่สุด","#66757f",false,dtx(ddn,(fiv==ni)&&nsw))}}}
  return hh}
-function draw3d(req,po){var prod=$("productMode").classList.contains("active"),d=null,lb="",tp=$("type").value;
- if(prod){if(req&&po){if(po.mi>=0){var q=STD[po.mi];d=[q[1],q[2],q[3]];lb="แสดงกล่อง "+nm(q)+" · "+dmx(q)}else{d=[req.w,req.l,req.h].map(function(v){return Math.ceil(v*2-1e-9)/2});lb="แสดงกล่องขนาดที่ควรสั่งผลิต · "+fu(d[0])+" × "+fu(d[1])+" × "+fu(d[2])+" "+UL[u]}}}
- else{var w=+$("w").value/FU[u],l=+$("l").value/FU[u],h=+$("h").value/FU[u];if(w>0&&l>0&&h>0){d=[w,l,h];lb="แสดงกล่องตามขนาดที่กรอก · "+fu(w)+" × "+fu(l)+" × "+fu(h)+" "+UL[u]}}
- if(d){scene(d[0],d[1],d[2],tp);view()}else{$("box").innerHTML=""}
+function draw3d(req,po){var prod=$("productMode").classList.contains("active"),d=null,lb="",tp=$("type").value,cand=null,pb=null;
+ if(prod){if(req&&po){cand=csz(po.ori);pb=po.ori.d}}
+ else{var w=+$("w").value/FU[u],l=+$("l").value/FU[u],h=+$("h").value/FU[u];if(w>0&&l>0&&h>0)cand=[w,l,h]}
+ var ck=cand?cand.join(","):"";if(ndReq){ndKey=ck;ndOn=!!cand;ndReq=false}if(ndOn&&ck!==ndKey)ndOn=false;
+ var pl=(prod&&req&&po)?" · สินค้าวางแบบ "+oriLb(po.ori)+" ("+fu(po.ori.d[0])+" × "+fu(po.ori.d[1])+" × "+fu(po.ori.d[2])+")":"";
+ if(ndOn){d=cand;lb="แสดงกล่องขนาดที่ต้องออกมีดไดคัทใหม่ · "+fu(d[0])+" × "+fu(d[1])+" × "+fu(d[2])+" "+UL[u]+pl}
+ else if(prod){if(req&&po){if(po.mi>=0){var q=STD[po.mi];d=[q[1],q[2],q[3]];lb="แสดงกล่อง "+nm(q)+" · "+dmx(q)+pl}else{d=cand;lb="แสดงกล่องขนาดที่ควรสั่งผลิต · "+fu(d[0])+" × "+fu(d[1])+" × "+fu(d[2])+" "+UL[u]+pl}}}
+ else if(cand){d=cand;lb="แสดงกล่องตามขนาดที่กรอก · "+fu(d[0])+" × "+fu(d[1])+" × "+fu(d[2])+" "+UL[u]}
+ if(d){scene(d[0],d[1],d[2],tp,pb);view()}else{$("box").innerHTML=""}
  $("viewLbl").textContent=d?lb:"กรอกขนาดเพื่อดูภาพกล่อง"}
 function buildTable(mi,fit,req,ptop){var tpx=$("type").value;
  EXL=(tpx=="rsc"||tpx=="mailer"||tpx=="ear"||tpx=="lock"||tpx=="tuck")?EXTRA.filter(function(q){return !STD.some(function(x){return x[1]!=null&&Math.abs(x[1]-q[1])<.06&&Math.abs(x[2]-q[2])<.06&&Math.abs(x[3]-q[3])<.06})}):[];
@@ -499,7 +543,7 @@ function buildTable(mi,fit,req,ptop){var tpx=$("type").value;
 }
 function render(){var tp=$("type").value;if(tp!==lastTp){lastTp=tp;STD=LIST[tp];fillStd();$("stdT").textContent=$("type").options[$("type").selectedIndex].text}
  drawCmp();
- $("pup").disabled=!$("rot").checked;var req=prodReq();if(req&&!window.__ps){window.__ps=1}if(!req)window.__ps=0;var pf=req?prodFit(req,STD):[],ptop=pf.length?pf[0]:-1;var po=req?sug(req.w,req.l,req.h):null;if(po)ptop=po.mi;draw3d(req,po);$("pres").innerHTML=(req?prodHtml(req,po):"")||'<div class="note">กรอกขนาดสินค้าก่อน เพื่อดูกล่องที่เหมาะ</div>';
+ $("pup").disabled=!$("rot").checked;var req=prodReq();if(req&&!window.__ps){window.__ps=1}if(!req)window.__ps=0;var pf=req?prodFit(req,STD):[],ptop=pf.length?pf[0]:-1;var po=req?pickOri(req):null;if(po)ptop=po.mi;draw3d(req,po);$("pres").innerHTML=(req?prodHtml(req,po):"")||'<div class="note">กรอกขนาดสินค้าก่อน เพื่อดูกล่องที่เหมาะ</div>';
  var W=+$("w").value/FU[u],L=+$("l").value/FU[u],H=+$("h").value/FU[u],type=$("type").value;
  var ok=W>0&&L>0&&H>0;
  var emp=[$("w").value,$("l").value,$("h").value].every(function(v){return v===""});$("err").textContent=(ok||emp)?"":"กรอกขนาดกว้าง ยาว สูง ให้มากกว่า 0";
@@ -513,7 +557,7 @@ function render(){var tp=$("type").value;if(tp!==lastTp){lastTp=tp;STD=LIST[tp];
  st.push(["พื้นที่กระดาษ ต่อ 1 ใบ",(Math.round(area*1000)/1000).toLocaleString("th-TH")+" ตร.ม."]);
  $("stats").innerHTML=st.map(function(s){return '<div class="stat"><b>'+s[1]+'</b><span>'+s[0]+'</span></div>'}).join("");
  var o=sug(W,L,H),best=o.best,fit=o.fit,exact=o.exact,ni=o.ni,nsw=o.nsw,close=o.close,dd=o.dd,mi=o.mi,rot=o.rot,m=$("match");
- m.className="";m.innerHTML=sugHtml(o,'<div style="font-weight:700;margin-bottom:6px">กล่องขนาด '+fu(W)+" × "+fu(L)+" × "+fu(H)+" "+UL[u]+' เหมาะกับ</div>',"ต่างจากที่กรอก",W,L,H);
+ m.className="";m.innerHTML=sugHtml(o,'<div style="font-weight:700;margin-bottom:6px">กล่องขนาด '+fu(W)+" × "+fu(L)+" × "+fu(H)+" "+UL[u]+' เหมาะกับ</div>',"ต่างจากที่กรอก",W,L,H,[W,L,H]);
 var tpx=$("type").value;
  EXL=(tpx=="rsc"||tpx=="mailer"||tpx=="ear"||tpx=="lock"||tpx=="tuck")?EXTRA.filter(function(q){return !STD.some(function(x){return x[1]!=null&&Math.abs(x[1]-q[1])<.06&&Math.abs(x[2]-q[2])<.06&&Math.abs(x[3]-q[3])<.06})}):[];
  if(EXL.length&&exact<0){var bi=-1,bd=1e9,bw=false;EXL.forEach(function(q,i){var d1=Math.abs(q[1]-W)+Math.abs(q[2]-L)+Math.abs(q[3]-H),d2=Math.abs(q[1]-L)+Math.abs(q[2]-W)+Math.abs(q[3]-H),d=Math.min(d1,d2);if(d<bd){bd=d;bi=i;bw=d2<d1}});
@@ -524,42 +568,56 @@ var tpx=$("type").value;
 var TL={rsc:"ฝาชน",mailer:"ไดคัทไปรษณีย์",ear:"ไดคัทหูช้าง",lock:"ฝาเสียบก้นขัด",tuck:"ฝาเสียบ",handle:"หูหิ้ว",pizza:"พิซซ่า",tele:"ฝาครอบ/เบเกอรี่",doc:"เอกสาร",shoe:"รองเท้า"};
 function fee(q){return q[4]===0?'<div class="fee">ไม่ต้องเก็บค่ามีดไดคัทจากลูกค้า</div>':""}
 function dmq(q){return fu(q[1])+" × "+fu(q[2])+" × "+fu(q[3])+" "+UL[u]}
-function prodReq(){var a=["pw","pl","ph"].map(function(i){return +$(i).value/FU[u]});if(!a.every(function(v){return v>0}))return null;var c=(+$("pcl").value||0)/FU[u],g=(+$("pgap").value||0)/FU[u],tp=(+$("ptop").value||0)/FU[u],n=["nx","ny","nz"].map(function(i){return Math.max(1,Math.floor(+$(i).value||1))});return {w:n[0]*a[0]+(n[0]-1)*g+2*c,l:n[1]*a[1]+(n[1]-1)*g+2*c,h:n[2]*a[2]+(n[2]-1)*g+tp,up:$("pup").checked,rot:$("rot").checked,n:n,cnt:n[0]*n[1]*n[2],base:a,c:c,g:g}}
+function prodReq(){var a=["pw","pl","ph"].map(function(i){return +$(i).value/FU[u]});if(!a.every(function(v){return v>0}))return null;
+ var cw=(+$("pcl").value||0)/FU[u],cl=(+$("pcll").value||0)/FU[u],tp=(+$("ptop").value||0)/FU[u],g=(+$("pgap").value||0)/FU[u],n=["nx","ny","nz"].map(function(i){return Math.max(1,Math.floor(+$(i).value||1))}),rot=$("rot").checked,up=$("pup").checked;
+ var B=[n[0]*a[0]+(n[0]-1)*g,n[1]*a[1]+(n[1]-1)*g,n[2]*a[2]+(n[2]-1)*g];
+ var P=!rot?[[0,1,2]]:(up?[[0,1,2],[1,0,2]]:[[0,1,2],[1,0,2],[0,2,1],[2,0,1],[1,2,0],[2,1,0]]),seen={},os=[];
+ P.forEach(function(p){var d=[B[p[0]],B[p[1]],B[p[2]]],k=d.map(function(v){return v.toFixed(2)}).join("|");if(seen[k])return;seen[k]=1;os.push({p:p,d:d,key:k,w:d[0]+2*cw,l:d[1]+2*cl,h:d[2]+tp})});
+ return {w:os[0].w,l:os[0].l,h:os[0].h,os:os,B:B,up:up,rot:rot,n:n,cnt:n[0]*n[1]*n[2],base:a,cw:cw,cl:cl,tp:tp,g:g}}
 function fitG(q,w,l,h,rot,up){var e=.001;if(q[1]==null)return false;if(!rot)return q[1]>=w-e&&q[2]>=l-e&&q[3]>=h-e;if(up)return q[3]>=h-e&&((q[1]>=w-e&&q[2]>=l-e)||(q[1]>=l-e&&q[2]>=w-e));var n=function(x,y){return x-y},a=[w,l,h].sort(n),b=[q[1],q[2],q[3]].sort(n);return b[0]>=a[0]-e&&b[1]>=a[1]-e&&b[2]>=a[2]-e}
-function fitsP(q,r){return fitG(q,r.w,r.l,r.h,r.rot,r.up)}
+function fitsP(q,r){return r.os.some(function(o){return fitG(q,o.w,o.l,o.h,false,false)})}
 function prodFit(r,list){var o=[];list.forEach(function(q,i){if(fitsP(q,r))o.push(i)});return o.sort(function(a,b){var x=list[a],y=list[b];return x[1]*x[2]*x[3]-y[1]*y[2]*y[3]})}
 function arrSvg(r){var s=Math.min(230/r.l,130/r.w),X=44,Y=8,W=r.w*s,L=r.l*s,o='<svg viewBox="0 0 300 190" style="width:100%;max-width:300px;display:block;margin:0 0 8px" role="img" aria-label="ภาพการเรียงสินค้ามองจากด้านบน">';
  o+='<rect x="'+X+'" y="'+Y+'" width="'+L+'" height="'+W+'" fill="none" stroke="#66757f" stroke-dasharray="4 3"/>';
- for(var i=0;i<r.n[0];i++)for(var j=0;j<r.n[1];j++){var x=X+(r.c+j*(r.base[1]+r.g))*s,y=Y+(r.c+i*(r.base[0]+r.g))*s;o+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+(r.base[1]*s).toFixed(1)+'" height="'+(r.base[0]*s).toFixed(1)+'" rx="4" fill="#b8864b" stroke="#6b4a22"/>'}
+ for(var i=0;i<r.n[0];i++)for(var j=0;j<r.n[1];j++){var x=X+(r.cl+j*(r.base[1]+r.g))*s,y=Y+(r.cw+i*(r.base[0]+r.g))*s;o+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+(r.base[1]*s).toFixed(1)+'" height="'+(r.base[0]*s).toFixed(1)+'" rx="4" fill="#b8864b" stroke="#6b4a22"/>'}
  o+='<text x="'+(X+L/2)+'" y="'+(Y+W+16)+'" text-anchor="middle" font-size="12" style="fill:var(--ink)">ยาว '+fu(r.l)+' '+UL[u]+'</text>';
  o+='<text transform="translate(14,'+(Y+W/2)+') rotate(-90)" text-anchor="middle" font-size="12" style="fill:var(--ink)">กว้าง '+fu(r.w)+' '+UL[u]+'</text>';
  o+='<text x="'+X+'" y="'+(Y+W+34)+'" font-size="12" style="fill:var(--ink)">มองจากด้านบน · ซ้อน '+r.n[2]+' ชั้น · สูงรวม '+fu(r.h)+' '+UL[u]+'</text></svg>';return o}
-function prodHtml(r,o){if(!r)return "";
- var h='<div style="font-weight:700;margin-bottom:6px">สินค้า '+(r.cnt>1?r.cnt+" ชิ้น (เรียง "+r.n[0]+" ตามกว้าง × "+r.n[1]+" ตามยาว × "+r.n[2]+" ชั้น) รวม ":"")+fu(r.w)+" × "+fu(r.l)+" × "+fu(r.h)+" "+UL[u]+(r.rot?(r.up?" (หมุนได้ แต่ตั้งตามแนวสูง)":" (หมุนได้)"):"")+' (รวมเผื่อ) เหมาะกับ</div>';
+function pickOri(r){var best=null;
+ r.os.forEach(function(o){o.s=sug(o.w,o.l,o.h,false,false);var k=o.s.exact>=0?0:(o.s.best?1:2),v=o.s.exact>=0?areaOf(STD[o.s.exact]):(o.s.best?o.s.best.v:areaOf([0,o.w,o.l,o.h]));o.k=k;o.v=v;if(!best||k<best.k||(k==best.k&&v<best.v))best=o});
+ var man=selKey?r.os.filter(function(o){return o.key==selKey})[0]:null;if(man)best=man;var s=best.s;s.ori=best;s.man=!!man;return s}
+function oriLb(o){return o.p[2]==2?(o.p[0]==0?"ตามที่กรอก":"ตั้ง สลับกว้าง↔ยาว"):"วางนอน/ตะแคง"}
+function csz(o){return [o.w,o.l,o.h].map(function(v){return Math.ceil(v*2-1e-9)/2})}
+function prodHtml(r,o){if(!r)return "";var ch=o.ori,cs=csz(ch),
+ h='<div style="font-weight:700;margin-bottom:6px">สินค้า '+(r.cnt>1?r.cnt+" ชิ้น (เรียง "+r.n[0]+" ตามกว้าง × "+r.n[1]+" ตามยาว × "+r.n[2]+" ชั้น) รวม ":"")+fu(r.B[0])+" × "+fu(r.B[1])+" × "+fu(r.B[2])+" "+UL[u]+' เหมาะกับ</div>';
  if(r.cnt>1)h+=arrSvg(r);
- h+=sugHtml(o,"","ต่างจากขนาดที่ต้องใช้",r.w,r.l,r.h);if(o.best)return h;
- var cs=[r.w,r.l,r.h].map(function(v){return Math.ceil(v*2-1e-9)/2});
- h+='<div class="pc top"><div style="font-weight:700">ขนาดที่ควรสั่งผลิต (ขนาดภายในกล่อง)</div><div class="nm">'+fu(cs[0])+" × "+fu(cs[1])+" × "+fu(cs[2])+" "+UL[u]+'</div><div class="note" style="margin:4px 0 8px">คำนวณจากขนาดสินค้ารวมช่องว่างเผื่อ ปัดขึ้นเป็นทวีคูณของ 0.5 ซม.'+(r.rot?" · เป็นขนาดตามแนวที่กรอก ถ้าวางหมุนแล้วประหยัดกว่า ให้สลับด้านเอง":"")+'</div><button type="button" data-c="'+cs.join(",")+'">ใช้ขนาดนี้</button></div>';
+ h+='<div class="otabw"><table class="otab"><thead><tr><th>การวางสินค้า</th><th>ขนาดสินค้าที่วาง</th><th>กล่องที่ต้องใช้ (รวมเผื่อ)</th><th>เทียบกับกล่องที่มี</th></tr></thead><tbody>';
+ r.os.forEach(function(q){var s2=q.s,res=s2.exact>=0?'<b>ตรง '+nm(STD[s2.exact])+'</b>':(s2.best?nm(STD[s2.best.i])+' ('+dmq(STD[s2.best.i])+')':'<span class="ask">ต้องสั่งผลิต</span>');
+  h+='<tr data-k="'+q.key+'" class="orow'+(q===ch?' on':'')+'" title="กดเพื่อดูภาพ 3 มิติ"><td>'+(q===ch?'✓ ':'')+oriLb(q)+'</td><td>'+fu(q.d[0])+' × '+fu(q.d[1])+' × '+fu(q.d[2])+'</td><td>'+fu(q.w)+' × '+fu(q.l)+' × '+fu(q.h)+'</td><td>'+res+'</td></tr>'});
+ h+='</tbody></table></div>';
+ if(r.os.length>1)h+='<div class="note" style="margin:4px 0 10px">ระบบลองวางสินค้าทุกแบบที่เป็นไปได้ แล้วเลือกแบบที่ได้กล่องเล็กที่สุด (แถวที่มี ✓) ผลด้านล่างเป็นของแบบนี้ · <b>กดที่แถวเพื่อดูภาพ 3 มิติของท่านั้น</b> · <b>กดที่แถวเพื่อดูภาพ 3 มิติของท่านั้น</b></div>';
+ h+=sugHtml(o,"","ต่างจากขนาดที่ต้องใช้",ch.w,ch.l,ch.h,cs);if(o.best)return h;
+ h+='<div class="pc top"><div style="font-weight:700">ขนาดที่ควรสั่งผลิต (ขนาดภายในกล่อง) · วางแบบ: '+oriLb(ch)+'</div><div class="nm">'+fu(cs[0])+" × "+fu(cs[1])+" × "+fu(cs[2])+" "+UL[u]+'</div><div class="note" style="margin:4px 0 8px">คำนวณจากขนาดสินค้าที่วางแบบนี้ รวมช่องว่างเผื่อ ปัดขึ้นเป็นทวีคูณของ 0.5 ซม.</div><button type="button" data-c="'+cs.join(",")+'">ใช้ขนาดนี้</button></div>';
  var cur=$("type").value,alt=[];
  Object.keys(LIST).forEach(function(k){if(k==cur)return;var l=LIST[k],f=prodFit(r,l);if(f.length)alt.push(TL[k]+" "+nm(l[f[0]])+" ("+dmq(l[f[0]])+")")});
  if(alt.length)h+='<div class="note">ประเภทอื่นที่มีขนาดใส่ได้: '+alt.slice(0,4).join(" · ")+'</div>';
  return h}
 function pick(e){var tr=e.target.closest("tr.row");if(!tr)return;var s=STD[+tr.dataset.i];if(!s||s[1]==null)return;var c=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=c(s[1]);$("l").value=c(s[2]);$("h").value=c(s[3]);render()}
-$("clrAll").addEventListener("click",function(){$("boxMode").click();["w","l","h","pw","pl","ph","cname"].forEach(function(i){$(i).value=""});$("pcl").value="0";$("ptop").value="0";$("pgap").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;render()});
+$("clrAll").addEventListener("click",function(){$("boxMode").click();["w","l","h","pw","pl","ph","cname"].forEach(function(i){$(i).value=""});selKey=null;ndOn=false;$("pcl").value="0";$("pcll").value="0";$("ptop").value="0";$("pgap").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;render()});
 $("clrBox").addEventListener("click",function(){["w","l","h"].forEach(function(i){$(i).value=""});render()});
-$("clrProd").addEventListener("click",function(){["pw","pl","ph"].forEach(function(i){$(i).value=""});$("pcl").value="0";$("ptop").value="0";$("pgap").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;render()});
+$("clrProd").addEventListener("click",function(){["pw","pl","ph"].forEach(function(i){$(i).value=""});selKey=null;ndOn=false;$("pcl").value="0";$("pcll").value="0";$("ptop").value="0";$("pgap").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;render()});
 $("std").addEventListener("click",pick);
-$("pres").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.dataset.c){var v=b.dataset.c.split(",").map(Number),f=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=f(v[0]);$("l").value=f(v[1]);$("h").value=f(v[2]);render();return}if(b)pick({target:{closest:function(){return{dataset:{i:b.dataset.i}}}}})});
+$("pres").addEventListener("click",function(e){var nb=e.target.closest("button[data-nd]");if(nb){ndReq=true;if(deg<135)deg=135;rx=-50;render();var sd0=$("stage");if(sd0)sd0.scrollIntoView({behavior:"smooth",block:"center"});return}var tr=e.target.closest("tr[data-k]");if(tr){selKey=tr.dataset.k;if(deg<135)deg=135;rx=-50;render();var sd=$("stage");if(sd)sd.scrollIntoView({behavior:"smooth",block:"center"});return}var b=e.target.closest("button");if(b&&b.dataset.c){var v=b.dataset.c.split(",").map(Number),f=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=f(v[0]);$("l").value=f(v[1]);$("h").value=f(v[2]);render();return}if(b)pick({target:{closest:function(){return{dataset:{i:b.dataset.i}}}}})});
 function fillX(i){var q=EXL[i];if(!q)return;var c=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=c(q[1]);$("l").value=c(q[2]);$("h").value=c(q[3]);render()}
 $("exwrap").addEventListener("click",function(e){var t=e.target.closest("tr[data-x]");if(t)fillX(+t.dataset.x)});
-$("match").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.dataset.x!==undefined){fillX(+b.dataset.x);return}if(b)pick({target:{closest:function(){return{dataset:{i:b.dataset.i}}}}})});
+$("match").addEventListener("click",function(e){var nb=e.target.closest("button[data-nd]");if(nb){ndReq=true;if(deg<135)deg=135;rx=-50;render();var sd0=$("stage");if(sd0)sd0.scrollIntoView({behavior:"smooth",block:"center"});return}var b=e.target.closest("button");if(b&&b.dataset.x!==undefined){fillX(+b.dataset.x);return}if(b)pick({target:{closest:function(){return{dataset:{i:b.dataset.i}}}}})});
 $("std").addEventListener("keydown",function(e){if(e.key=="Enter")pick(e)});
 $("unit").addEventListener("change",function(){
- var cm=["w","l","h"].map(function(i){return +$(i).value/FU[u]}),pc=["pw","pl","ph","pcl","ptop","pgap"].map(function(i){var v=$(i).value;return v===""?null:+v/FU[u]});u=this.value;
- ["pw","pl","ph","pcl","ptop","pgap"].forEach(function(i,k){var e=$(i);if(pc[k]!==null)e.value=Math.round(pc[k]*FU[u]*100)/100;e.step={cm:.5,mm:5,in:.25}[u]});
+ var cm=["w","l","h"].map(function(i){return +$(i).value/FU[u]}),pc=["pw","pl","ph","pcl","pcll","ptop","pgap"].map(function(i){var v=$(i).value;return v===""?null:+v/FU[u]});u=this.value;
+ ["pw","pl","ph","pcl","pcll","ptop","pgap"].forEach(function(i,k){var e=$(i);if(pc[k]!==null)e.value=Math.round(pc[k]*FU[u]*100)/100;e.step={cm:.5,mm:5,in:.25}[u]});
  ["w","l","h"].forEach(function(i,k){var e=$(i);e.value=Math.round(cm[k]*FU[u]*100)/100;e.step={cm:.5,mm:5,in:.25}[u];e.min=0.1});
  document.querySelectorAll(".u").forEach(function(e){e.textContent=UL[u]});render()});
-["w","l","h","type","rot","pw","pl","ph","pcl","ptop","pgap","nx","ny","nz","pup"].forEach(function(i){$(i).addEventListener("input",render)});
+["w","l","h","type","rot","pw","pl","ph","pcl","pcll","ptop","pgap","nx","ny","nz","pup"].forEach(function(i){$(i).addEventListener("input",render)});
 function fillStd(){$("addStd").innerHTML='<option value="">+ เพิ่มขนาดที่มีของประเภทนี้…</option>';STD.forEach(function(x,i){if(x[1]==null)return;var op=document.createElement("option");op.value=i;op.textContent=nm(x)+" ("+[x[1],x[2],x[3]].map(function(v){return Math.round(v*100)/100}).join("×")+" ซม.)";$("addStd").appendChild(op)})}
 fillStd();
 $("addCur").addEventListener("click",function(){var W=+$("w").value/FU[u],L=+$("l").value/FU[u],H=+$("h").value/FU[u];if(!(W>0&&L>0&&H>0))return;
@@ -572,6 +630,136 @@ $("chips").addEventListener("click",function(e){var b=e.target.closest("button")
  else if(b.dataset.i!==undefined){var c=CMP[+b.dataset.i],f=function(v){return Math.round(v*FU[u]*100)/100};$("w").value=f(c.w);$("l").value=f(c.l);$("h").value=f(c.h);render()}});
 render();
 </script>
-</body>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getAuth,onAuthStateChanged,signInWithPopup,GoogleAuthProvider,signOut} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {getFirestore,collection,doc,onSnapshot,setDoc,getDoc} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+/* ===== ใส่ค่าจาก Firebase Console → Project settings → Your apps (Web) ===== */
+const firebaseConfig={
+  apiKey:"AIzaSyBi4aDrz5BqiZNh6-jl3VYKgR31gvWwAyo",
+  authDomain:"custom-corrugated-box.firebaseapp.com",
+  projectId:"custom-corrugated-box",
+  appId:"1:1082905312491:web:e8e9233894241a7c5d92ae"
+};
+/* ========================================================================= */
+
+const DEF=JSON.parse(JSON.stringify(LIST));
+let fdb=null,auth=null,isAdmin=false,draft=null;
+let remoteKeys=new Set(),snapReady=false;
+function updSeed(){const miss=Object.keys(DEF).filter(k=>!remoteKeys.has(k)).length;$("seedBtn").classList.toggle("hidden",!(isAdmin&&snapReady&&miss>0))}
+const note=t=>{const e=$("syncNote");if(e)e.textContent=t||""};
+const esc=v=>String(v==null?"":v).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+const toO=r=>({n:r[0],w:r[1]==null?null:r[1],l:r[2]==null?null:r[2],h:r[3]==null?null:r[3],d:(r[4]===0||r[4]===1)?r[4]:null,p:r[5]||""});
+const toR=o=>[o.n,o.w,o.l,o.h,o.d,o.p||""];
+
+function applyRemote(key,rows){
+  if(!(key in LIST)||!Array.isArray(rows))return;
+  LIST[key]=rows.map(toR);
+  lastTp="";render();
+}
+
+function startSync(){
+  onSnapshot(collection(fdb,"sizes"),snap=>{
+    let n=0,t=0;remoteKeys=new Set();snapReady=true;
+    snap.forEach(d=>{remoteKeys.add(d.id);const v=d.data()||{};if(v.rows){applyRemote(d.id,v.rows);n++;if(v.updatedAt>t)t=v.updatedAt}});
+    note(n?("ข้อมูลส่วนกลาง · อัปเดตล่าสุด "+new Date(t).toLocaleString("th-TH")):"ยังไม่มีข้อมูลส่วนกลาง — ใช้ค่าเริ่มต้นของหน้า");
+    updSeed();
+  },()=>note("เชื่อมข้อมูลส่วนกลางไม่ได้ — ใช้ค่าที่มากับหน้า"));
+}
+
+function rowHtml(o,i){
+  return '<tr data-i="'+i+'"><td><input class="nm" data-k="n" value="'+esc(o.n)+'" aria-label="ชื่อ"></td>'+
+  ['w','l','h'].map(k=>'<td><input class="num" data-k="'+k+'" type="number" step="0.01" min="0" inputmode="decimal" value="'+esc(o[k])+'" aria-label="'+k+'"></td>').join('')+
+  '<td><select data-k="d"><option value="">ยังไม่ระบุ</option><option value="1"'+(o.d===1?' selected':'')+'>มีแล้ว</option><option value="0"'+(o.d===0?' selected':'')+'>ยังไม่มี</option></select></td>'+
+  '<td><select data-k="p"><option value="">—</option><option value="stock"'+(o.p==="stock"?' selected':'')+'>stock</option><option value="order"'+(o.p==="order"?' selected':'')+'>ต้องสั่ง</option></select></td>'+
+  '<td><button type="button" class="secondary del" data-del="'+i+'" aria-label="ลบแถว">✕</button></td></tr>';
+}
+const paint=()=>{$("edBody").innerHTML=draft.map(rowHtml).join("")};
+function openEd(){
+  draft=LIST[$("type").value].map(toO);
+  $("edT").textContent="จัดการตารางขนาดมาตรฐาน — "+$("stdT").textContent;
+  $("edMsg").textContent="";paint();$("edDlg").showModal();
+}
+function collect(){
+  const out=[];
+  for(let i=0;i<draft.length;i++){
+    const o=draft[i];
+    if(!String(o.n||"").trim())return{err:"แถวที่ "+(i+1)+" ยังไม่ได้ใส่ชื่อ"};
+    const have=[o.w,o.l,o.h].filter(v=>v!=null).length;
+    if(have!==0&&have!==3)return{err:"แถวที่ "+(i+1)+" ต้องใส่ กว้าง ยาว สูง ให้ครบ (หรือเว้นว่างทั้งหมด)"};
+    if(have===3&&!(o.w>0&&o.l>0&&o.h>0))return{err:"แถวที่ "+(i+1)+" ขนาดต้องมากกว่า 0"};
+    out.push({n:String(o.n).trim(),w:o.w,l:o.l,h:o.h,d:o.d,p:o.p||""});
+  }
+  return{rows:out};
+}
+async function save(){
+  const r=collect();if(r.err){$("edMsg").textContent=r.err;return}
+  const tp=$("type").value,btn=$("edSave");btn.disabled=true;$("edMsg").textContent="";
+  try{
+    await setDoc(doc(fdb,"sizes",tp),{rows:r.rows,updatedAt:Date.now()});
+    $("edDlg").close();
+  }catch(e){
+    $("edMsg").textContent=(e&&e.code==="permission-denied")?"บัญชีนี้ไม่มีสิทธิ์แก้ไขตาราง":"บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง";
+  }finally{btn.disabled=false}
+}
+
+async function seed(){
+  const miss=Object.keys(DEF).filter(k=>!remoteKeys.has(k));
+  if(!miss.length){note("ข้อมูลครบทุกประเภทแล้ว");return}
+  if(!confirm("นำเข้าตารางเริ่มต้น "+miss.length+" ประเภทที่ยังไม่มีใน Firebase?\n(ประเภทที่มีข้อมูลอยู่แล้วจะไม่ถูกเขียนทับ)"))return;
+  const b=$("seedBtn");b.disabled=true;let ok=0;
+  try{
+    for(const k of miss){
+      await setDoc(doc(fdb,"sizes",k),{rows:DEF[k].map(toO),updatedAt:Date.now()});ok++;
+    }
+    note("นำเข้าสำเร็จ "+ok+" ประเภท");
+  }catch(e){
+    note((e&&e.code==="permission-denied"?"ไม่มีสิทธิ์นำเข้า":"นำเข้าไม่สำเร็จ")+" (สำเร็จ "+ok+"/"+miss.length+" ประเภท)");
+  }finally{b.disabled=false}
+}
+
+document.addEventListener("input",e=>{
+  const t=e.target;if(!t.closest||!t.closest("#edBody")||!draft)return;
+  const i=+t.closest("tr").dataset.i,k=t.dataset.k;if(!draft[i]||!k)return;
+  const v=t.value;
+  if(k==="n"||k==="p")draft[i][k]=v;
+  else if(k==="d")draft[i].d=v===""?null:+v;
+  else draft[i][k]=v===""?null:+v;
+});
+document.addEventListener("click",e=>{
+  const b=e.target.closest&&e.target.closest("button");if(!b)return;
+  if(b.id==="edBtn")openEd();
+  else if(b.id==="edAdd"){draft.push({n:"",w:null,l:null,h:null,d:null,p:""});paint()}
+  else if(b.id==="edCancel")$("edDlg").close();
+  else if(b.id==="edReset"){if(confirm("คืนค่าเริ่มต้นของประเภทนี้? (ยังไม่บันทึกจนกว่าจะกดบันทึก)")){draft=DEF[$("type").value].map(toO);paint()}}
+  else if(b.dataset.del!==undefined&&b.closest("#edBody")){draft.splice(+b.dataset.del,1);paint()}
+  else if(b.id==="edSave")save();
+  else if(b.id==="seedBtn")seed();
+  else if(b.id==="loginBtn"){
+    if(auth.currentUser)signOut(auth);
+    else signInWithPopup(auth,new GoogleAuthProvider()).catch(()=>note("เข้าสู่ระบบไม่สำเร็จ"));
+  }
+});
+
+if(/^YOUR_/.test(firebaseConfig.apiKey)){
+  note("ยังไม่ได้ตั้งค่า Firebase — ใช้ค่าเริ่มต้นของหน้า");
+}else{
+  const app=initializeApp(firebaseConfig);
+  fdb=getFirestore(app);auth=getAuth(app);
+  startSync();
+  $("loginBtn").classList.remove("hidden");
+  onAuthStateChanged(auth,async u=>{
+    isAdmin=false;
+    if(u&&u.email){
+      try{isAdmin=(await getDoc(doc(fdb,"admins",u.email.toLowerCase()))).exists()}catch(e){}
+    }
+    $("loginBtn").textContent=u?("ออกจากระบบ ("+u.email+")"):"🔑 เข้าสู่ระบบเพื่อแก้ไข";
+    $("edBtn").classList.toggle("hidden",!isAdmin);
+    updSeed();
+  });
+}
+</script>
 </body>
 </html>
