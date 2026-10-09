@@ -319,10 +319,10 @@ select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-rad
   <div class="eh"><h2 id="edT">จัดการตารางขนาดมาตรฐาน</h2>
     <div class="note">แก้ไขเฉพาะประเภทที่เลือกอยู่ · หน่วยเป็น ซม. · กดบันทึกแล้วทุกคนที่เปิดหน้านี้จะเห็นทันที</div></div>
   <div class="eb"><div id="edPasteBox" class="hidden" style="margin-bottom:12px;padding:10px;border:1px dashed var(--line);border-radius:10px">
-<div class="note">วางข้อมูลจาก Excel / Google Sheets ได้เลย 1 แถวต่อ 1 ขนาด เรียงคอลัมน์ (แยกด้วย Tab): <b>ชื่อ, กว้าง, ยาว, สูง, มีดไดคัท</b> (มี / ไม่มี / เว้นว่าง), <b>กระดาษ</b> (stock / order / เว้นว่าง), <b>รหัสมีด</b> (ถ้ามีหลายรหัสคั่นด้วย ; เช่น D-101;D-205) ตัวเลขเป็น ซม. แถวหัวตารางใส่มาได้ ระบบข้ามให้</div>
+<div class="note">วางข้อมูลจาก Excel / Google Sheets ได้เลย 1 แถวต่อ 1 ขนาด เรียงคอลัมน์ (แยกด้วย Tab): <b>ชื่อ, กว้าง, ยาว, สูง, มีดไดคัท</b> (มี / ไม่มี / เว้นว่าง), <b>กระดาษ</b> (stock / order / เว้นว่าง), <b>รหัสมีด</b> (หลายรหัสคั่นด้วย ; หรือจะแยกเป็นหลายบรรทัดที่ชื่อและขนาดเหมือนกัน ระบบรวมให้เอง) ตัวเลขเป็น ซม. ถ้าวางพร้อมแถวหัวตาราง (ชื่อ กว้าง ยาว สูง มีดไดคัท กระดาษ รหัสมีด) ระบบอ่านตามชื่อหัว สลับลำดับคอลัมน์ได้ ถ้าไม่มีหัวตาราง ระบบเดาจากเนื้อหา</div>
 <textarea id="edPasteTa" rows="6" style="width:100%;margin-top:6px;font:inherit;border:1px solid #cfd7d4;border-radius:9px;padding:8px" placeholder="เบอร์ A&#9;14&#9;20&#9;6&#9;มี&#9;stock&#9;D-101;D-205"></textarea>
-<div style="margin-top:6px;display:flex;gap:8px;flex-wrap:wrap"><button class="secondary" id="edPasteRep" type="button">แทนที่ทั้งหมด</button><button class="secondary" id="edPasteApp" type="button">ต่อท้ายตารางเดิม</button><button class="secondary" id="edPasteClose" type="button">ปิด</button></div>
-<div id="edPasteMsg" class="note"></div></div><table><thead><tr><th>ชื่อ / เบอร์</th><th>กว้าง</th><th>ยาว</th><th>สูง</th><th>มีดไดคัท</th><th>รหัสมีด (หลายรหัสคั่นด้วย ,)</th><th>กระดาษ</th><th></th></tr></thead><tbody id="edBody"></tbody></table></div>
+<div style="margin-top:6px;display:flex;gap:8px;flex-wrap:wrap"><button class="secondary" id="edPasteRep" type="button">แทนที่ทั้งหมด</button><button class="secondary" id="edPasteApp" type="button">ต่อท้ายตารางเดิม</button><button class="secondary" id="edPasteCode" type="button">ใส่รหัสมีดให้ขนาดที่มีอยู่</button><button class="secondary" id="edPasteClose" type="button">ปิด</button></div>
+<div class="note" style="margin-top:6px">หรือถ้าชีตมีแค่ <b>ประเภท, กว้าง, ยาว, สูง, รหัสมีด</b> (ขนาดเดียวกันหลายบรรทัดได้) ให้กด <b>ใส่รหัสมีดให้ขนาดที่มีอยู่</b> ระบบจับคู่กับแถวที่ขนาดตรงกันให้ ไม่ต้องมีคอลัมน์ชื่อ</div><div id="edPasteMsg" class="note"></div></div><table><thead><tr><th>ชื่อ / เบอร์</th><th>กว้าง</th><th>ยาว</th><th>สูง</th><th>มีดไดคัท</th><th>รหัสมีด (หลายรหัสคั่นด้วย ,)</th><th>กระดาษ</th><th></th></tr></thead><tbody id="edBody"></tbody></table></div>
   <div class="ef">
     <div><button class="secondary" id="edAdd" type="button">+ เพิ่มแถว</button> <button class="secondary" id="edPaste" type="button">📋 วางจาก Excel</button> <button class="secondary" id="edReset" type="button">↩ คืนค่าเริ่มต้นของประเภทนี้</button></div>
     <div id="edMsg" role="alert"></div>
@@ -734,29 +734,84 @@ async function seed(){
 }
 
 function parsePaste(txt){
-  const rows=[],bad=[];
+  const rows=[],bad=[];let map=null,started=false;
+  const split=line=>(line.indexOf("\t")>=0?line.split("\t"):line.split(",")).map(x=>x.trim());
+  const num=x=>x===""||x==null?null:parseFloat(String(x).replace(/,/g,""));
+  const roleOf=t=>{t=String(t||"").toLowerCase();if(/รหัส|code/.test(t))return"k";if(/ไดคัท|มีด|die/.test(t))return"d";if(/กระดาษ|paper/.test(t))return"p";if(/กว้าง|width/.test(t))return"w";if(/ยาว|length/.test(t))return"l";if(/สูง|height/.test(t))return"h";if(/ชื่อ|เบอร์|name/.test(t))return"n";return null};
+  const DIE=/^(ไม่มี|ยังไม่มี|มี|0|1|yes|no|y|n|true|false)$/i,PAP=/^(stock|order|สต็?อก|สต๊อก|ต้องสั่ง|ต้องสั่งกระดาษ|สั่งกระดาษ|สั่ง)$/i;
+  const dieOf=t=>{t=String(t||"").trim();if(!t)return null;return /^(ไม่|ยังไม่|0|no|n|false)/i.test(t)?0:1};
+  const papOf=t=>{t=String(t||"").toLowerCase();return /stock|สต/.test(t)?"stock":(/order|สั่ง/.test(t)?"order":"")};
+  const codesOf=t=>String(t||"").split(/[;|,]/).map(x=>x.trim()).filter(Boolean);
   txt.split(/\r?\n/).forEach((line,i)=>{
     if(!line.trim())return;
-    const c=(line.indexOf("\t")>=0?line.split("\t"):line.split(",")).map(x=>x.trim());
-    const num=x=>x===""||x==null?null:parseFloat(String(x).replace(/,/g,""));
-    const w=num(c[1]),l=num(c[2]),h=num(c[3]);
-    if(rows.length===0&&bad.length===0&&c[1]!==""&&isNaN(w)){return}   /* แถวหัวตาราง */
-    if(!c[0]){bad.push(i+1);return}
+    const c=split(line);
+    if(!started&&!map){
+      const roles=c.map(roleOf);
+      if(roles.indexOf("w")>=0&&roles.filter(Boolean).length>=3){map={};roles.forEach((r,j)=>{if(r&&!(r in map))map[r]=j});return}
+    }
+    let name,w,l,h,d=null,p="",k=[];
+    if(map){
+      name=c[map.n!==undefined?map.n:0];w=num(c[map.w]);l=num(c[map.l]);h=num(c[map.h]);
+      d=map.d!==undefined?dieOf(c[map.d]):null;p=map.p!==undefined?papOf(c[map.p]):"";k=map.k!==undefined?codesOf(c[map.k]):[];
+    }else{
+      name=c[0];w=num(c[1]);l=num(c[2]);h=num(c[3]);
+      if(!started&&c[1]!==""&&isNaN(w))return;   /* แถวหัวตารางที่ไม่รู้จัก */
+      let dd=false,pp=false;
+      c.slice(4).forEach(x=>{
+        if(!x)return;
+        if(!dd&&DIE.test(x)){d=dieOf(x);dd=true}
+        else if(!pp&&PAP.test(x)){p=papOf(x);pp=true}
+        else k=k.concat(codesOf(x));
+      });
+    }
+    if(!name){bad.push(i+1);return}
     const have=[w,l,h].filter(v=>v!=null&&!isNaN(v)).length;
-    if(have!==0&&have!==3||[w,l,h].some(v=>v!=null&&(isNaN(v)||v<=0))){bad.push(i+1);return}
-    const dd=(c[4]||"").toLowerCase(),pp=(c[5]||"").toLowerCase();
-    const d=/^(ไม่|ยังไม่|0|no|n|false)/.test(dd)?0:(/^(มี|1|yes|y|true)/.test(dd)?1:null);
-    const p=/stock|สต็อก|สต๊อก/.test(pp)?"stock":(/order|สั่ง/.test(pp)?"order":"");
-    const k=(c[6]||"").split(/[;|,]/).map(x=>x.trim()).filter(Boolean);
-    rows.push({n:c[0],w:have?w:null,l:have?l:null,h:have?h:null,d:d,p:p,k:k});
+    if((have!==0&&have!==3)||[w,l,h].some(v=>v!=null&&(isNaN(v)||v<=0))){bad.push(i+1);return}
+    started=true;
+    rows.push({n:name,w:have?w:null,l:have?l:null,h:have?h:null,d:d,p:p,k:k});
   });
   return{rows,bad};
+}
+function mergeRows(rows){
+  const map=new Map(),out=[];let merged=0;
+  rows.forEach(r=>{
+    const key=[String(r.n).trim().toLowerCase(),r.w,r.l,r.h].join("|"),e=map.get(key);
+    if(!e){const c=Object.assign({},r,{k:(r.k||[]).slice()});map.set(key,c);out.push(c);return}
+    merged++;
+    (r.k||[]).forEach(x=>{if(e.k.indexOf(x)<0)e.k.push(x)});
+    if(e.d==null)e.d=r.d;if(!e.p)e.p=r.p;
+  });
+  return{rows:out,merged};
+}
+function doCodes(){
+  const near=(a,b)=>Math.abs(a-b)<.06,labels={},skip=[];
+  let hit=0,swap=0,fresh=0,codesAdded=0;
+  $("edPasteTa").value.split(/\r?\n/).forEach((line,i)=>{
+    if(!line.trim())return;
+    const c=(line.indexOf("\t")>=0?line.split("\t"):line.split(",")).map(x=>x.trim());
+    const w=parseFloat(c[1]),l=parseFloat(c[2]),h=parseFloat(c[3]),codes=(c[4]||"").split(/[;|]/).map(x=>x.trim()).filter(Boolean);
+    if(isNaN(w)||isNaN(l)||isNaN(h)){if(i>0)skip.push(i+1);return}
+    if(!codes.length||w<=0||l<=0||h<=0){skip.push(i+1);return}
+    labels[c[0]]=(labels[c[0]]||0)+1;
+    let row=draft.find(r=>r.w!=null&&near(r.w,w)&&near(r.l,l)&&near(r.h,h));
+    if(row)hit++;
+    else{row=draft.find(r=>r.w!=null&&near(r.w,l)&&near(r.l,w)&&near(r.h,h));if(row)swap++}
+    if(!row){row={n:"ขนาด "+w+"×"+l+"×"+h,w:w,l:l,h:h,d:1,p:"",k:[]};draft.push(row);fresh++}
+    row.k=row.k||[];
+    codes.forEach(x=>{if(row.k.indexOf(x)<0){row.k.push(x);codesAdded++}});
+    if(row.d==null)row.d=1;
+  });
+  if(!hit&&!swap&&!fresh){$("edPasteMsg").textContent="ไม่พบแถวที่ใช้ได้ (ต้องเป็น ประเภท, กว้าง, ยาว, สูง, รหัสมีด)"+(skip.length?" · แถวที่ข้าม: "+skip.join(", "):"");return}
+  paint();
+  const lb=Object.keys(labels).map(k=>k+" ("+labels[k]+" แถว)").join(", ");
+  $("edPasteMsg").textContent="เพิ่มรหัส "+codesAdded+" รหัส · จับคู่ขนาดเดิมได้ "+(hit+swap)+" แถว"+(swap?" (สลับกว้าง↔ยาว "+swap+")":"")+(fresh?" · ขนาดที่ยังไม่มีในตาราง เพิ่มเป็นแถวใหม่ชื่อ \"ขนาด …\" "+fresh+" แถว (เปลี่ยนชื่อได้)":"")+(skip.length?" · ข้ามแถว: "+skip.join(", "):"")+" · ประเภทในชีต: "+lb+" · ตรวจดูแล้วกด \"บันทึก\"";
+  $("edPasteTa").value="";
 }
 function doPaste(replace){
   const r=parsePaste($("edPasteTa").value);
   if(!r.rows.length){$("edPasteMsg").textContent="ไม่พบแถวข้อมูลที่ใช้ได้"+(r.bad.length?" (แถวที่มีปัญหา: "+r.bad.join(", ")+")":"");return}
-  draft=replace?r.rows:draft.concat(r.rows);paint();
-  $("edPasteMsg").textContent="เพิ่ม "+r.rows.length+" แถวลงตารางแล้ว"+(r.bad.length?" · ข้ามแถวที่ข้อมูลไม่ครบ/ไม่ถูกต้อง: "+r.bad.join(", "):"")+" · ตรวจดูแล้วกด \"บันทึก\" เพื่อส่งขึ้น Firebase";
+  const m=mergeRows(replace?r.rows:draft.concat(r.rows));draft=m.rows;paint();
+  $("edPasteMsg").textContent="เพิ่ม "+r.rows.length+" แถวลงตารางแล้ว"+(m.merged?" · รวมแถวที่ชื่อและขนาดเหมือนกัน "+m.merged+" แถว (รหัสมีดรวมเป็นดรอปดาวน์)":"")+(r.bad.length?" · ข้ามแถวที่ข้อมูลไม่ครบ/ไม่ถูกต้อง: "+r.bad.join(", "):"")+" · ตรวจดูแล้วกด \"บันทึก\" เพื่อส่งขึ้น Firebase";
   $("edPasteTa").value="";
 }
 
@@ -781,6 +836,7 @@ document.addEventListener("click",e=>{
   else if(b.id==="edPasteClose")$("edPasteBox").classList.add("hidden");
   else if(b.id==="edPasteRep"){if(confirm("แทนที่ตารางของประเภทนี้ทั้งหมดด้วยข้อมูลที่วาง?"))doPaste(true)}
   else if(b.id==="edPasteApp")doPaste(false);
+  else if(b.id==="edPasteCode")doCodes();
   else if(b.id==="seedBtn")seed();
   else if(b.id==="loginBtn"){
     if(auth.currentUser)signOut(auth);
