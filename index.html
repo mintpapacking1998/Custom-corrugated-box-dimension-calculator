@@ -158,10 +158,11 @@ details.info{margin-top:10px}details.info summary{cursor:pointer;font-size:.8rem
 #edDlg .ef{padding:12px 18px;border-top:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;align-items:center}
 #edDlg td,#edDlg th{padding:5px 4px}
 #edDlg input,#edDlg select{padding:7px 8px;font-size:.88rem}
-#edDlg .nm{min-width:130px}#edDlg .num{width:78px}
+#edDlg .cd{min-width:170px}#edDlg .nm{min-width:130px}#edDlg .num{width:78px}
 #edDlg .del{color:var(--red);border-color:#e5b6b2;padding:6px 9px}
 #edMsg{font-size:.85rem;color:var(--red);min-height:1.2em}
 .sync{font-size:.78rem;color:var(--muted)}
+select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-radius:7px}
 </style>
 </head>
 <body>
@@ -308,7 +309,7 @@ details.info{margin-top:10px}details.info summary{cursor:pointer;font-size:.8rem
       <div><h2>ขนาดมาตรฐานที่มี</h2><div class="note">กดแถวเพื่อใช้ขนาดนั้น · <span id="stdT"></span></div></div><div style="text-align:right"><button id="loginBtn" class="secondary hidden" type="button">🔑 เข้าสู่ระบบเพื่อแก้ไข</button> <button id="edBtn" class="secondary hidden" type="button">⚙ จัดการตารางขนาดมาตรฐาน</button> <button id="seedBtn" class="secondary hidden" type="button">⬆ นำเข้าข้อมูลที่มีอยู่ขึ้น Firebase</button><div class="sync" id="syncNote"></div></div>
     </div>
     <div class="tw">
-      <table><thead><tr><th>ชื่อ / เบอร์</th><th>กว้าง</th><th>ยาว</th><th>สูง</th><th>มีดไดคัท</th><th>กระดาษ</th><th></th></tr></thead><tbody id="std"></tbody></table>
+      <table><thead><tr><th>ชื่อ / เบอร์</th><th>กว้าง</th><th>ยาว</th><th>สูง</th><th>มีดไดคัท</th><th>รหัสมีด</th><th>กระดาษ</th><th></th></tr></thead><tbody id="std"></tbody></table>
     </div>
     <div id="exwrap"></div>
   </section>
@@ -317,9 +318,13 @@ details.info{margin-top:10px}details.info summary{cursor:pointer;font-size:.8rem
 <dialog id="edDlg" aria-labelledby="edT">
   <div class="eh"><h2 id="edT">จัดการตารางขนาดมาตรฐาน</h2>
     <div class="note">แก้ไขเฉพาะประเภทที่เลือกอยู่ · หน่วยเป็น ซม. · กดบันทึกแล้วทุกคนที่เปิดหน้านี้จะเห็นทันที</div></div>
-  <div class="eb"><table><thead><tr><th>ชื่อ / เบอร์</th><th>กว้าง</th><th>ยาว</th><th>สูง</th><th>มีดไดคัท</th><th>กระดาษ</th><th></th></tr></thead><tbody id="edBody"></tbody></table></div>
+  <div class="eb"><div id="edPasteBox" class="hidden" style="margin-bottom:12px;padding:10px;border:1px dashed var(--line);border-radius:10px">
+<div class="note">วางข้อมูลจาก Excel / Google Sheets ได้เลย 1 แถวต่อ 1 ขนาด เรียงคอลัมน์ (แยกด้วย Tab): <b>ชื่อ, กว้าง, ยาว, สูง, มีดไดคัท</b> (มี / ไม่มี / เว้นว่าง), <b>กระดาษ</b> (stock / order / เว้นว่าง), <b>รหัสมีด</b> (ถ้ามีหลายรหัสคั่นด้วย ; เช่น D-101;D-205) ตัวเลขเป็น ซม. แถวหัวตารางใส่มาได้ ระบบข้ามให้</div>
+<textarea id="edPasteTa" rows="6" style="width:100%;margin-top:6px;font:inherit;border:1px solid #cfd7d4;border-radius:9px;padding:8px" placeholder="เบอร์ A&#9;14&#9;20&#9;6&#9;มี&#9;stock&#9;D-101;D-205"></textarea>
+<div style="margin-top:6px;display:flex;gap:8px;flex-wrap:wrap"><button class="secondary" id="edPasteRep" type="button">แทนที่ทั้งหมด</button><button class="secondary" id="edPasteApp" type="button">ต่อท้ายตารางเดิม</button><button class="secondary" id="edPasteClose" type="button">ปิด</button></div>
+<div id="edPasteMsg" class="note"></div></div><table><thead><tr><th>ชื่อ / เบอร์</th><th>กว้าง</th><th>ยาว</th><th>สูง</th><th>มีดไดคัท</th><th>รหัสมีด (หลายรหัสคั่นด้วย ,)</th><th>กระดาษ</th><th></th></tr></thead><tbody id="edBody"></tbody></table></div>
   <div class="ef">
-    <div><button class="secondary" id="edAdd" type="button">+ เพิ่มแถว</button> <button class="secondary" id="edReset" type="button">↩ คืนค่าเริ่มต้นของประเภทนี้</button></div>
+    <div><button class="secondary" id="edAdd" type="button">+ เพิ่มแถว</button> <button class="secondary" id="edPaste" type="button">📋 วางจาก Excel</button> <button class="secondary" id="edReset" type="button">↩ คืนค่าเริ่มต้นของประเภทนี้</button></div>
     <div id="edMsg" role="alert"></div>
     <div><button class="secondary" id="edCancel" type="button">ยกเลิก</button> <button class="primary" id="edSave" type="button" style="width:auto;padding:9px 22px">บันทึก</button></div>
   </div>
@@ -385,6 +390,13 @@ shoe:[["แบบ 1",15.9,30,10.5,1,""],["แบบ 1",17,33,13,1,""],["แบ�
 var EXTRA=[["00",9.75,14,6],["0",11,17,6],["0+4",11,17,10],["AA",13,17,7],["A",14,20,6],["2A",14,20,12],["B",17,25,9],["2B",17,25,18],["B+7",17,25,16],["C",20,30,11],["C+9",20,30,20],["CD",15,15,15],["D",22,35,14],["D+11",22,35,25],["E",24,40,17],["2F",31,30,13],["F",30,45,20],["G",31,36,26],["H",40,45,34],["I",45,55,40]],EXL=[],exKey="";
 var STD=LIST.rsc,lastTp="";
 function nm(x){return x[0]}
+var CS={};
+function eh(v){return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
+function ckey(q){return $("type").value+"|"+q[0]+"|"+q[1]+"|"+q[2]+"|"+q[3]}
+function codeSel(q){var c=q[6];if(!c||!c.length)return '<span class="note">—</span>';if(c.length==1)return '<b>'+eh(c[0])+'</b>';
+ var k=ckey(q),cur=CS[k];return '<select class="cs" data-ck="'+eh(k)+'" aria-label="รหัสมีดไดคัท">'+c.map(function(x){return '<option'+(x===cur?' selected':'')+'>'+eh(x)+'</option>'}).join("")+'</select>'}
+function codeTxt(q){var c=q[6];return (c&&c.length)?'<div class="note" style="margin:2px 0 4px">รหัสมีดไดคัท: '+c.map(eh).join(", ")+'</div>':""}
+document.addEventListener("change",function(e){var t=e.target;if(t.classList&&t.classList.contains("cs"))CS[t.dataset.ck]=t.value});
 function dieB(q){return q[4]==1?'<span class="bd ok">มีมีดไดคัทแล้ว</span>':q[4]==0?'<span class="bd no">ยังไม่มีมีดไดคัท</span>':'<span class="bd un">ยังไม่ระบุสถานะมีด</span>'}
 function papB(q){return q[5]=="stock"?'<span class="bd ok">กระดาษ stock</span>':q[5]=="order"?'<span class="bd no">ต้องสั่งกระดาษ</span>':''}
 var TN={rsc:"ฝาบนและฝาล่างชนกันตรงกลาง มีปีกกาว 3 ซม. ผลิตง่าย ราคาประหยัดที่สุด",mailer:"ไดคัทชิ้นเดียว ฝามีหูพับเข้าด้านข้างและลิ้นล็อกด้านหน้า ไม่ต้องใช้กาวหรือเทป",ear:"ไดคัทชิ้นเดียว ผนังข้างพับสองชั้นและหูฝาล็อกด้านข้าง แข็งแรงกว่าแบบไปรษณีย์",lock:"ฝาบนมีลิ้นเสียบและปีกกันฝุ่น ก้นกล่องพับขัดล็อกเอง ไม่ต้องใช้เทป",tuck:"ฝาบนและล่างเป็นลิ้นเสียบ มีปีกกันฝุ่นข้างละ 2 ชิ้น เปิดปิดซ้ำได้",handle:"มีแผ่นหูหิ้วเจาะช่องบนฝา ควรเลือกลูกฟูกที่แข็งพอรับน้ำหนักของ",pizza:"ไดคัทชิ้นเดียว ฝาติดกับผนังหลัง ปีกข้างและลิ้นหน้าของฝาพับเข้าด้านใน มีรูกลมสำหรับล็อก",tele:"ฝากับตัวกล่องแยกชิ้น ฝาเผื่อ 0.6 ซม. เหมาะกับของพรีเมียม",shoe:"มี 2 แบบ ภาพ 3 มิติและสูตรแผ่นคลี่ใช้แบบกล่อง + ฝาแยกชิ้นไปก่อน (ยังไม่ได้แยกตามแบบ 1 / แบบ 2)",doc:"ฝาติดกับตัวกล่อง ผนังข้างพับสองชั้น เหมาะกับเก็บเอกสาร ใส่ขนาด A4 ได้"};
@@ -499,7 +511,7 @@ function drawCmp(){
 var ndReq=false,ndOn=false,ndKey="",selKey=null,LBL="ต่างจากที่กรอก";
 function dmx(q){return fu(q[1])+" × "+fu(q[2])+" × "+fu(q[3])+" "+UL[u]}
 function sg(v){var r=Math.round(v*FU[u]*100)/100;return r==0?"0":(r>0?"+":"−")+Math.abs(r).toLocaleString("th-TH")}
-function pcx(q,i,tag,col,top,xt){return '<div class="pc'+(top?" top":"")+'"><div><span class="tag" style="background:'+col+'">'+tag+'</span> <span class="nm">'+nm(q)+'</span> · '+dmx(q)+'</div><div class="note" style="margin:2px 0 0">แผ่นคลี่ '+shLb(q)+'</div>'+(xt||"")+'<div style="margin:6px 0">'+dieB(q)+papB(q)+'</div>'+fee(q)+'<button type="button" data-i="'+i+'">ใช้ขนาดนี้</button></div>'}
+function pcx(q,i,tag,col,top,xt){return '<div class="pc'+(top?" top":"")+'"><div><span class="tag" style="background:'+col+'">'+tag+'</span> <span class="nm">'+nm(q)+'</span> · '+dmx(q)+'</div><div class="note" style="margin:2px 0 0">แผ่นคลี่ '+shLb(q)+'</div>'+(xt||"")+'<div style="margin:6px 0">'+dieB(q)+papB(q)+'</div>'+codeTxt(q)+fee(q)+'<button type="button" data-i="'+i+'">ใช้ขนาดนี้</button></div>'}
 function dtx(d,sw){return '<div style="font-size:.95rem;margin-top:4px">'+LBL+': กว้าง '+sg(d[0])+' · ยาว '+sg(d[1])+' · สูง '+sg(d[2])+' '+UL[u]+(sw?" (สลับกว้าง↔ยาว)":"")+'</div>'+(d.some(function(v){return v<-.06})?'<div class="warn">⚠ บางด้านเล็กกว่าที่ต้องการ ของอาจใส่ไม่พอ</div>':"")}
 function shLb(q){var r=calc(q[1],q[2],q[3],$("type").value),a=areaOf(q);return fu(r.len)+" × "+fu(r.wid)+" "+UL[u]+(r.lid?" + ฝา "+fu(r.lid[0])+" × "+fu(r.lid[1]):"")+" · ใช้กระดาษ "+(Math.round(a/10)/1000).toLocaleString("th-TH")+" ตร.ม./ใบ"}
 function areaOf(q){var r=calc(q[1],q[2],q[3],$("type").value);return r.len*r.wid+(r.lid?r.lid[0]*r.lid[1]:0)}
@@ -536,9 +548,9 @@ function buildTable(mi,fit,req,ptop){var tpx=$("type").value;
  var k2=tpx+"|"+u;
  if(k2!=exKey){exKey=k2;$("exwrap").innerHTML=EXL.length?'<details style="margin-top:14px"><summary>ขนาดมาตรฐานทั่วไปอื่น ที่ไม่อยู่ในรายการของเรา ('+EXL.length+' ขนาด · ไปรษณีย์ไทย)</summary><table><thead><tr><th>เบอร์</th><th>กว้าง</th><th>ยาว</th><th>สูง</th><th>สถานะ</th></tr></thead><tbody>'+EXL.map(function(q,i){return '<tr class="row" data-x="'+i+'" tabindex="0"><td><b>'+q[0]+'</b></td><td>'+fu(q[1])+'</td><td>'+fu(q[2])+'</td><td>'+fu(q[3])+'</td><td><span class="tag" style="background:#b26a00">ไม่มีมีดไดคัท</span></td></tr>'}).join("")+'</tbody></table><div class="ask" style="margin:8px 0 4px">ทุกขนาดในตารางนี้ไม่มีมีดไดคัท — สอบถามเรื่องการเก็บเงินค่ามีดไดคัทอีกครั้ง</div><div class="note">กดแถวเพื่อใช้ขนาดนี้ · ที่มา: ตารางกล่องไปรษณีย์ไทยมาตรฐาน 20 ขนาด (LazBlog)</div></details>':""}
  $("std").innerHTML=STD.map(function(s,i){
-  if(s[1]==null)return '<tr><td><b>'+s[0]+'</b></td><td colspan="3" class="note">ยังไม่ระบุขนาด</td><td>'+dieB(s)+'</td><td>'+papB(s)+'</td><td></td></tr>';
+  if(s[1]==null)return '<tr><td><b>'+s[0]+'</b></td><td colspan="3" class="note">ยังไม่ระบุขนาด</td><td>'+dieB(s)+'</td><td>'+codeSel(s)+'</td><td>'+papB(s)+'</td><td></td></tr>';
   var cls="row"+(i==mi?" on":"");
-  return '<tr class="'+cls+'" data-i="'+i+'" tabindex="0"><td><b>'+s[0]+'</b></td><td>'+fu(s[1])+'</td><td>'+fu(s[2])+'</td><td>'+fu(s[3])+'</td><td>'+dieB(s)+'</td><td>'+papB(s)+'</td><td>'+(req?((fitsP(s,req)||i==ptop)?'<span class="tag">'+(i==ptop?'แนะนำสำหรับสินค้า':'ใส่สินค้าได้')+'</span>':''):(fit.indexOf(i)>=0?'<span class="tag">ใส่ของได้</span>':''))+'</td></tr>';
+  return '<tr class="'+cls+'" data-i="'+i+'" tabindex="0"><td><b>'+s[0]+'</b></td><td>'+fu(s[1])+'</td><td>'+fu(s[2])+'</td><td>'+fu(s[3])+'</td><td>'+dieB(s)+'</td><td>'+codeSel(s)+'</td><td>'+papB(s)+'</td><td>'+(req?((fitsP(s,req)||i==ptop)?'<span class="tag">'+(i==ptop?'แนะนำสำหรับสินค้า':'ใส่สินค้าได้')+'</span>':''):(fit.indexOf(i)>=0?'<span class="tag">ใส่ของได้</span>':''))+'</td></tr>';
  }).join("");
 }
 function render(){var tp=$("type").value;if(tp!==lastTp){lastTp=tp;STD=LIST[tp];fillStd();$("stdT").textContent=$("type").options[$("type").selectedIndex].text}
@@ -602,7 +614,7 @@ function prodHtml(r,o){if(!r)return "";var ch=o.ori,cs=csz(ch),
  Object.keys(LIST).forEach(function(k){if(k==cur)return;var l=LIST[k],f=prodFit(r,l);if(f.length)alt.push(TL[k]+" "+nm(l[f[0]])+" ("+dmq(l[f[0]])+")")});
  if(alt.length)h+='<div class="note">ประเภทอื่นที่มีขนาดใส่ได้: '+alt.slice(0,4).join(" · ")+'</div>';
  return h}
-function pick(e){var tr=e.target.closest("tr.row");if(!tr)return;var s=STD[+tr.dataset.i];if(!s||s[1]==null)return;var c=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=c(s[1]);$("l").value=c(s[2]);$("h").value=c(s[3]);render()}
+function pick(e){if(e.target.closest&&e.target.closest("select"))return;var tr=e.target.closest("tr.row");if(!tr)return;var s=STD[+tr.dataset.i];if(!s||s[1]==null)return;var c=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=c(s[1]);$("l").value=c(s[2]);$("h").value=c(s[3]);render()}
 $("clrAll").addEventListener("click",function(){$("boxMode").click();["w","l","h","pw","pl","ph","cname"].forEach(function(i){$(i).value=""});selKey=null;ndOn=false;$("pcl").value="0";$("pcll").value="0";$("ptop").value="0";$("pgap").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;render()});
 $("clrBox").addEventListener("click",function(){["w","l","h"].forEach(function(i){$(i).value=""});render()});
 $("clrProd").addEventListener("click",function(){["pw","pl","ph"].forEach(function(i){$(i).value=""});selKey=null;ndOn=false;$("pcl").value="0";$("pcll").value="0";$("ptop").value="0";$("pgap").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;render()});
@@ -651,8 +663,8 @@ let remoteKeys=new Set(),snapReady=false;
 function updSeed(){const miss=Object.keys(DEF).filter(k=>!remoteKeys.has(k)).length;$("seedBtn").classList.toggle("hidden",!(isAdmin&&snapReady&&miss>0))}
 const note=t=>{const e=$("syncNote");if(e)e.textContent=t||""};
 const esc=v=>String(v==null?"":v).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
-const toO=r=>({n:r[0],w:r[1]==null?null:r[1],l:r[2]==null?null:r[2],h:r[3]==null?null:r[3],d:(r[4]===0||r[4]===1)?r[4]:null,p:r[5]||""});
-const toR=o=>[o.n,o.w,o.l,o.h,o.d,o.p||""];
+const toO=r=>({n:r[0],w:r[1]==null?null:r[1],l:r[2]==null?null:r[2],h:r[3]==null?null:r[3],d:(r[4]===0||r[4]===1)?r[4]:null,p:r[5]||"",k:Array.isArray(r[6])?r[6]:[]});
+const toR=o=>[o.n,o.w,o.l,o.h,o.d,o.p||"",o.k||[]];
 
 function applyRemote(key,rows){
   if(!(key in LIST)||!Array.isArray(rows))return;
@@ -673,6 +685,7 @@ function rowHtml(o,i){
   return '<tr data-i="'+i+'"><td><input class="nm" data-k="n" value="'+esc(o.n)+'" aria-label="ชื่อ"></td>'+
   ['w','l','h'].map(k=>'<td><input class="num" data-k="'+k+'" type="number" step="0.01" min="0" inputmode="decimal" value="'+esc(o[k])+'" aria-label="'+k+'"></td>').join('')+
   '<td><select data-k="d"><option value="">ยังไม่ระบุ</option><option value="1"'+(o.d===1?' selected':'')+'>มีแล้ว</option><option value="0"'+(o.d===0?' selected':'')+'>ยังไม่มี</option></select></td>'+
+  '<td><input class="cd" data-k="k" value="'+esc((o.k||[]).join(", "))+'" placeholder="เช่น D-101, D-205" aria-label="รหัสมีดไดคัท"></td>'+
   '<td><select data-k="p"><option value="">—</option><option value="stock"'+(o.p==="stock"?' selected':'')+'>stock</option><option value="order"'+(o.p==="order"?' selected':'')+'>ต้องสั่ง</option></select></td>'+
   '<td><button type="button" class="secondary del" data-del="'+i+'" aria-label="ลบแถว">✕</button></td></tr>';
 }
@@ -680,7 +693,7 @@ const paint=()=>{$("edBody").innerHTML=draft.map(rowHtml).join("")};
 function openEd(){
   draft=LIST[$("type").value].map(toO);
   $("edT").textContent="จัดการตารางขนาดมาตรฐาน — "+$("stdT").textContent;
-  $("edMsg").textContent="";paint();$("edDlg").showModal();
+  $("edMsg").textContent="";$("edPasteBox").classList.add("hidden");paint();$("edDlg").showModal();
 }
 function collect(){
   const out=[];
@@ -690,7 +703,7 @@ function collect(){
     const have=[o.w,o.l,o.h].filter(v=>v!=null).length;
     if(have!==0&&have!==3)return{err:"แถวที่ "+(i+1)+" ต้องใส่ กว้าง ยาว สูง ให้ครบ (หรือเว้นว่างทั้งหมด)"};
     if(have===3&&!(o.w>0&&o.l>0&&o.h>0))return{err:"แถวที่ "+(i+1)+" ขนาดต้องมากกว่า 0"};
-    out.push({n:String(o.n).trim(),w:o.w,l:o.l,h:o.h,d:o.d,p:o.p||""});
+    out.push({n:String(o.n).trim(),w:o.w,l:o.l,h:o.h,d:o.d,p:o.p||"",k:o.k||[]});
   }
   return{rows:out};
 }
@@ -720,22 +733,54 @@ async function seed(){
   }finally{b.disabled=false}
 }
 
+function parsePaste(txt){
+  const rows=[],bad=[];
+  txt.split(/\r?\n/).forEach((line,i)=>{
+    if(!line.trim())return;
+    const c=(line.indexOf("\t")>=0?line.split("\t"):line.split(",")).map(x=>x.trim());
+    const num=x=>x===""||x==null?null:parseFloat(String(x).replace(/,/g,""));
+    const w=num(c[1]),l=num(c[2]),h=num(c[3]);
+    if(rows.length===0&&bad.length===0&&c[1]!==""&&isNaN(w)){return}   /* แถวหัวตาราง */
+    if(!c[0]){bad.push(i+1);return}
+    const have=[w,l,h].filter(v=>v!=null&&!isNaN(v)).length;
+    if(have!==0&&have!==3||[w,l,h].some(v=>v!=null&&(isNaN(v)||v<=0))){bad.push(i+1);return}
+    const dd=(c[4]||"").toLowerCase(),pp=(c[5]||"").toLowerCase();
+    const d=/^(ไม่|ยังไม่|0|no|n|false)/.test(dd)?0:(/^(มี|1|yes|y|true)/.test(dd)?1:null);
+    const p=/stock|สต็อก|สต๊อก/.test(pp)?"stock":(/order|สั่ง/.test(pp)?"order":"");
+    const k=(c[6]||"").split(/[;|,]/).map(x=>x.trim()).filter(Boolean);
+    rows.push({n:c[0],w:have?w:null,l:have?l:null,h:have?h:null,d:d,p:p,k:k});
+  });
+  return{rows,bad};
+}
+function doPaste(replace){
+  const r=parsePaste($("edPasteTa").value);
+  if(!r.rows.length){$("edPasteMsg").textContent="ไม่พบแถวข้อมูลที่ใช้ได้"+(r.bad.length?" (แถวที่มีปัญหา: "+r.bad.join(", ")+")":"");return}
+  draft=replace?r.rows:draft.concat(r.rows);paint();
+  $("edPasteMsg").textContent="เพิ่ม "+r.rows.length+" แถวลงตารางแล้ว"+(r.bad.length?" · ข้ามแถวที่ข้อมูลไม่ครบ/ไม่ถูกต้อง: "+r.bad.join(", "):"")+" · ตรวจดูแล้วกด \"บันทึก\" เพื่อส่งขึ้น Firebase";
+  $("edPasteTa").value="";
+}
+
 document.addEventListener("input",e=>{
   const t=e.target;if(!t.closest||!t.closest("#edBody")||!draft)return;
   const i=+t.closest("tr").dataset.i,k=t.dataset.k;if(!draft[i]||!k)return;
   const v=t.value;
   if(k==="n"||k==="p")draft[i][k]=v;
+  else if(k==="k")draft[i].k=v.split(/[,;|]/).map(x=>x.trim()).filter(Boolean);
   else if(k==="d")draft[i].d=v===""?null:+v;
   else draft[i][k]=v===""?null:+v;
 });
 document.addEventListener("click",e=>{
   const b=e.target.closest&&e.target.closest("button");if(!b)return;
   if(b.id==="edBtn")openEd();
-  else if(b.id==="edAdd"){draft.push({n:"",w:null,l:null,h:null,d:null,p:""});paint()}
+  else if(b.id==="edAdd"){draft.push({n:"",w:null,l:null,h:null,d:null,p:"",k:[]});paint()}
   else if(b.id==="edCancel")$("edDlg").close();
   else if(b.id==="edReset"){if(confirm("คืนค่าเริ่มต้นของประเภทนี้? (ยังไม่บันทึกจนกว่าจะกดบันทึก)")){draft=DEF[$("type").value].map(toO);paint()}}
   else if(b.dataset.del!==undefined&&b.closest("#edBody")){draft.splice(+b.dataset.del,1);paint()}
   else if(b.id==="edSave")save();
+  else if(b.id==="edPaste"){$("edPasteBox").classList.toggle("hidden");$("edPasteMsg").textContent=""}
+  else if(b.id==="edPasteClose")$("edPasteBox").classList.add("hidden");
+  else if(b.id==="edPasteRep"){if(confirm("แทนที่ตารางของประเภทนี้ทั้งหมดด้วยข้อมูลที่วาง?"))doPaste(true)}
+  else if(b.id==="edPasteApp")doPaste(false);
   else if(b.id==="seedBtn")seed();
   else if(b.id==="loginBtn"){
     if(auth.currentUser)signOut(auth);
