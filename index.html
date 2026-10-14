@@ -164,7 +164,35 @@ details.info{margin-top:10px}details.info summary{cursor:pointer;font-size:.8rem
 .sync{font-size:.78rem;color:var(--muted)}
 select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-radius:7px}
 </style>
-</head>
+
+<style>
+.advanced>summary,.advanced details>summary{list-style:none;display:flex;align-items:center;gap:9px;padding:11px 14px;border:1.5px solid #b9c4d6;border-radius:12px;background:linear-gradient(#fff,#eef2f8);color:var(--brand);font-weight:800;cursor:pointer;box-shadow:0 2px 0 #c9d2e0;user-select:none}
+.advanced>summary::-webkit-details-marker,.advanced details>summary::-webkit-details-marker{display:none}
+.advanced>summary::before{content:"⚙";font-size:1.05rem}
+.advanced details>summary::before{content:"⊞";font-size:1.05rem}
+.advanced>summary::after,.advanced details>summary::after{content:"▾";margin-left:auto;transition:transform .15s}
+.advanced[open]>summary::after,.advanced details[open]>summary::after{transform:rotate(180deg)}
+.advanced>summary:hover,.advanced details>summary:hover{background:#e6edf8;border-color:var(--brand)}
+.advanced[open]>summary,.advanced details[open]>summary{background:#e6edf8;border-color:var(--brand);box-shadow:none}
+.advanced details>summary{margin-bottom:6px}
+.sw{font-weight:800;margin:16px 0 6px;display:flex;align-items:center;gap:8px}
+.sw::before{content:"";width:16px;height:16px;border-radius:5px;background:var(--sc);border:1.5px solid rgba(0,0,0,.25)}
+.cgrp{margin:8px 0;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#fcfcfb}
+.cgt{font-size:.82rem;font-weight:700;color:var(--muted);margin-bottom:6px}
+.grid2c{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lg3{display:flex;gap:14px;flex-wrap:wrap;font-size:.84rem;margin:2px 0 8px}
+.lgi{display:inline-flex;align-items:center;gap:6px;font-weight:700}
+.lgi i{width:15px;height:15px;border-radius:4px;display:inline-block;border:1.5px solid rgba(0,0,0,.3)}
+</style>
+
+<style>
+.zoomc{position:absolute;top:10px;right:10px;display:flex;align-items:center;gap:2px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 4px 14px rgba(0,0,0,.16);padding:4px;z-index:5;cursor:default}
+.zoomc button{width:36px;height:36px;border:0;background:transparent;border-radius:9px;font:inherit;font-size:1.3rem;font-weight:700;cursor:pointer;color:var(--ink);line-height:1}
+.zoomc button:hover{background:#eef2f8}.zoomc button:active{background:#dfe7f4}
+.zoomc .zr{width:auto;padding:0 12px;font-size:.85rem;border:1px solid #b9c4d6;color:var(--brand);margin-left:4px;height:32px}
+.zoomc span{min-width:54px;text-align:center;font-weight:700;font-size:.92rem;cursor:pointer;user-select:none}
+</style>
+<style>.clinfo .otab td,.clinfo .otab th{padding:6px 8px;text-align:center}.clinfo .otab td:first-child,.clinfo .otab th:first-child{text-align:left;min-width:190px}.clinfo .otab tr.on td{background:var(--green-bg);font-weight:700}.clinfo{margin-top:6px;min-width:0;max-width:100%}.advanced>div{grid-template-columns:minmax(0,1fr)}.clinfo>div{max-width:100%}</style></head>
 <body>
 
 <main>
@@ -237,8 +265,18 @@ select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-rad
                   </div>
                   <div class="field"><label>ช่องว่างระหว่างชิ้น ต่อช่อง (<span class="u">ซม.</span>)</label><input id="pgap" type="number" min="0" step=".5" value="0"></div>
                 </details>
+                <div class="sw" style="--sc:#1ea550">ระยะเผื่อของสินค้า (สีเขียว)</div>
                 <div class="grid2f"><div class="field"><label for="pcl">เผื่อด้านกว้าง = ความลึก (<span class="u">ซม.</span>)</label><input id="pcl" type="number" min="0" step=".5" value="0"></div><div class="field"><label for="pcll">เผื่อด้านยาว = ความยาว (<span class="u">ซม.</span>)</label><input id="pcll" type="number" min="0" step=".5" value="0"></div><div class="field"><label for="ptop">เผื่อด้านบน (<span class="u">ซม.</span>)</label><input id="ptop" type="number" min="0" step=".5" value="0"></div></div>
-                <div class="helper" style="margin-top:-4px">เผื่อด้านกว้าง = ความลึกของกล่อง · เผื่อด้านยาว = ความยาวของกล่อง · คิดให้ด้านละค่านี้ทั้งสองข้าง · ด้านบน 0 = ปิดฝาพอดี · ด้านล่างไม่คิดเผื่อ</div>
+                <div class="helper" style="margin-top:-4px">เผื่อด้านกว้าง = ความลึกของกล่อง · เผื่อด้านยาว = ความยาวของกล่อง · คิดให้ด้านละค่านี้ทั้งสองข้าง · ด้านบน 0 = ปิดฝาพอดี · ด้านล่างไม่คิดเผื่อ · ในภาพ 3 มิติแสดงเป็นสีเขียว</div>
+                <div class="sw" style="--sc:#e02828">ระยะเผื่อปิดกล่อง (สีแดง)</div>
+                <div class="cgrp"><div class="cgt">ด้านกว้าง = ความลึกของกล่อง · รวมซ้าย + ขวา</div><div class="field"><label for="pkW">เผื่อด้านกว้าง (<span class="u">ซม.</span>)</label><input id="pkW" type="number" min="0" step=".5" value="0"><div class="note" id="pkWs" style="margin-top:4px"></div></div></div>
+                <div class="cgrp"><div class="cgt">ด้านยาว · รวมหน้า + หลัง</div><div class="field"><label for="pkG">เผื่อด้านยาว (<span class="u">ซม.</span>)</label><input id="pkG" type="number" min="0" step=".5" value="0"><div class="note" id="pkGs" style="margin-top:4px"></div></div></div>
+                <div class="cgrp"><div class="cgt">สูง</div><div class="field"><label for="pkh">ด้านบน (<span class="u">ซม.</span>)</label><input id="pkh" type="number" min="0" step=".5" value="0"></div></div>
+                <div class="helper" style="margin-top:-4px">เพิ่มให้ขนาดกล่องที่ต้องใช้ใหญ่ขึ้นตามค่าแต่ละด้าน เพื่อให้ปิดกล่องได้ · กรอกค่ารวมครั้งเดียว ระบบแบ่งครึ่งให้ซ้าย–ขวา / หน้า–หลังเอง เช่น กว้าง 1 → ซ้าย 0.5 + ขวา 0.5 · ยาว 2 → หน้า 1 + หลัง 1</div>
+                <details class="info clinfo" open><summary>ค่าแนะนำระยะเผื่อปิดกล่อง (ซม.)</summary>
+                  <div class="note" style="margin:8px 0">สำหรับผู้กรอกใช้อ้างอิง · กว้าง/ยาว = ค่ารวมสองข้าง (กรอกครั้งเดียว ระบบแบ่งซ้าย–ขวา / หน้า–หลังให้) · สูง = ด้านบน · หน่วยเป็น <b>ซม.</b> เสมอ (ไม่เปลี่ยนตามหน่วยที่เลือกด้านบน) · ดูแล้วกรอกเองตามความเหมาะสมของงาน · แถวของประเภทกล่องที่เลือกอยู่จะเป็นสีเขียว</div>
+                  <div style="overflow-x:auto"><table id="cltab" class="otab"><thead><tr><th>ประเภทกล่อง</th><th>กว้าง</th><th>ยาว</th><th>สูง</th></tr></thead><tbody><tr data-t="ear"><td>หูช้าง</td><td>1</td><td>2</td><td>1</td></tr><tr data-t="mailer"><td>ไปรษณีย์</td><td>2</td><td>1</td><td>1</td></tr><tr data-t="lock"><td>ฝาเสียบก้นขัด</td><td>1</td><td>1</td><td>1</td></tr><tr data-t="handle"><td>หูหิ้วกระดาษ / เมล่อน</td><td>1</td><td>1</td><td>2</td></tr><tr data-t="pizza"><td>พิซซ่า / ฝาเสียบ</td><td>2</td><td>1</td><td>1</td></tr><tr data-t="tuck"><td>ฝาเสียบบนล่าง</td><td>1</td><td>1</td><td>1</td></tr><tr data-t="rsc"><td>ฝาชน ลอน 3/B หรือ 3/C</td><td>0.8</td><td>1.2</td><td>1.6</td></tr><tr data-t="rsc"><td>ฝาชน ลอน 5/BC</td><td>1.4</td><td>2.1</td><td>2.8</td></tr><tr data-t="tele"><td>กล่องฝาครอบ/ถาด สันคนละด้าน (ตัว)<div class="note" style="margin:2px 0 0">* สันอยู่ด้านกว้าง (ด้านสั้น)</div></td><td>1</td><td>2</td><td>1</td></tr><tr data-t="tele"><td>กล่องฝาครอบ/ถาด สันทุกด้าน (ตัว)</td><td>2</td><td>2</td><td>1</td></tr><tr data-t="shoe"><td>กล่องรองเท้า แบบ1/แบบ2</td><td>1</td><td>2</td><td>1</td></tr></tbody></table></div>
+                </details>
               </div>
             </details>
           </div>
@@ -277,12 +315,14 @@ select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-rad
         <details class="viewer" open>
           <summary>ดูภาพกล่อง 3 มิติ</summary>
           <div id="viewLbl" class="note" style="margin-top:6px"></div>
+          <div id="lg3" class="lg3"></div>
           <div style="height:8px"></div>
-          <div class="stage" id="stage"><div class="persp"><div class="box" id="box"></div></div><div class="hint">ลากเพื่อหมุนกล่อง</div></div>
+          <div class="stage" id="stage"><div class="persp"><div class="box" id="box"></div></div><svg id="dimsvg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible"></svg><div class="zoomc" id="zoomc" role="group" aria-label="ซูมภาพ 3 มิติ"><button id="zout" type="button" aria-label="ซูมออก" title="ซูมออก">−</button><span id="zval" title="คลิกเพื่อกลับเป็น 100%">100%</span><button id="zin" type="button" aria-label="ซูมเข้า" title="ซูมเข้า">＋</button><button id="zrst" type="button" class="zr" title="รีเซ็ตการซูม">รีเซ็ต</button></div><div class="hint">ลากเพื่อหมุน · ล้อเมาส์ / บีบสองนิ้ว / ปุ่มมุมขวาบนเพื่อซูม</div></div>
           <div class="viewer-controls">
             <button class="main" id="tog" type="button">เปิดกล่อง</button>
             <button id="rst" type="button">รีเซ็ตมุมมอง</button>
             <button id="bot" type="button">ดูก้นกล่อง</button>
+            <button id="dimBtn" type="button" aria-pressed="true">เส้นวัดระยะ</button>
             <button id="spin" type="button">หมุนอัตโนมัติ</button>
           </div>
           <div class="ang"><label for="deg">มุมเปิดฝา <b id="degv">0°</b></label><input id="deg" type="range" min="0" max="180" step="5" value="0"><div class="pre"><button type="button" data-d="0">ปิด</button><button type="button" data-d="45">45°</button><button type="button" data-d="90">90°</button><button type="button" data-d="135">135°</button><button type="button" data-d="180">180°</button></div></div>
@@ -393,6 +433,7 @@ tuck:[["กล่องฝาเสียบ",24,35,6,1,"stock"]],
 shoe:[["แบบ 1",15.9,30,10.5,1,""],["แบบ 1",17,33,13,1,""],["แบบ 1",20,32,12,1,""],["แบบ 2",14,28,10,1,""],["แบบ 2",18.5,28,9.5,1,""],["แบบ 2",20,33.5,11,1,""],["แบบ 2",21,32.5,12,1,""],["แบบ 2",32,32,14,1,""],["แบบ 2",17,30,11,1,""]]};
 var EXTRA=[["00",9.75,14,6],["0",11,17,6],["0+4",11,17,10],["AA",13,17,7],["A",14,20,6],["2A",14,20,12],["B",17,25,9],["2B",17,25,18],["B+7",17,25,16],["C",20,30,11],["C+9",20,30,20],["CD",15,15,15],["D",22,35,14],["D+11",22,35,25],["E",24,40,17],["2F",31,30,13],["F",30,45,20],["G",31,36,26],["H",40,45,34],["I",45,55,40]],EXL=[],exKey="";
 var STD=LIST.rsc,lastTp="",prevU=null;
+function hlCl(tp){document.querySelectorAll("#cltab tr[data-t]").forEach(function(r){r.classList.toggle("on",r.dataset.t===tp)})}
 function pizzaUnit(tp){setTimeout(function(){var sel=$("unit");
  if(tp==="pizza"){if(u!=="in"){prevU=u;sel.value="in";sel.dispatchEvent(new Event("change"))}}
  else if(prevU&&u==="in"){sel.value=prevU;prevU=null;sel.dispatchEvent(new Event("change"))}
@@ -427,11 +468,11 @@ function calc(W,L,H,type){if(type=="shoe")type="tele";
  var h=Math.max(3,H*0.4);
  return {len:L+2*H,wid:W+2*H,lid:[L+0.6+2*h,W+0.6+2*h]};
 }
-var rx=-32,ry=-28,deg=0,spin=false;
+var rx=-32,ry=-28,deg=0,spin=false,zm=1;
 function face(w,h,tf,c,cls,inner){return '<div class="f '+(cls||'')+'" style="--c:'+c+';width:'+w+'px;height:'+h+'px;margin:'+(-h/2)+'px 0 0 '+(-w/2)+'px;transform:'+tf+'">'+(inner||'')+'</div>'}
 function flap(w,f,tf,c,inner){return face(w,f,tf,c,"fl",inner).replace('margin:'+(-f/2)+'px 0 0','margin:'+(-f)+'px 0 0')}
 function scene(W,L,H,type,pb){if(type=="shoe")type="tele";
- var k=135/Math.max(W,L,H),l=L*k,w=W*k,h=H*k,K="#b8864b",S="#a2733c",T="#d8b27f",B="#8f6430";
+ var k=135/Math.max(W,L,H);SC={k:k,W:W,L:L,H:H,g:null};var l=L*k,w=W*k,h=H*k,K="#b8864b",S="#a2733c",T="#d8b27f",B="#8f6430";
  var o=face(l,w,"rotateX(90deg) translateZ("+(-h/2)+"px)",B,"",type=="lock"?'<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%"><polygon points="0,0 100,0 50,36" fill="rgba(255,255,255,.18)"/><polygon points="0,100 100,100 50,64" fill="rgba(255,255,255,.18)"/><path d="M0,0 L50,36 L50,64 L0,100 M100,0 L50,36 M100,100 L50,64" fill="none" stroke="#6b4a22" stroke-width="1.4" vector-effect="non-scaling-stroke"/></svg>':"")
   +face(l,h,"translateZ("+w/2+"px)",K,"",(type=="mailer"||type=="lock")?'<div style="position:absolute;left:50%;top:0;width:'+Math.max(14,.2*h)+'px;height:'+Math.max(7,.1*h)+'px;margin-left:-'+Math.max(7,.1*h)+'px;background:#4a3318;border-radius:0 0 99px 99px"></div>':"")+face(l,h,"rotateY(180deg) translateZ("+w/2+"px)",K)
   +face(w,h,"rotateY(90deg) translateZ("+l/2+"px)",S)+face(w,h,"rotateY(-90deg) translateZ("+l/2+"px)",S);
@@ -452,43 +493,81 @@ function scene(W,L,H,type,pb){if(type=="shoe")type="tele";
  }else{
   if(type=="tuck"||type=="lock")o+=flap(w,w*.6,"translate3d("+l/2+"px,"+(-h/2+1)+"px,0) rotateY(90deg) rotateX(var(--ear))",T)+flap(w,w*.6,"translate3d("+(-l/2)+"px,"+(-h/2+1)+"px,0) rotateY(-90deg) rotateX(var(--ear))",T);
   var lipH={mailer:.9*h,ear:.9*h,tuck:2*k,lock:2*k,pizza:h,doc:.9*h}[type],in_="";
-  if(lipH){var lw="";if(type=="ear"||type=="mailer"){var ew=Math.min(.9*h,w/2);lw='<div class="f" style="--c:'+T+';left:100%;top:0;margin:0;width:'+ew+'px;height:100%;border-radius:0 '+Math.min(lipH,18)+'px 0 0;border-left:0;transform-origin:0 50%;transform:rotateY(var(--ear))"></div><div class="f" style="--c:'+T+';left:auto;right:100%;top:0;margin:0;width:'+ew+'px;height:100%;border-radius:'+Math.min(lipH,18)+'px 0 0 0;border-right:0;transform-origin:100% 50%;transform:rotateY(calc(var(--ear) * -1))"></div>'}
-  in_+='<div class="f" style="--c:'+T+';left:0;top:auto;bottom:100%;margin:0;width:100%;height:'+lipH+'px;border-radius:'+(type=='ear'?'14px 14px 0 0':'8px 8px 0 0')+';transform-origin:50% 100%;transform:translateY(2px) rotateX(var(--lip))">'+lw+'</div>'}
-  if(type=="mailer"||type=="ear"||type=="pizza"){var r=type=="pizza"?"8px":"45%";var eh=Math.min((type=="ear"?1.05:.9)*h,w/2);
-   in_+='<div class="f" style="--c:'+S+';left:100%;top:0;margin:0;width:'+eh+'px;height:100%;transform-origin:0 50%;transform:translateX('+(-2)+'px) rotateY(var(--ear));border-radius:0 '+r+' '+r+' 0'+(type=='ear'?';clip-path:polygon(0 0,100% 14%,100% 86%,0 100%)':'')+'"></div>'
-    +'<div class="f" style="--c:'+S+';left:auto;right:100%;top:0;margin:0;width:'+eh+'px;height:100%;transform-origin:100% 50%;transform:translateX('+(2)+'px) rotateY(calc(var(--ear) * -1));border-radius:'+r+' 0 0 '+r+''+(type=='ear'?';clip-path:polygon(0 14%,100% 0,100% 100%,0 86%)':'')+'"></div>';}
+  if(lipH){var lw="";if(type=="ear"||type=="mailer"){var ew=Math.min(.9*h,w/2),lr1=type=="ear"?Math.min(lipH,ew).toFixed(1):Math.min(lipH,18),lr2=type=="ear"?(Math.min(lipH,ew)*.5).toFixed(1):0;lw='<div class="f" style="--c:'+T+';left:100%;top:0;margin:0;width:'+ew+'px;height:100%;border-radius:0 '+lr1+'px '+lr2+'px 0;border-left:0;transform-origin:0 50%;transform:rotateY(var(--ear))"></div><div class="f" style="--c:'+T+';left:auto;right:100%;top:0;margin:0;width:'+ew+'px;height:100%;border-radius:'+lr1+'px 0 0 '+lr2+'px;border-right:0;transform-origin:100% 50%;transform:rotateY(calc(var(--ear) * -1))"></div>'}
+  in_+='<div class="f" style="--c:'+T+';left:0;top:auto;bottom:100%;margin:0;width:100%;height:'+lipH+'px;border-radius:'+(type=='ear'?'0':'8px 8px 0 0')+';transform-origin:50% 100%;transform:translateY(2px) rotateX(var(--lip))">'+lw+'</div>'}
+  if(type=="mailer"||type=="ear"||type=="pizza"){var eh=Math.min((type=="ear"?1.05:.9)*h,w/2),r=type=="pizza"?"8px":"45%",rt=type=="ear"?(eh*.95).toFixed(1)+"px":r,rb=type=="ear"?(eh*.6).toFixed(1)+"px":r;
+   in_+='<div class="f" style="--c:'+S+';left:100%;top:0;margin:0;width:'+eh+'px;height:100%;transform-origin:0 50%;transform:translateX('+(-2)+'px) rotateY(var(--ear));border-radius:0 '+rt+' '+rb+' 0'+'"></div>'
+    +'<div class="f" style="--c:'+S+';left:auto;right:100%;top:0;margin:0;width:'+eh+'px;height:100%;transform-origin:100% 50%;transform:translateX('+(2)+'px) rotateY(calc(var(--ear) * -1));border-radius:'+rt+' 0 0 '+rb+''+'"></div>';}
   if(type=="handle"){var hh=Math.min(.6*h,3.5*k*1.4);
    in_+='<div class="f" style="--c:'+K+';left:25%;top:calc(50% - '+hh+'px);margin:0;width:50%;height:'+hh+'px;transform-origin:50% 100%;transform:rotateX(-90deg)"><div style="position:absolute;left:20%;width:60%;top:22%;height:36%;background:#4a3318;border-radius:99px"></div></div>';}
   o+=flap(l,w,"translate3d(0,"+(-h/2)+"px,"+(-w/2)+"px) rotateY(180deg) rotateX(var(--a))",T,in_);
  }
- if(pb){var C="rgba(30,110,230,.72)",G="rgba(40,170,90,.20)",
-  cub=function(x,y,z,tx,ty,tz,col){return '<div class="f" style="--c:transparent;border:0;width:0;height:0;transform:translate3d('+tx+'px,'+ty+'px,'+tz+'px)">'+face(y,z,"translateZ("+x/2+"px)",col)+face(y,z,"rotateY(180deg) translateZ("+x/2+"px)",col)+face(x,z,"rotateY(90deg) translateZ("+y/2+"px)",col)+face(x,z,"rotateY(-90deg) translateZ("+y/2+"px)",col)+face(y,x,"rotateX(90deg) translateZ("+z/2+"px)",col)+'</div>'};
-  var pa=pb.a,pn=pb.n,pg=pb.g;
-  if(pn[0]*pn[1]*pn[2]>120){o+=cub(pb.d[0]*k,pb.d[1]*k,pb.d[2]*k,0,(H/2-pb.d[2]/2)*k,0,C)}
-  else{
-   if(pb.cw>0||pb.cl>0||pb.tp>0)o+=cub(pb.ow*k*.995,pb.ol*k*.995,pb.oh*k*.995,0,(H/2-pb.oh/2)*k,0,G);
-   for(var ii=0;ii<pn[0];ii++)for(var jj=0;jj<pn[1];jj++)for(var mm=0;mm<pn[2];mm++){
-    var wc=(W-pb.ow)/2+pb.cw+ii*(pa[0]+pg)+pa[0]/2-W/2,lc=(L-pb.ol)/2+pb.cl+jj*(pa[1]+pg)+pa[1]/2-L/2,yb=mm*(pa[2]+pg)+pa[2]/2;
-    o+=cub(pa[0]*k,pa[1]*k,pa[2]*k,lc*k,(H/2-yb)*k,wc*k,C)}}}
+ if(pb){var BL="rgba(30,110,230,.88)",GR="rgba(30,165,80,.40)",RD="rgba(230,40,40,.30)",
+  cub=function(x,y,z,tx,ty,tz,col,bd){var q='<div class="f" style="--c:transparent;border:0;width:0;height:0;transform:translate3d('+tx+'px,'+ty+'px,'+tz+'px)">'+face(y,z,"translateZ("+x/2+"px)",col)+face(y,z,"rotateY(180deg) translateZ("+x/2+"px)",col)+face(x,z,"rotateY(90deg) translateZ("+y/2+"px)",col)+face(x,z,"rotateY(-90deg) translateZ("+y/2+"px)",col)+face(y,x,"rotateX(90deg) translateZ("+z/2+"px)",col)+'</div>';return q.replace(/class="f " style="--c:/g,'class="f " style="border-color:'+bd+';--c:')},
+  slab=function(w0,w1,l0,l1,h0,h1,col,bd){var a=(w1-w0)*k*.997,b=(l1-l0)*k*.997,c=(h1-h0)*k*.997;if(a<.05||b<.05||c<.05)return"";return cub(a,b,c,(l0+l1)/2*k,(H/2-(h0+h1)/2)*k,(w0+w1)/2*k,col,bd)},
+  shell=function(w0,w1,l0,l1,hh,mF,mB,mL,mR,mT,col,bd){return slab(w1,w1+mF,l0,l1,0,hh,col,bd)+slab(w0-mB,w0,l0,l1,0,hh,col,bd)+slab(w0-mB,w1+mF,l0-mL,l0,0,hh,col,bd)+slab(w0-mB,w1+mF,l1,l1+mR,0,hh,col,bd)+slab(w0-mB,w1+mF,l0-mL,l1+mR,hh,hh+mT,col,bd)};
+  var pa=pb.a,pn=pb.n,pg=pb.g,gd=pb.d,Wo=gd[0]+2*pb.cw+pb.kF+pb.kB,Lo=gd[1]+2*pb.cl+pb.kL+pb.kR,
+   gw0=-Wo/2+pb.kB,gw1=Wo/2-pb.kF,gl0=-Lo/2+pb.kL,gl1=Lo/2-pb.kR,cw0=gw0+pb.cw,cl0=gl0+pb.cl;SC.g={gw0:gw0,gw1:gw1,gl0:gl0,gl1:gl1,gh:gd[2]+pb.tp};
+  o+=shell(gw0,gw1,gl0,gl1,gd[2]+pb.tp,pb.kF,pb.kB,pb.kL,pb.kR,pb.kh,RD,"#a31212");
+  o+=shell(cw0,cw0+gd[0],cl0,cl0+gd[1],gd[2],pb.cw,pb.cw,pb.cl,pb.cl,pb.tp,GR,"#0f6b33");
+  if(pn[0]*pn[1]*pn[2]>120){o+=slab(cw0,cw0+gd[0],cl0,cl0+gd[1],0,gd[2],BL,"#0b3f9e")}
+  else{for(var ii=0;ii<pn[0];ii++)for(var jj=0;jj<pn[1];jj++)for(var mm=0;mm<pn[2];mm++){
+    var w0=cw0+ii*(pa[0]+pg),l0=cl0+jj*(pa[1]+pg),h0=mm*(pa[2]+pg);
+    o+=slab(w0,w0+pa[0],l0,l0+pa[1],h0,h0+pa[2],BL,"#0b3f9e")}}}
  $("box").innerHTML=o;
 }
+var SC=null,dimOn=true;
+function dims3d(){var sv=$("dimsvg");if(!sv)return;if(!SC||!dimOn){sv.innerHTML="";return}
+ var pe=document.querySelector(".persp"),st=$("stage").getBoundingClientRect(),pr=pe.getBoundingClientRect(),bo=$("box").getBoundingClientRect(),P=parseFloat(getComputedStyle(pe).perspective)||900,
+  ox=bo.left-st.left,oy=bo.top-st.top,px=pr.left-st.left+pr.width/2,py=pr.top-st.top+pr.height/2,
+  ca=Math.cos(ry*Math.PI/180),sa=Math.sin(ry*Math.PI/180),cb=Math.cos(rx*Math.PI/180),sb=Math.sin(rx*Math.PI/180);
+ function T(w,l,h){var x=l*SC.k,y=(SC.H/2-h)*SC.k,z=w*SC.k,x1=x*ca+z*sa,z1=-x*sa+z*ca,y2=y*cb-z1*sb,z2=y*sb+z1*cb;return {x:x1*zm,y:y2*zm,z:z2}}
+ function S(q){var f=P/(P-q.z);return [px+(ox+q.x-px)*f,py+(oy+q.y-py)*f]}
+ var W=SC.W,L=SC.L,H=SC.H,off=Math.max(W,L,H)*.1,
+  sz=T(W/2,0,0).z>T(-W/2,0,0).z?1:-1,sx=T(0,L/2,0).z>T(0,-L/2,0).z?1:-1,cw=1,cl=1,mx=1e9;
+ [[1,1],[1,-1],[-1,1],[-1,-1]].forEach(function(c){var q=T(c[0]*W/2,c[1]*L/2,0);if(q.x<mx){mx=q.x;cw=c[0];cl=c[1]}});
+ var out="",lx=0,ly=0;
+ var CC=S(T(0,0,H/2));
+ function dim(e1,e2,d1,d2,col,txt,lo){lo=lo||0;var a=S(T.apply(0,e1)),b=S(T.apply(0,e2)),c=S(T.apply(0,d1)),d=S(T.apply(0,d2)),dx=d[0]-c[0],dy=d[1]-c[1],n=Math.sqrt(dx*dx+dy*dy)||1,tx=-dy/n*5,ty=dx/n*5,mxp=(c[0]+d[0])/2,myp=(c[1]+d[1])/2;
+  out+='<g stroke="'+col+'" fill="none"><path d="M'+a[0].toFixed(1)+','+a[1].toFixed(1)+'L'+c[0].toFixed(1)+','+c[1].toFixed(1)+'M'+b[0].toFixed(1)+','+b[1].toFixed(1)+'L'+d[0].toFixed(1)+','+d[1].toFixed(1)+'" stroke-width=".8" stroke-dasharray="2 2" opacity=".7"/><path d="M'+c[0].toFixed(1)+','+c[1].toFixed(1)+'L'+d[0].toFixed(1)+','+d[1].toFixed(1)+'M'+(c[0]-tx).toFixed(1)+','+(c[1]-ty).toFixed(1)+'L'+(c[0]+tx).toFixed(1)+','+(c[1]+ty).toFixed(1)+'M'+(d[0]-tx).toFixed(1)+','+(d[1]-ty).toFixed(1)+'L'+(d[0]+tx).toFixed(1)+','+(d[1]+ty).toFixed(1)+'" stroke-width="1.7"/></g>'
+  +(function(){var vx=mxp-CC[0],vy=myp-CC[1],vn=Math.sqrt(vx*vx+vy*vy)||1;lx=mxp+vx/vn*lo;ly=myp+vy/vn*lo;return lo?'<path d="M'+mxp.toFixed(1)+','+myp.toFixed(1)+'L'+lx.toFixed(1)+','+ly.toFixed(1)+'" stroke="'+col+'" stroke-width=".9" opacity=".7" fill="none"/>':''})()+'<text x="'+lx.toFixed(1)+'" y="'+(ly-5).toFixed(1)+'" text-anchor="middle" font-size="12" font-weight="700" fill="'+col+'" stroke="#fff" stroke-width="3.2" paint-order="stroke" style="font-family:inherit">'+txt+'</text>'}
+ var U=" "+UL[u],C1="#1f2933";
+ dim([sz*W/2,-L/2,0],[sz*W/2,L/2,0],[sz*(W/2+off),-L/2,0],[sz*(W/2+off),L/2,0],C1,"ยาว "+fu(L)+U);
+ dim([-W/2,sx*L/2,0],[W/2,sx*L/2,0],[-W/2,sx*(L/2+off),0],[W/2,sx*(L/2+off),0],C1,"กว้าง "+fu(W)+U);
+ dim([cw*W/2,cl*L/2,0],[cw*W/2,cl*L/2,H],[cw*(W/2+off),cl*(L/2+off),0],[cw*(W/2+off),cl*(L/2+off),H],C1,"สูง "+fu(H)+U);
+ var g=SC.g;if(g){var C2="#0f6b33",o2=off*.5,we=sz>0?g.gw0:g.gw1,le=sx>0?g.gl0:g.gl1,cwe=cw>0?g.gw0:g.gw1,cle=cl>0?g.gl0:g.gl1;
+  dim([we,g.gl0,0],[we,g.gl1,0],[we-sz*o2,g.gl0,0],[we-sz*o2,g.gl1,0],C2,"ยาว "+fu(g.gl1-g.gl0)+U,34);
+  dim([g.gw0,le,0],[g.gw1,le,0],[g.gw0,le-sx*o2,0],[g.gw1,le-sx*o2,0],C2,"กว้าง "+fu(g.gw1-g.gw0)+U,34);
+  dim([cwe,cle,0],[cwe,cle,g.gh],[cwe-cw*o2,cle-cl*o2,0],[cwe-cw*o2,cle-cl*o2,g.gh],C2,"สูง "+fu(g.gh)+U,34)}
+ sv.innerHTML=out}
 function view(){var d=deg,bx=$("box"),r=Math.min(1,d/45);
- bx.style.transform="rotateX("+rx+"deg) rotateY("+ry+"deg)";
+ bx.style.transform="scale("+zm+") rotateX("+rx+"deg) rotateY("+ry+"deg)";
  bx.style.setProperty("--a",(90-d)+"deg");var tq=$("type").value,rel=(tq=="ear"||tq=="mailer");bx.style.setProperty("--lip",(rel?90-62*r:90)+"deg");bx.style.setProperty("--ear",(rel?90-70*r:(tq=="lock"?100-70*r:90))+"deg");bx.style.setProperty("--lift",(-d/180*130)+"px");
- $("deg").value=d;$("degv").textContent=d+"°";$("tog").textContent=d>0?"ปิดกล่อง":"เปิดกล่อง"}
+ $("deg").value=d;$("degv").textContent=d+"°";$("tog").textContent=d>0?"ปิดกล่อง":"เปิดกล่อง";var zv=$("zval");if(zv)zv.textContent=Math.round(zm*100)+"%";dims3d()}
 (function(){
  var st=$("stage"),d=null;
  st.addEventListener("pointerdown",function(e){d=[e.clientX,e.clientY];try{st.setPointerCapture(e.pointerId)}catch(x){}});
- st.addEventListener("pointermove",function(e){if(!d)return;ry+=(e.clientX-d[0])*0.6;rx=Math.max(-85,Math.min(85,rx-(e.clientY-d[1])*0.6));d=[e.clientX,e.clientY];view()});
+ st.addEventListener("pointermove",function(e){if(!d||window.__pinch)return;ry+=(e.clientX-d[0])*0.6;rx=Math.max(-85,Math.min(85,rx-(e.clientY-d[1])*0.6));d=[e.clientX,e.clientY];view()});
  var up=function(){d=null};st.addEventListener("pointerup",up);st.addEventListener("pointercancel",up);
  $("tog").addEventListener("click",function(){deg=deg>0?0:135;view()});
  $("deg").addEventListener("input",function(){deg=+this.value;view()});
  document.querySelectorAll(".pre button").forEach(function(b){b.addEventListener("click",function(){deg=+b.dataset.d;view()})});
+ $("dimBtn").addEventListener("click",function(){dimOn=!dimOn;this.setAttribute("aria-pressed",dimOn);render()});
  $("bot").addEventListener("click",function(){rx=62;ry=-28;view()});
- $("rst").addEventListener("click",function(){rx=-32;ry=-28;view()});
+ $("rst").addEventListener("click",function(){rx=-32;ry=-28;zm=1;view()});
  $("spin").addEventListener("click",function(){spin=!spin;this.setAttribute("aria-pressed",spin)});
  (function t(){if(spin&&!d){ry+=0.5;view()}requestAnimationFrame(t)})();
 })();
+(function(){var st=$("stage"),ps={},pd0=0;
+ function zoom(f){zm=Math.max(.4,Math.min(3.5,zm*f));view()}
+ st.addEventListener("wheel",function(e){e.preventDefault();zoom(e.deltaY<0?1.1:1/1.1)},{passive:false});
+ $("zin").addEventListener("click",function(){zoom(1.25)});$("zout").addEventListener("click",function(){zoom(1/1.25)});
+ var rz=function(){zm=1;view()};$("zrst").addEventListener("click",rz);$("zval").addEventListener("click",rz);
+ $("zoomc").addEventListener("pointerdown",function(e){e.stopPropagation()});$("zoomc").addEventListener("wheel",function(e){e.stopPropagation()},{passive:true});
+ st.addEventListener("pointerdown",function(e){ps[e.pointerId]=[e.clientX,e.clientY];var k=Object.keys(ps);if(k.length==2){window.__pinch=1;var a=ps[k[0]],b=ps[k[1]];pd0=Math.hypot(a[0]-b[0],a[1]-b[1])}});
+ st.addEventListener("pointermove",function(e){if(!ps[e.pointerId])return;ps[e.pointerId]=[e.clientX,e.clientY];var k=Object.keys(ps);if(k.length==2){var a=ps[k[0]],b=ps[k[1]],dd=Math.hypot(a[0]-b[0],a[1]-b[1]);if(pd0>0&&dd>0){zoom(dd/pd0);pd0=dd}}});
+ var rel=function(e){delete ps[e.pointerId];if(Object.keys(ps).length<2)window.__pinch=0};
+ st.addEventListener("pointerup",rel);st.addEventListener("pointercancel",rel)})();
 var CMP=[],mode="stack";
 function sv(){try{localStorage.setItem("cmp",JSON.stringify(CMP))}catch(e){}}
 (function(){try{var v=JSON.parse(localStorage.getItem("cmp"));if(Array.isArray(v)&&v.length){CMP=v;return}}catch(e){}
@@ -552,18 +631,20 @@ function sugHtml(o,title,lbl,W,L,H,ns){LBL=lbl;var hh=title,best=o.best,ni=o.ni,
    if(!seen[fiv]){var q1=STD[fiv],ddn=(fiv==ni)?dd:[q1[1]-W,q1[2]-L,q1[3]-H];add(fiv,"ใกล้ที่สุด","#66757f",false,dtx(ddn,(fiv==ni)&&nsw))}}}
  return hh}
 
-function lay3(r,o){var p=o.p;return {a:[r.base[p[0]],r.base[p[1]],r.base[p[2]]],n:[r.n[p[0]],r.n[p[1]],r.n[p[2]]],g:r.g,cw:r.cw,cl:r.cl,tp:r.tp,ow:o.w,ol:o.l,oh:o.h,d:o.d}}
+function lay3(r,o){var p=o.p;return {a:[r.base[p[0]],r.base[p[1]],r.base[p[2]]],n:[r.n[p[0]],r.n[p[1]],r.n[p[2]]],g:r.g,cw:r.cw,cl:r.cl,tp:r.tp,kF:r.kF||0,kB:r.kB||0,kL:r.kL||0,kR:r.kR||0,kh:r.kh||0,d:o.d}}
 function pcLb(r,o){var p=o.p;return [r.base[p[0]],r.base[p[1]],r.base[p[2]]].map(fu).join(" × ")+" "+UL[u]}
 function draw3d(req,po){var prod=$("productMode").classList.contains("active"),d=null,lb="",tp=$("type").value,cand=null,pb=null;
  if(prod){if(req&&po){cand=csz(po.ori);pb=lay3(req,po.ori)}}
  else{var w=+$("w").value/FU[u],l=+$("l").value/FU[u],h=+$("h").value/FU[u];if(w>0&&l>0&&h>0)cand=[w,l,h]}
  var ck=cand?cand.join(","):"";if(ndReq){ndKey=ck;ndOn=!!cand;ndReq=false}if(ndOn&&ck!==ndKey)ndOn=false;
- var pl=(prod&&req&&po)?" · สินค้า"+(req.cnt>1?" "+req.cnt+" ชิ้น":"")+" วางแบบ "+oriLb(po.ori)+" (ชิ้นละ "+pcLb(req,po.ori)+")"+((req.cw>0||req.cl>0||req.tp>0)?" · ฟ้า = สินค้า · เขียว = ระยะเผื่อ":""):"";
+ var pl=(prod&&req&&po)?" · สินค้า"+(req.cnt>1?" "+req.cnt+" ชิ้น":"")+" วางแบบ "+oriLb(po.ori)+" (ชิ้นละ "+pcLb(req,po.ori)+")":"";
  if(ndOn){d=cand;lb="แสดงกล่องขนาดที่ต้องออกมีดไดคัทใหม่ · "+fu(d[0])+" × "+fu(d[1])+" × "+fu(d[2])+" "+UL[u]+pl}
  else if(prod){if(req&&po){if(po.mi>=0){var q=STD[po.mi];d=[q[1],q[2],q[3]];lb="แสดงกล่อง "+nm(q)+" · "+dmx(q)+pl}else{d=cand;lb="แสดงกล่องขนาดที่ควรสั่งผลิต · "+fu(d[0])+" × "+fu(d[1])+" × "+fu(d[2])+" "+UL[u]+pl}}}
  else if(cand){d=cand;lb="แสดงกล่องตามขนาดที่กรอก · "+fu(d[0])+" × "+fu(d[1])+" × "+fu(d[2])+" "+UL[u]}
- if(d){scene(d[0],d[1],d[2],tp,pb);view()}else{$("box").innerHTML=""}
- $("viewLbl").textContent=d?lb:"กรอกขนาดเพื่อดูภาพกล่อง"}
+ if(d){scene(d[0],d[1],d[2],tp,pb);view()}else{$("box").innerHTML="";SC=null;dims3d()}
+ $("viewLbl").textContent=d?lb:"กรอกขนาดเพื่อดูภาพกล่อง";
+ var lg="";if(pb&&d&&req){lg='<span class="lgi"><i style="background:rgb(30,110,230)"></i>ฟ้า = สินค้า</span>';if(req.cw>0||req.cl>0||req.tp>0)lg+='<span class="lgi"><i style="background:rgb(30,165,80)"></i>เขียว = ระยะเผื่อสินค้า</span>';if(req.kF>0||req.kB>0||req.kL>0||req.kR>0||req.kh>0)lg+='<span class="lgi"><i style="background:rgb(230,40,40)"></i>แดง = ระยะเผื่อปิดกล่อง</span>'}
+ if(d&&dimOn)lg+='<span class="lgi"><i style="background:#1f2933"></i>เส้นดำ = ขนาดกล่องรวม (ภายนอก)</span>'+((pb&&req)?'<span class="lgi"><i style="background:#0f6b33"></i>เส้นเขียว = ขนาดในกรอบสีเขียว</span>':"");$("lg3").innerHTML=lg}
 function buildTable(mi,fit,req,ptop){var tpx=$("type").value;
  EXL=(tpx=="rsc"||tpx=="mailer"||tpx=="ear"||tpx=="lock"||tpx=="tuck")?EXTRA.filter(function(q){return !STD.some(function(x){return x[1]!=null&&Math.abs(x[1]-q[1])<.06&&Math.abs(x[2]-q[2])<.06&&Math.abs(x[3]-q[3])<.06})}):[];
  var k2=tpx+"|"+u;
@@ -576,7 +657,8 @@ function buildTable(mi,fit,req,ptop){var tpx=$("type").value;
  $("std").innerHTML=allRows.filter(function(h,i){return !STD[i][7]}).join("");
  var cr=allRows.filter(function(h,i){return STD[i][7]});$("stdC").innerHTML=cr.join("");$("stdCwrap").classList.toggle("hidden",!cr.length);
 }
-function render(){var tp=$("type").value;if(tp!==lastTp){lastTp=tp;STD=LIST[tp];fillStd();$("stdT").textContent=$("type").options[$("type").selectedIndex].text;pizzaUnit(tp)}
+function updSplit(){var f=function(id,a,b,out){var v=+$(id).value||0,h=(Math.round(v/2*100)/100).toLocaleString("th-TH");$(out).innerHTML=v>0?"แบ่งให้อัตโนมัติ: "+a+" <b>"+h+"</b> + "+b+" <b>"+h+"</b> "+UL[u]:"แบ่งให้อัตโนมัติ: "+a+" / "+b+" ข้างละครึ่ง"};f("pkW","ซ้าย","ขวา","pkWs");f("pkG","หน้า","หลัง","pkGs")}
+function render(){updSplit();var tp=$("type").value;if(tp!==lastTp){lastTp=tp;STD=LIST[tp];fillStd();$("stdT").textContent=$("type").options[$("type").selectedIndex].text;pizzaUnit(tp);hlCl(tp)}
  drawCmp();
  $("pup").disabled=!$("rot").checked;var req=prodReq();if(req&&!window.__ps){window.__ps=1}if(!req)window.__ps=0;var pf=req?prodFit(req,STD):[],ptop=pf.length?pf[0]:-1;var po=req?pickOri(req):null;if(po)ptop=po.mi;draw3d(req,po);$("pres").innerHTML=(req?prodHtml(req,po):"")||'<div class="note">กรอกขนาดสินค้าก่อน เพื่อดูกล่องที่เหมาะ</div>';
  var W=+$("w").value/FU[u],L=+$("l").value/FU[u],H=+$("h").value/FU[u],type=$("type").value;
@@ -602,11 +684,11 @@ var TL={rsc:"ฝาชน",mailer:"ไดคัทไปรษณีย์",ear:
 function fee(q){return q[4]===0?'<div class="fee">ไม่ต้องเก็บค่ามีดไดคัทจากลูกค้า</div>':""}
 function dmq(q){return fu(q[1])+" × "+fu(q[2])+" × "+fu(q[3])+" "+UL[u]}
 function prodReq(){var a=["pw","pl","ph"].map(function(i){return +$(i).value/FU[u]});if(!a.every(function(v){return v>0}))return null;
- var cw=(+$("pcl").value||0)/FU[u],cl=(+$("pcll").value||0)/FU[u],tp=(+$("ptop").value||0)/FU[u],g=(+$("pgap").value||0)/FU[u],n=["nx","ny","nz"].map(function(i){return Math.max(1,Math.floor(+$(i).value||1))}),rot=$("rot").checked,up=$("pup").checked;
+ var cw=(+$("pcl").value||0)/FU[u],cl=(+$("pcll").value||0)/FU[u],tp=(+$("ptop").value||0)/FU[u],g=(+$("pgap").value||0)/FU[u],kF=(+$("pkW").value||0)/FU[u]/2,kB=(+$("pkW").value||0)/FU[u]/2,kL=(+$("pkG").value||0)/FU[u]/2,kR=(+$("pkG").value||0)/FU[u]/2,kh=(+$("pkh").value||0)/FU[u],n=["nx","ny","nz"].map(function(i){return Math.max(1,Math.floor(+$(i).value||1))}),rot=$("rot").checked,up=$("pup").checked;
  var B=[n[0]*a[0]+(n[0]-1)*g,n[1]*a[1]+(n[1]-1)*g,n[2]*a[2]+(n[2]-1)*g];
  var P=!rot?[[0,1,2]]:(up?[[0,1,2],[1,0,2]]:[[0,1,2],[1,0,2],[0,2,1],[2,0,1],[1,2,0],[2,1,0]]),seen={},os=[];
- P.forEach(function(p){var d=[B[p[0]],B[p[1]],B[p[2]]],k=d.map(function(v){return v.toFixed(2)}).join("|");if(seen[k])return;seen[k]=1;os.push({p:p,d:d,key:k,w:d[0]+2*cw,l:d[1]+2*cl,h:d[2]+tp})});
- return {w:os[0].w,l:os[0].l,h:os[0].h,os:os,B:B,up:up,rot:rot,n:n,cnt:n[0]*n[1]*n[2],base:a,cw:cw,cl:cl,tp:tp,g:g}}
+ P.forEach(function(p){var d=[B[p[0]],B[p[1]],B[p[2]]],k=d.map(function(v){return v.toFixed(2)}).join("|");if(seen[k])return;seen[k]=1;os.push({p:p,d:d,key:k,w:d[0]+2*cw+kF+kB,l:d[1]+2*cl+kL+kR,h:d[2]+tp+kh})});
+ return {w:os[0].w,l:os[0].l,h:os[0].h,os:os,B:B,up:up,rot:rot,n:n,cnt:n[0]*n[1]*n[2],base:a,cw:cw,cl:cl,tp:tp,g:g,kF:kF,kB:kB,kL:kL,kR:kR,kh:kh}}
 function fitG(q,w,l,h,rot,up){var e=.001;if(q[1]==null)return false;if(!rot)return q[1]>=w-e&&q[2]>=l-e&&q[3]>=h-e;if(up)return q[3]>=h-e&&((q[1]>=w-e&&q[2]>=l-e)||(q[1]>=l-e&&q[2]>=w-e));var n=function(x,y){return x-y},a=[w,l,h].sort(n),b=[q[1],q[2],q[3]].sort(n);return b[0]>=a[0]-e&&b[1]>=a[1]-e&&b[2]>=a[2]-e}
 function fitsP(q,r){return r.os.some(function(o){return fitG(q,o.w,o.l,o.h,false,false)})}
 function prodFit(r,list){var o=[];list.forEach(function(q,i){if(fitsP(q,r))o.push(i)});return o.sort(function(a,b){var x=list[a],y=list[b];return x[1]*x[2]*x[3]-y[1]*y[2]*y[3]})}
@@ -636,9 +718,9 @@ function prodHtml(r,o){if(!r)return "";var ch=o.ori,cs=csz(ch),
  if(alt.length)h+='<div class="note">ประเภทอื่นที่มีขนาดใส่ได้: '+alt.slice(0,4).join(" · ")+'</div>';
  return h}
 function pick(e){if(e.target.closest&&e.target.closest("select"))return;var tr=e.target.closest("tr.row");if(!tr)return;var s=STD[+tr.dataset.i];if(!s||s[1]==null)return;var c=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=c(s[1]);$("l").value=c(s[2]);$("h").value=c(s[3]);render()}
-$("clrAll").addEventListener("click",function(){$("boxMode").click();["w","l","h","pw","pl","ph","cname"].forEach(function(i){$(i).value=""});selKey=null;ndOn=false;$("pcl").value="0";$("pcll").value="0";$("ptop").value="0";$("pgap").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;render()});
+$("clrAll").addEventListener("click",function(){$("boxMode").click();["w","l","h","pw","pl","ph","cname"].forEach(function(i){$(i).value=""});selKey=null;ndOn=false;$("pcl").value="0";$("pcll").value="0";$("ptop").value="0";$("pgap").value="0";$("pkW").value="0";$("pkG").value="0";$("pkh").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;render()});
 $("clrBox").addEventListener("click",function(){["w","l","h"].forEach(function(i){$(i).value=""});render()});
-$("clrProd").addEventListener("click",function(){["pw","pl","ph"].forEach(function(i){$(i).value=""});selKey=null;ndOn=false;$("pcl").value="0";$("pcll").value="0";$("ptop").value="0";$("pgap").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;render()});
+$("clrProd").addEventListener("click",function(){["pw","pl","ph"].forEach(function(i){$(i).value=""});selKey=null;ndOn=false;$("pcl").value="0";$("pcll").value="0";$("ptop").value="0";$("pgap").value="0";$("pkW").value="0";$("pkG").value="0";$("pkh").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;render()});
 $("std").addEventListener("click",pick);$("stdC").addEventListener("click",pick);$("stdC").addEventListener("keydown",function(e){if(e.key=="Enter")pick(e)});
 $("pres").addEventListener("click",function(e){var nb=e.target.closest("button[data-nd]");if(nb){ndReq=true;if(deg<135)deg=135;rx=-50;render();var sd0=$("stage");if(sd0)sd0.scrollIntoView({behavior:"smooth",block:"center"});return}var tr=e.target.closest("tr[data-k]");if(tr){selKey=tr.dataset.k;if(deg<135)deg=135;rx=-50;render();var sd=$("stage");if(sd)sd.scrollIntoView({behavior:"smooth",block:"center"});return}var b=e.target.closest("button");if(b&&b.dataset.c){var v=b.dataset.c.split(",").map(Number),f=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=f(v[0]);$("l").value=f(v[1]);$("h").value=f(v[2]);render();return}if(b)pick({target:{closest:function(){return{dataset:{i:b.dataset.i}}}}})});
 function fillX(i){var q=EXL[i];if(!q)return;var c=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=c(q[1]);$("l").value=c(q[2]);$("h").value=c(q[3]);render()}
@@ -646,11 +728,11 @@ $("exwrap").addEventListener("click",function(e){var t=e.target.closest("tr[data
 $("match").addEventListener("click",function(e){var nb=e.target.closest("button[data-nd]");if(nb){ndReq=true;if(deg<135)deg=135;rx=-50;render();var sd0=$("stage");if(sd0)sd0.scrollIntoView({behavior:"smooth",block:"center"});return}var b=e.target.closest("button");if(b&&b.dataset.x!==undefined){fillX(+b.dataset.x);return}if(b)pick({target:{closest:function(){return{dataset:{i:b.dataset.i}}}}})});
 $("std").addEventListener("keydown",function(e){if(e.key=="Enter")pick(e)});
 $("unit").addEventListener("change",function(){
- var cm=["w","l","h"].map(function(i){return +$(i).value/FU[u]}),pc=["pw","pl","ph","pcl","pcll","ptop","pgap"].map(function(i){var v=$(i).value;return v===""?null:+v/FU[u]});u=this.value;
- ["pw","pl","ph","pcl","pcll","ptop","pgap"].forEach(function(i,k){var e=$(i);if(pc[k]!==null)e.value=Math.round(pc[k]*FU[u]*100)/100;e.step={cm:.5,mm:5,in:.25}[u]});
+ var cm=["w","l","h"].map(function(i){return +$(i).value/FU[u]}),pc=["pw","pl","ph","pcl","pcll","ptop","pgap","pkW","pkG","pkh"].map(function(i){var v=$(i).value;return v===""?null:+v/FU[u]});u=this.value;
+ ["pw","pl","ph","pcl","pcll","ptop","pgap","pkW","pkG","pkh"].forEach(function(i,k){var e=$(i);if(pc[k]!==null)e.value=Math.round(pc[k]*FU[u]*100)/100;e.step={cm:.5,mm:5,in:.25}[u]});
  ["w","l","h"].forEach(function(i,k){var e=$(i);e.value=Math.round(cm[k]*FU[u]*100)/100;e.step={cm:.5,mm:5,in:.25}[u];e.min=0.1});
  document.querySelectorAll(".u").forEach(function(e){e.textContent=UL[u]});render()});
-["w","l","h","type","rot","pw","pl","ph","pcl","pcll","ptop","pgap","nx","ny","nz","pup"].forEach(function(i){$(i).addEventListener("input",render)});
+["w","l","h","type","rot","pw","pl","ph","pcl","pcll","ptop","pgap","pkW","pkG","pkh","nx","ny","nz","pup"].forEach(function(i){$(i).addEventListener("input",render)});
 function fillStd(){$("addStd").innerHTML='<option value="">+ เพิ่มขนาดที่มีของประเภทนี้…</option>';STD.forEach(function(x,i){if(x[1]==null)return;var op=document.createElement("option");op.value=i;op.textContent=nm(x)+" ("+[x[1],x[2],x[3]].map(function(v){return Math.round(v*100)/100}).join("×")+" ซม.)";$("addStd").appendChild(op)})}
 fillStd();
 $("addCur").addEventListener("click",function(){var W=+$("w").value/FU[u],L=+$("l").value/FU[u],H=+$("h").value/FU[u];if(!(W>0&&L>0&&H>0))return;
