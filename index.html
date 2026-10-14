@@ -461,8 +461,15 @@ function scene(W,L,H,type,pb){if(type=="shoe")type="tele";
    in_+='<div class="f" style="--c:'+K+';left:25%;top:calc(50% - '+hh+'px);margin:0;width:50%;height:'+hh+'px;transform-origin:50% 100%;transform:rotateX(-90deg)"><div style="position:absolute;left:20%;width:60%;top:22%;height:36%;background:#4a3318;border-radius:99px"></div></div>';}
   o+=flap(l,w,"translate3d(0,"+(-h/2)+"px,"+(-w/2)+"px) rotateY(180deg) rotateX(var(--a))",T,in_);
  }
- if(pb){var pd=pb[0]*k,pl=pb[1]*k,ph=pb[2]*k,C="rgba(30,110,230,.72)";
-  o+='<div class="f" style="--c:transparent;border:0;width:0;height:0;transform:translateY('+(h/2-ph/2)+'px)">'+face(pl,ph,"translateZ("+pd/2+"px)",C)+face(pl,ph,"rotateY(180deg) translateZ("+pd/2+"px)",C)+face(pd,ph,"rotateY(90deg) translateZ("+pl/2+"px)",C)+face(pd,ph,"rotateY(-90deg) translateZ("+pl/2+"px)",C)+face(pl,pd,"rotateX(90deg) translateZ("+ph/2+"px)",C)+'</div>'}
+ if(pb){var C="rgba(30,110,230,.72)",G="rgba(40,170,90,.20)",
+  cub=function(x,y,z,tx,ty,tz,col){return '<div class="f" style="--c:transparent;border:0;width:0;height:0;transform:translate3d('+tx+'px,'+ty+'px,'+tz+'px)">'+face(y,z,"translateZ("+x/2+"px)",col)+face(y,z,"rotateY(180deg) translateZ("+x/2+"px)",col)+face(x,z,"rotateY(90deg) translateZ("+y/2+"px)",col)+face(x,z,"rotateY(-90deg) translateZ("+y/2+"px)",col)+face(y,x,"rotateX(90deg) translateZ("+z/2+"px)",col)+'</div>'};
+  var pa=pb.a,pn=pb.n,pg=pb.g;
+  if(pn[0]*pn[1]*pn[2]>120){o+=cub(pb.d[0]*k,pb.d[1]*k,pb.d[2]*k,0,(H/2-pb.d[2]/2)*k,0,C)}
+  else{
+   if(pb.cw>0||pb.cl>0||pb.tp>0)o+=cub(pb.ow*k*.995,pb.ol*k*.995,pb.oh*k*.995,0,(H/2-pb.oh/2)*k,0,G);
+   for(var ii=0;ii<pn[0];ii++)for(var jj=0;jj<pn[1];jj++)for(var mm=0;mm<pn[2];mm++){
+    var wc=(W-pb.ow)/2+pb.cw+ii*(pa[0]+pg)+pa[0]/2-W/2,lc=(L-pb.ol)/2+pb.cl+jj*(pa[1]+pg)+pa[1]/2-L/2,yb=mm*(pa[2]+pg)+pa[2]/2;
+    o+=cub(pa[0]*k,pa[1]*k,pa[2]*k,lc*k,(H/2-yb)*k,wc*k,C)}}}
  $("box").innerHTML=o;
 }
 function view(){var d=deg,bx=$("box"),r=Math.min(1,d/45);
@@ -519,7 +526,7 @@ function drawCmp(){
 var ndReq=false,ndOn=false,ndKey="",selKey=null,LBL="ต่างจากที่กรอก";
 function dmx(q){return fu(q[1])+" × "+fu(q[2])+" × "+fu(q[3])+" "+UL[u]}
 function sg(v){var r=Math.round(v*FU[u]*100)/100;return r==0?"0":(r>0?"+":"−")+Math.abs(r).toLocaleString("th-TH")}
-function pcx(q,i,tag,col,top,xt){return '<div class="pc'+(top?" top":"")+'"><div><span class="tag" style="background:'+col+'">'+tag+'</span> <span class="nm">'+nm(q)+'</span>'+(q[7]?' <span class="bd un">Customized</span>':'')+' · '+dmx(q)+'</div><div class="note" style="margin:2px 0 0">แผ่นคลี่ '+shLb(q)+'</div>'+(xt||"")+'<div style="margin:6px 0">'+dieB(q)+papB(q)+'</div>'+codeTxt(q)+fee(q)+'<button type="button" data-i="'+i+'">ใช้ขนาดนี้</button></div>'}
+function pcx(q,i,tag,col,top,xt){return '<div class="pc'+(top?" top":"")+'"><div><span class="tag" style="background:'+col+'">'+tag+'</span> <span class="nm">'+nm(q)+'</span>'+(q[7]?' <span class="bd un">Customized</span>':'')+' · '+dmx(q)+'</div>'+(xt||"")+'<div style="margin:6px 0">'+dieB(q)+papB(q)+'</div>'+codeTxt(q)+fee(q)+'<button type="button" data-i="'+i+'">ใช้ขนาดนี้</button></div>'}
 function dtx(d,sw){return '<div style="font-size:.95rem;margin-top:4px">'+LBL+': กว้าง '+sg(d[0])+' · ยาว '+sg(d[1])+' · สูง '+sg(d[2])+' '+UL[u]+(sw?" (สลับกว้าง↔ยาว)":"")+'</div>'+(d.some(function(v){return v<-.06})?'<div class="warn">⚠ บางด้านเล็กกว่าที่ต้องการ ของอาจใส่ไม่พอ</div>':"")}
 function shLb(q){var r=calc(q[1],q[2],q[3],$("type").value),a=areaOf(q);return fu(r.len)+" × "+fu(r.wid)+" "+UL[u]+(r.lid?" + ฝา "+fu(r.lid[0])+" × "+fu(r.lid[1]):"")+" · ใช้กระดาษ "+(Math.round(a/10)/1000).toLocaleString("th-TH")+" ตร.ม./ใบ"}
 function areaOf(q){var r=calc(q[1],q[2],q[3],$("type").value);return r.len*r.wid+(r.lid?r.lid[0]*r.lid[1]:0)}
@@ -545,11 +552,13 @@ function sugHtml(o,title,lbl,W,L,H,ns){LBL=lbl;var hh=title,best=o.best,ni=o.ni,
    if(!seen[fiv]){var q1=STD[fiv],ddn=(fiv==ni)?dd:[q1[1]-W,q1[2]-L,q1[3]-H];add(fiv,"ใกล้ที่สุด","#66757f",false,dtx(ddn,(fiv==ni)&&nsw))}}}
  return hh}
 
+function lay3(r,o){var p=o.p;return {a:[r.base[p[0]],r.base[p[1]],r.base[p[2]]],n:[r.n[p[0]],r.n[p[1]],r.n[p[2]]],g:r.g,cw:r.cw,cl:r.cl,tp:r.tp,ow:o.w,ol:o.l,oh:o.h,d:o.d}}
+function pcLb(r,o){var p=o.p;return [r.base[p[0]],r.base[p[1]],r.base[p[2]]].map(fu).join(" × ")+" "+UL[u]}
 function draw3d(req,po){var prod=$("productMode").classList.contains("active"),d=null,lb="",tp=$("type").value,cand=null,pb=null;
- if(prod){if(req&&po){cand=csz(po.ori);pb=po.ori.d}}
+ if(prod){if(req&&po){cand=csz(po.ori);pb=lay3(req,po.ori)}}
  else{var w=+$("w").value/FU[u],l=+$("l").value/FU[u],h=+$("h").value/FU[u];if(w>0&&l>0&&h>0)cand=[w,l,h]}
  var ck=cand?cand.join(","):"";if(ndReq){ndKey=ck;ndOn=!!cand;ndReq=false}if(ndOn&&ck!==ndKey)ndOn=false;
- var pl=(prod&&req&&po)?" · สินค้าวางแบบ "+oriLb(po.ori)+" ("+fu(po.ori.d[0])+" × "+fu(po.ori.d[1])+" × "+fu(po.ori.d[2])+")":"";
+ var pl=(prod&&req&&po)?" · สินค้า"+(req.cnt>1?" "+req.cnt+" ชิ้น":"")+" วางแบบ "+oriLb(po.ori)+" (ชิ้นละ "+pcLb(req,po.ori)+")"+((req.cw>0||req.cl>0||req.tp>0)?" · ฟ้า = สินค้า · เขียว = ระยะเผื่อ":""):"";
  if(ndOn){d=cand;lb="แสดงกล่องขนาดที่ต้องออกมีดไดคัทใหม่ · "+fu(d[0])+" × "+fu(d[1])+" × "+fu(d[2])+" "+UL[u]+pl}
  else if(prod){if(req&&po){if(po.mi>=0){var q=STD[po.mi];d=[q[1],q[2],q[3]];lb="แสดงกล่อง "+nm(q)+" · "+dmx(q)+pl}else{d=cand;lb="แสดงกล่องขนาดที่ควรสั่งผลิต · "+fu(d[0])+" × "+fu(d[1])+" × "+fu(d[2])+" "+UL[u]+pl}}}
  else if(cand){d=cand;lb="แสดงกล่องตามขนาดที่กรอก · "+fu(d[0])+" × "+fu(d[1])+" × "+fu(d[2])+" "+UL[u]}
@@ -574,13 +583,11 @@ function render(){var tp=$("type").value;if(tp!==lastTp){lastTp=tp;STD=LIST[tp];
  var ok=W>0&&L>0&&H>0;
  var emp=[$("w").value,$("l").value,$("h").value].every(function(v){return v===""});$("err").textContent=(ok||emp)?"":"กรอกขนาดกว้าง ยาว สูง ให้มากกว่า 0";
  if(emp){$("match").className="";$("match").innerHTML='<div class="note">กรอกขนาดกล่องเพื่อดูขนาดมาตรฐานที่ตรงหรือใกล้เคียง</div>';$("stats").innerHTML="";document.querySelectorAll("#std tr.on,#stdC tr.on").forEach(function(r){r.classList.remove("on")});if(!req)document.querySelectorAll("#std .tag,#stdC .tag").forEach(function(t){t.remove()})}
- $("typeNote").innerHTML=TN[type]+"<br><b>สูตรแผ่นคลี่ (ซม.):</b> "+FM[type];
+ $("typeNote").innerHTML=TN[type];
  if(!ok){buildTable(-1,[],req,ptop);return}
  
  var r=calc(W,L,H,type),area=(r.len*r.wid+(r.lid?r.lid[0]*r.lid[1]:0))/10000;
- var st=[["ขนาดภายใน",fu(W)+" × "+fu(L)+" × "+fu(H)+" "+UL[u]],["แผ่นคลี่ (ยาว × กว้าง)",fu(r.len)+" × "+fu(r.wid)+" "+UL[u]]];
- if(r.lid)st.push(["แผ่นคลี่ฝา",fu(r.lid[0])+" × "+fu(r.lid[1])+" "+UL[u]]);
- st.push(["พื้นที่กระดาษ ต่อ 1 ใบ",(Math.round(area*1000)/1000).toLocaleString("th-TH")+" ตร.ม."]);
+ var st=[["ขนาดภายใน",fu(W)+" × "+fu(L)+" × "+fu(H)+" "+UL[u]]];
  $("stats").innerHTML=st.map(function(s){return '<div class="stat"><b>'+s[1]+'</b><span>'+s[0]+'</span></div>'}).join("");
  var o=sug(W,L,H),best=o.best,fit=o.fit,exact=o.exact,ni=o.ni,nsw=o.nsw,close=o.close,dd=o.dd,mi=o.mi,rot=o.rot,m=$("match");
  m.className="";m.innerHTML=sugHtml(o,'<div style="font-weight:700;margin-bottom:6px">กล่องขนาด '+fu(W)+" × "+fu(L)+" × "+fu(H)+" "+UL[u]+' เหมาะกับ</div>',"ต่างจากที่กรอก",W,L,H,[W,L,H]);
