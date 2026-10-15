@@ -249,7 +249,7 @@ select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-rad
         
 
         <div style="margin-top:22px">
-          <div class="step"><div class="stepno">2</div><div><h2>บอกขนาดที่คุณมี</h2><small>ถ้ารู้ขนาดสินค้า ให้กรอกตรงนี้ ระบบจะช่วยเลือกกล่องให้</small></div><div style="margin-left:auto;width:132px"><select id="unit" aria-label="หน่วยความยาว" style="padding:7px 9px"><option value="cm">ซม. (cm)</option><option value="mm">มม. (mm)</option><option value="in">นิ้ว (in)</option></select></div></div>
+          <div class="step"><div class="stepno">2</div><div><h2>บอกขนาดที่คุณมี</h2><small>ถ้ารู้ขนาดสินค้า ให้กรอกตรงนี้ ระบบจะช่วยเลือกกล่องให้</small></div><div style="margin-left:auto;width:132px"><div style="font-size:.72rem;color:var(--muted);margin-bottom:2px;text-align:right">หน่วยของกล่อง</div><select id="unit" aria-label="หน่วยความยาว" style="padding:7px 9px"><option value="cm">ซม. (cm)</option><option value="mm">มม. (mm)</option><option value="in">นิ้ว (in)</option></select></div></div>
 
           <div class="choice-tabs">
             <button id="boxMode" class="active" type="button">ขนาดกล่อง</button>
@@ -258,11 +258,11 @@ select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-rad
 
           <div id="productFields">
             <div class="dims">
-              <div class="diminput"><label>กว้าง</label><input id="pw" type="number" min="0" step=".5" placeholder="เช่น 17"><span class="unit u">ซม.</span></div>
-              <div class="diminput"><label>ยาว</label><input id="pl" type="number" min="0" step=".5" placeholder="เช่น 25"><span class="unit u">ซม.</span></div>
-              <div class="diminput"><label>สูง</label><input id="ph" type="number" min="0" step=".5" placeholder="เช่น 9"><span class="unit u">ซม.</span></div>
+              <div class="diminput"><label>กว้าง</label><input id="pw" type="number" min="0" step=".5" placeholder="เช่น 17"><span class="unit uc">ซม.</span></div>
+              <div class="diminput"><label>ยาว</label><input id="pl" type="number" min="0" step=".5" placeholder="เช่น 25"><span class="unit uc">ซม.</span></div>
+              <div class="diminput"><label>สูง</label><input id="ph" type="number" min="0" step=".5" placeholder="เช่น 9"><span class="unit uc">ซม.</span></div>
             </div>
-            <div class="helper">กรอกเป็นขนาดของสินค้า ไม่รวมความหนาของกล่อง</div>
+            <div class="helper">กรอกเป็นขนาดของสินค้า ไม่รวมความหนาของกล่อง · <b>หน่วยของสินค้าเป็น ซม. เท่านั้น</b> (ตัวเลือกหน่วยด้านบนใช้กับขนาดกล่อง)</div>
             <div class="quick">
               <button type="button" data-fill="17,25,9">ตัวอย่าง 17 × 25 × 9</button>
               <button type="button" data-fill="20,30,11">ตัวอย่าง 20 × 30 × 11</button>
@@ -280,15 +280,15 @@ select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-rad
                     <div class="field"><label>เรียงตามยาว (ชิ้น)</label><input id="ny" type="number" min="1" value="1"></div>
                     <div class="field"><label>ซ้อนกี่ชั้น</label><input id="nz" type="number" min="1" value="1"></div>
                   </div>
-                  <div class="field"><label>ช่องว่างระหว่างชิ้น ต่อช่อง (<span class="u">ซม.</span>)</label><input id="pgap" type="number" min="0" step=".5" value="0"></div>
+                  <div class="field"><label>ช่องว่างระหว่างชิ้น ต่อช่อง (<span class="uc">ซม.</span>)</label><input id="pgap" type="number" min="0" step=".5" value="0"></div>
                 </details>
                 <div class="sw" style="--sc:#1ea550">ระยะเผื่อของสินค้า (สีเขียว)</div>
-                <div class="grid2f"><div class="field"><label for="pcl">เผื่อด้านกว้าง = ความลึก (<span class="u">ซม.</span>)</label><input id="pcl" type="number" min="0" step=".5" value="0"></div><div class="field"><label for="pcll">เผื่อด้านยาว = ความยาว (<span class="u">ซม.</span>)</label><input id="pcll" type="number" min="0" step=".5" value="0"></div><div class="field"><label for="ptop">เผื่อด้านบน (<span class="u">ซม.</span>)</label><input id="ptop" type="number" min="0" step=".5" value="0"></div></div>
+                <div class="grid2f"><div class="field"><label for="pcl">เผื่อด้านกว้าง = ความลึก (<span class="uc">ซม.</span>)</label><input id="pcl" type="number" min="0" step=".5" value="0"></div><div class="field"><label for="pcll">เผื่อด้านยาว = ความยาว (<span class="uc">ซม.</span>)</label><input id="pcll" type="number" min="0" step=".5" value="0"></div><div class="field"><label for="ptop">เผื่อด้านบน (<span class="uc">ซม.</span>)</label><input id="ptop" type="number" min="0" step=".5" value="0"></div></div>
                 <div class="helper" style="margin-top:-4px">เผื่อด้านกว้าง = ความลึกของกล่อง · เผื่อด้านยาว = ความยาวของกล่อง · คิดให้ด้านละค่านี้ทั้งสองข้าง · ด้านบน 0 = ปิดฝาพอดี · ด้านล่างไม่คิดเผื่อ · ในภาพ 3 มิติแสดงเป็นสีเขียว</div>
                 <div class="sw" style="--sc:#e02828">ระยะเผื่อปิดกล่อง (สีแดง)</div>
-                <div class="cgrp"><div class="cgt">ด้านกว้าง = ความลึกของกล่อง · รวมซ้าย + ขวา</div><div class="field"><label for="pkW">เผื่อด้านกว้าง (<span class="u">ซม.</span>)</label><input id="pkW" type="number" min="0" step=".5" value="0"><div class="note" id="pkWs" style="margin-top:4px"></div></div></div>
-                <div class="cgrp"><div class="cgt">ด้านยาว · รวมหน้า + หลัง</div><div class="field"><label for="pkG">เผื่อด้านยาว (<span class="u">ซม.</span>)</label><input id="pkG" type="number" min="0" step=".5" value="0"><div class="note" id="pkGs" style="margin-top:4px"></div></div></div>
-                <div class="cgrp"><div class="cgt">สูง</div><div class="field"><label for="pkh">ด้านบน (<span class="u">ซม.</span>)</label><input id="pkh" type="number" min="0" step=".5" value="0"></div></div>
+                <div class="cgrp"><div class="cgt">ด้านกว้าง = ความลึกของกล่อง · รวมซ้าย + ขวา</div><div class="field"><label for="pkW">เผื่อด้านกว้าง (<span class="uc">ซม.</span>)</label><input id="pkW" type="number" min="0" step=".5" value="0"><div class="note" id="pkWs" style="margin-top:4px"></div></div></div>
+                <div class="cgrp"><div class="cgt">ด้านยาว · รวมหน้า + หลัง</div><div class="field"><label for="pkG">เผื่อด้านยาว (<span class="uc">ซม.</span>)</label><input id="pkG" type="number" min="0" step=".5" value="0"><div class="note" id="pkGs" style="margin-top:4px"></div></div></div>
+                <div class="cgrp"><div class="cgt">สูง</div><div class="field"><label for="pkh">ด้านบน (<span class="uc">ซม.</span>)</label><input id="pkh" type="number" min="0" step=".5" value="0"></div></div>
                 <div class="helper" style="margin-top:-4px">เพิ่มให้ขนาดกล่องที่ต้องใช้ใหญ่ขึ้นตามค่าแต่ละด้าน เพื่อให้ปิดกล่องได้ · กรอกค่ารวมครั้งเดียว ระบบแบ่งครึ่งให้ซ้าย–ขวา / หน้า–หลังเอง เช่น กว้าง 1 → ซ้าย 0.5 + ขวา 0.5 · ยาว 2 → หน้า 1 + หลัง 1</div>
                 <details class="info clinfo" open><summary>ค่าแนะนำระยะเผื่อปิดกล่อง (ซม.)</summary>
                   <div class="note" style="margin:8px 0">สำหรับผู้กรอกใช้อ้างอิง · กว้าง/ยาว = ค่ารวมสองข้าง (กรอกครั้งเดียว ระบบแบ่งซ้าย–ขวา / หน้า–หลังให้) · สูง = ด้านบน · หน่วยเป็น <b>ซม.</b> เสมอ (ไม่เปลี่ยนตามหน่วยที่เลือกด้านบน) · ดูแล้วกรอกเองตามความเหมาะสมของงาน · แถวของประเภทกล่องที่เลือกอยู่จะเป็นสีเขียว</div>
@@ -308,18 +308,33 @@ select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-rad
             <details class="advanced" id="fitBox" open>
               <summary>ลองวางสินค้าในกล่องนี้</summary>
               <div style="margin-top:12px">
-                <div class="note" style="margin-bottom:8px">เลือกขนาดกล่องด้านบนก่อน แล้วใส่ขนาดสินค้าที่นี่ เพื่อดูว่าวางในกล่องนี้ได้แบบไหน ใส่ได้กี่ชิ้น (แยกจากแท็บ "ขนาดสินค้า" ที่ใช้หากล่องจากสินค้า)</div>
+                <div class="note" style="margin-bottom:8px">เลือกขนาดกล่องด้านบนก่อน แล้วกรอกสินค้าที่นี่ เพื่อดูว่าวางในกล่องนี้ได้แบบไหน (แยกจากแท็บ "ขนาดสินค้า" ที่ใช้หากล่องจากสินค้า)</div>
                 <div class="dims">
-                  <div class="diminput"><label>สินค้า กว้าง</label><input id="fw" type="number" min="0" step=".5" placeholder="เช่น 9"><span class="unit u">ซม.</span></div>
-                  <div class="diminput"><label>สินค้า ยาว</label><input id="fl" type="number" min="0" step=".5" placeholder="เช่น 12"><span class="unit u">ซม.</span></div>
-                  <div class="diminput"><label>สินค้า สูง</label><input id="fh" type="number" min="0" step=".5" placeholder="เช่น 4"><span class="unit u">ซม.</span></div>
+                  <div class="diminput"><label>สินค้า กว้าง</label><input id="fw" type="number" min="0" step=".5" placeholder="เช่น 9"><span class="unit uc">ซม.</span></div>
+                  <div class="diminput"><label>สินค้า ยาว</label><input id="fl" type="number" min="0" step=".5" placeholder="เช่น 12"><span class="unit uc">ซม.</span></div>
+                  <div class="diminput"><label>สินค้า สูง</label><input id="fh" type="number" min="0" step=".5" placeholder="เช่น 4"><span class="unit uc">ซม.</span></div>
                 </div>
-                <div class="grid2c" style="margin-top:10px">
-                  <div class="field"><label for="fgap">ช่องว่างระหว่างชิ้น (<span class="u">ซม.</span>)</label><input id="fgap" type="number" min="0" step=".5" value="0"></div>
-                  <div class="field"><label for="fmar">เผื่อรอบด้านและด้านบน (<span class="u">ซม.</span>)</label><input id="fmar" type="number" min="0" step=".5" value="0"></div>
+                <div class="helper">กรอกเป็นขนาดของสินค้า ไม่รวมความหนาของกล่อง · <b>หน่วยของสินค้าเป็น ซม. เท่านั้น</b> (ตัวเลือกหน่วยด้านบนใช้กับขนาดกล่อง)</div>
+                <button id="fCopy" class="secondary" type="button" style="margin:6px 0 2px">คัดลอกจากแท็บ "ขนาดสินค้า"</button>
+                <div class="sw" style="--sc:#1e6ee6">จำนวนชิ้นที่ต้องการวาง: <b id="fcnt">1</b> ชิ้น</div>
+                <div class="dims">
+                  <div class="field"><label>เรียงตามกว้าง (ชิ้น)</label><input id="fnx" type="number" min="1" value="1"></div>
+                  <div class="field"><label>เรียงตามยาว (ชิ้น)</label><input id="fny" type="number" min="1" value="1"></div>
+                  <div class="field"><label>ซ้อนกี่ชั้น</label><input id="fnz" type="number" min="1" value="1"></div>
                 </div>
-                <div class="field" style="margin-top:10px"><label for="fnum">จำนวนชิ้นที่ต้องการวาง (เว้นว่าง = ใส่ให้ได้มากที่สุด)</label><input id="fnum" type="number" min="1" step="1" placeholder="เช่น 6"></div>
-                <label class="checkrow"><input id="fup" type="checkbox"> <span>ต้องตั้งตามแนวสูง (ห้ามนอน/คว่ำ)</span></label>
+                <div class="field" style="margin-top:10px"><label>ช่องว่างระหว่างชิ้น ต่อช่อง (<span class="uc">ซม.</span>)</label><input id="fgap" type="number" min="0" step=".5" value="0"></div>
+                <div class="sw" style="--sc:#1ea550">ระยะเผื่อของสินค้า (สีเขียว)</div>
+                <div class="grid2f"><div class="field"><label for="fcl">เผื่อด้านกว้าง = ความลึก (<span class="uc">ซม.</span>)</label><input id="fcl" type="number" min="0" step=".5" value="0"></div><div class="field"><label for="fcll">เผื่อด้านยาว = ความยาว (<span class="uc">ซม.</span>)</label><input id="fcll" type="number" min="0" step=".5" value="0"></div><div class="field"><label for="ftop">เผื่อด้านบน (<span class="uc">ซม.</span>)</label><input id="ftop" type="number" min="0" step=".5" value="0"></div></div>
+                <div class="helper" style="margin-top:-4px">คิดให้ด้านละค่านี้ทั้งสองข้าง · ด้านบน 0 = ปิดฝาพอดี · ด้านล่างไม่คิดเผื่อ · ในภาพ 3 มิติแสดงเป็นสีเขียว</div>
+                <div class="sw" style="--sc:#e02828">ระยะเผื่อปิดกล่อง (สีแดง)</div>
+                <div class="cgrp"><div class="cgt">ด้านกว้าง = ความลึกของกล่อง · รวมซ้าย + ขวา</div><div class="field"><label for="fkW">เผื่อด้านกว้าง (<span class="uc">ซม.</span>)</label><input id="fkW" type="number" min="0" step=".5" value="0"><div class="note" id="fkWs" style="margin-top:4px"></div></div></div>
+                <div class="cgrp"><div class="cgt">ด้านยาว · รวมหน้า + หลัง</div><div class="field"><label for="fkG">เผื่อด้านยาว (<span class="uc">ซม.</span>)</label><input id="fkG" type="number" min="0" step=".5" value="0"><div class="note" id="fkGs" style="margin-top:4px"></div></div></div>
+                <div class="cgrp"><div class="cgt">สูง</div><div class="field"><label for="fkh">ด้านบน (<span class="uc">ซม.</span>)</label><input id="fkh" type="number" min="0" step=".5" value="0"></div></div>
+                <div class="helper" style="margin-top:-4px">เพิ่มให้ขนาดที่ต้องใช้ใหญ่ขึ้นตามค่าแต่ละด้าน เพื่อให้ปิดกล่องได้ · กรอกค่ารวมครั้งเดียว ระบบแบ่งครึ่งให้ซ้าย–ขวา / หน้า–หลังเอง · ในภาพ 3 มิติแสดงเป็นสีแดง</div>
+                <details class="info clinfo" open><summary>คำแนะนำระยะปิดกล่อง (ซม.)</summary>
+                  <div class="note" style="margin:8px 0">สำหรับผู้กรอกใช้อ้างอิง · กว้าง/ยาว = ค่ารวมสองข้าง (กรอกครั้งเดียว ระบบแบ่งซ้าย–ขวา / หน้า–หลังให้) · สูง = ด้านบน · หน่วยเป็น <b>ซม.</b> เสมอ (ไม่เปลี่ยนตามหน่วยที่เลือกด้านบน) · ดูแล้วกรอกเองตามความเหมาะสมของงาน · แถวของประเภทกล่องที่เลือกอยู่จะเป็นสีเขียว</div>
+                  <div style="overflow-x:auto"><table id="cltab2" class="otab"><thead><tr><th>ประเภทกล่อง</th><th>กว้าง</th><th>ยาว</th><th>สูง</th></tr></thead><tbody><tr data-t="ear"><td>หูช้าง</td><td>1</td><td>2</td><td>1</td></tr><tr data-t="mailer"><td>ไปรษณีย์</td><td>2</td><td>1</td><td>1</td></tr><tr data-t="lock"><td>ฝาเสียบก้นขัด</td><td>1</td><td>1</td><td>1</td></tr><tr data-t="handle"><td>หูหิ้วกระดาษ / เมล่อน</td><td>1</td><td>1</td><td>2</td></tr><tr data-t="pizza"><td>พิซซ่า / ฝาเสียบ</td><td>2</td><td>1</td><td>1</td></tr><tr data-t="tuck"><td>ฝาเสียบบนล่าง</td><td>1</td><td>1</td><td>1</td></tr><tr data-t="rsc"><td>ฝาชน ลอน 3/B หรือ 3/C</td><td>0.8</td><td>1.2</td><td>1.6</td></tr><tr data-t="rsc"><td>ฝาชน ลอน 5/BC</td><td>1.4</td><td>2.1</td><td>2.8</td></tr><tr data-t="tele"><td>กล่องฝาครอบ/ถาด สันคนละด้าน (ตัว)<div class="note" style="margin:2px 0 0">* สันอยู่ด้านกว้าง (ด้านสั้น)</div></td><td>1</td><td>2</td><td>1</td></tr><tr data-t="tele"><td>กล่องฝาครอบ/ถาด สันทุกด้าน (ตัว)</td><td>2</td><td>2</td><td>1</td></tr><tr data-t="shoe"><td>กล่องรองเท้า แบบ1/แบบ2</td><td>1</td><td>2</td><td>1</td></tr></tbody></table></div>
+                </details>
                 <button id="clrFit" class="secondary" type="button" style="margin-top:8px">ล้างสินค้าที่ลองวาง</button>
               </div>
             </details>
@@ -359,7 +374,7 @@ select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-rad
           <div class="viewer-controls">
             <button class="main" id="tog" type="button">เปิดกล่อง</button>
             <button id="rst" type="button">รีเซ็ตมุมมอง</button>
-                        <span class="dimgrp"><b>เส้นวัดระยะ</b><button id="dimB" type="button" aria-pressed="true">กล่อง</button><button id="dimG" type="button" aria-pressed="true">สีเขียว</button><button id="dimP" type="button" aria-pressed="true">สินค้า (ฟ้า)</button></span>
+                        <span class="dimgrp"><b>เส้นวัดระยะ</b><button id="dimB" type="button" aria-pressed="true">กล่อง</button><button id="dimG" type="button" aria-pressed="true">ระยะเผื่อสินค้า (เขียว)</button><button id="dimP" type="button" aria-pressed="true">สินค้า (ฟ้า)</button></span>
           </div>
           <div class="ang"><label for="deg">มุมเปิดฝา <b id="degv">0°</b></label><input id="deg" type="range" min="0" max="180" step="5" value="0"><div class="pre"><button type="button" data-d="0">ปิด</button><button type="button" data-d="45">45°</button><button type="button" data-d="90">90°</button><button type="button" data-d="135">135°</button><button type="button" data-d="180">180°</button></div></div>
         </details>
@@ -468,7 +483,7 @@ tuck:[["กล่องฝาเสียบ",24,35,6,1,"stock"]],
 shoe:[["แบบ 1",15.9,30,10.5,1,""],["แบบ 1",17,33,13,1,""],["แบบ 1",20,32,12,1,""],["แบบ 2",14,28,10,1,""],["แบบ 2",18.5,28,9.5,1,""],["แบบ 2",20,33.5,11,1,""],["แบบ 2",21,32.5,12,1,""],["แบบ 2",32,32,14,1,""],["แบบ 2",17,30,11,1,""]]};
 var EXTRA=[["00",9.75,14,6],["0",11,17,6],["0+4",11,17,10],["AA",13,17,7],["A",14,20,6],["2A",14,20,12],["B",17,25,9],["2B",17,25,18],["B+7",17,25,16],["C",20,30,11],["C+9",20,30,20],["CD",15,15,15],["D",22,35,14],["D+11",22,35,25],["E",24,40,17],["2F",31,30,13],["F",30,45,20],["G",31,36,26],["H",40,45,34],["I",45,55,40]],EXL=[],exKey="";
 var STD=LIST.rsc,lastTp="",prevU=null;
-function hlCl(tp){document.querySelectorAll("#cltab tr[data-t]").forEach(function(r){r.classList.toggle("on",r.dataset.t===tp)})}
+function hlCl(tp){document.querySelectorAll("#cltab tr[data-t],#cltab2 tr[data-t]").forEach(function(r){r.classList.toggle("on",r.dataset.t===tp)})}
 function pizzaUnit(tp){setTimeout(function(){var sel=$("unit");
  if(tp==="pizza"){if(u!=="in"){prevU=u;sel.value="in";sel.dispatchEvent(new Event("change"))}}
  else if(prevU&&u==="in"){sel.value=prevU;prevU=null;sel.dispatchEvent(new Event("change"))}
@@ -680,34 +695,38 @@ function sugHtml(o,title,lbl,W,L,H,ns){LBL=lbl;var hh=title,best=o.best,ni=o.ni,
 function lay3(r,o){var p=o.p;return {a:[r.base[p[0]],r.base[p[1]],r.base[p[2]]],n:[r.n[p[0]],r.n[p[1]],r.n[p[2]]],g:r.g,cw:r.cw,cl:r.cl,tp:r.tp,kF:r.kF||0,kB:r.kB||0,kL:r.kL||0,kR:r.kR||0,kh:r.kh||0,d:o.d}}
 function pcLb(r,o){var p=o.p;return [r.base[p[0]],r.base[p[1]],r.base[p[2]]].map(fu).join(" × ")+" "+UL[u]}
 var FITSEL=null;
+function fitClear(){["fw","fl","fh"].forEach(function(i){$(i).value=""});["fnx","fny","fnz"].forEach(function(i){$(i).value="1"});["fgap","fcl","fcll","ftop","fkW","fkG","fkh"].forEach(function(i){$(i).value="0"});FITSEL=null}
 function fitCalc(){
  var el=$("fitRes");window.__fitPb=null;window.__fitLb="";if(!el)return;
- var box=$("boxMode").classList.contains("active"),W=+$("w").value/FU[u],L=+$("l").value/FU[u],H=+$("h").value/FU[u],a=["fw","fl","fh"].map(function(i){return +$(i).value/FU[u]});
+ var c2=function(v){return Math.round(v*100)/100},dc=function(v){return c2(v[0])+" × "+c2(v[1])+" × "+c2(v[2])+" ซม."},num=function(i){return +$(i).value||0},
+  a=["fw","fl","fh"].map(num),n=["fnx","fny","fnz"].map(function(i){return Math.max(1,Math.floor(+$(i).value||1))}),
+  g=num("fgap"),cw=num("fcl"),cl=num("fcll"),tp=num("ftop"),kW=num("fkW"),kG=num("fkG"),kh=num("fkh"),cnt=n[0]*n[1]*n[2];
+ $("fcnt").textContent=cnt;
+ var sp=function(v,x,y,out){$(out).innerHTML=v>0?"แบ่งให้อัตโนมัติ: "+x+" <b>"+c2(v/2)+"</b> + "+y+" <b>"+c2(v/2)+"</b> ซม.":"แบ่งให้อัตโนมัติ: "+x+" / "+y+" ข้างละครึ่ง"};sp(kW,"ซ้าย","ขวา","fkWs");sp(kG,"หน้า","หลัง","fkGs");
+ var box=$("boxMode").classList.contains("active"),W=+$("w").value/FU[u],L=+$("l").value/FU[u],H=+$("h").value/FU[u];
  if(!box||!(W>0&&L>0&&H>0)||!a.every(function(v){return v>0})){el.innerHTML="";return}
- var g=(+$("fgap").value||0)/FU[u],m=(+$("fmar").value||0)/FU[u],up=$("fup").checked,N=Math.floor(+$("fnum").value)||0,e=.001;
- var P=up?[[0,1,2],[1,0,2]]:[[0,1,2],[1,0,2],[0,2,1],[2,0,1],[1,2,0],[2,1,0]],seen={},os=[],A=[W-2*m,L-2*m,H-m],vol=a[0]*a[1]*a[2];
- P.forEach(function(p){var d=[a[p[0]],a[p[1]],a[p[2]]],k=d.map(function(v){return v.toFixed(2)}).join("|");if(seen[k])return;seen[k]=1;
-  var n=d.map(function(x,i){return Math.floor((A[i]+g+e)/(x+g))}),c=n.every(function(v){return v>=1})?n[0]*n[1]*n[2]:0;
-  os.push({p:p,d:d,key:k,n:n,cap:c,fill:c*vol/(W*L*H),need:[d[0]+2*m,d[1]+2*m,d[2]+m]})});
- var best=os.slice().sort(function(x,y){return y.cap-x.cap||((y.p[2]==2)-(x.p[2]==2))||y.fill-x.fill})[0],sel=os.filter(function(o){return o.key==FITSEL&&o.cap>0})[0]||best;
- var dm=function(v){return fu(v[0])+" × "+fu(v[1])+" × "+fu(v[2])+" "+UL[u]},h='<div class="fitbox"><div style="font-weight:700;margin-bottom:6px">วางสินค้า '+dm(a)+' ในกล่อง '+dm([W,L,H])+'</div>';
- var q=0;
- if(best.cap<1){
-  var mn=os.slice().sort(function(x,y){return x.need[0]*x.need[1]*x.need[2]-y.need[0]*y.need[1]*y.need[2]})[0];
-  h+='<div class="ask" style="margin-bottom:8px">ใส่ไม่ได้ — สินค้าใหญ่กว่ากล่องนี้ในทุกการวาง · กล่องที่เล็กที่สุดที่ใส่สินค้า 1 ชิ้นได้ (รวมเผื่อ) ต้องไม่ต่ำกว่า <b>'+dm(mn.need)+'</b> (ไปแท็บ "ขนาดสินค้า" เพื่อหากล่องที่เหมาะ)</div>';
- }else{
-  q=N>0?Math.min(N,sel.cap):sel.cap;
-  var okN=N>0&&sel.cap>=N;
-  h+='<div class="'+(N>0&&!okN?'ask':'fee')+'" style="margin-bottom:8px;font-size:.95rem">'+(N>0?(okN?'✓ ใส่ครบ <b>'+N+' ชิ้น</b> ได้ (ใส่ได้สูงสุด '+sel.cap+' ชิ้น)':'ใส่ได้สูงสุด <b>'+sel.cap+' ชิ้น</b> ไม่ครบ '+N+' ชิ้น (ขาดอีก '+(N-sel.cap)+' ชิ้น)'):'ใส่ได้สูงสุด <b>'+sel.cap+' ชิ้น</b>')+' · วางแบบ '+oriLb(sel)+' · เรียง กว้าง '+sel.n[0]+' × ยาว '+sel.n[1]+' × ซ้อน '+sel.n[2]+' ชั้น</div>';
- }
- h+='<div class="otabw"><table class="otab"><thead><tr><th>การวางสินค้า</th><th>ขนาดสินค้าที่วาง</th><th>เรียงได้ (กว้าง × ยาว × ชั้น)</th><th>ใส่ได้ (ชิ้น)</th><th>ใช้พื้นที่กล่อง</th></tr></thead><tbody>';
- os.forEach(function(o){h+='<tr data-fk="'+o.key+'" class="frow'+(o===sel&&best.cap>0?' on':'')+'"'+(o.cap>0?' title="กดเพื่อดูภาพ 3 มิติ"':'')+'><td>'+(o===sel&&best.cap>0?'✓ ':'')+oriLb(o)+'</td><td>'+fu(o.d[0])+' × '+fu(o.d[1])+' × '+fu(o.d[2])+'</td><td>'+(o.cap>0?o.n[0]+' × '+o.n[1]+' × '+o.n[2]:'—')+'</td><td><b>'+o.cap+'</b></td><td>'+(o.cap>0?Math.round(o.fill*100)+'%':'—')+'</td></tr>'});
- h+='</tbody></table></div><div class="note" style="margin-top:6px">คำนวณจากขนาดภายในของกล่องที่กรอกด้านบน · เผื่อรอบด้านใช้กับ ซ้าย/ขวา/หน้า/หลัง และด้านบน</div></div>';
+ var e=.001,B=[n[0]*a[0]+(n[0]-1)*g,n[1]*a[1]+(n[1]-1)*g,n[2]*a[2]+(n[2]-1)*g],
+  P=[[0,1,2],[1,0,2],[0,2,1],[2,0,1],[1,2,0],[2,1,0]],seen={},os=[],AX=["กว้าง","ยาว","สูง"];
+ P.forEach(function(p){var d=[B[p[0]],B[p[1]],B[p[2]]],k=d.map(function(v){return v.toFixed(2)}).join("|");if(seen[k])return;seen[k]=1;
+  var need=[d[0]+2*cw+kW,d[1]+2*cl+kG,d[2]+tp+kh],sl=[W-need[0],L-need[1],H-need[2]];
+  os.push({p:p,d:d,key:k,need:need,sl:sl,fit:sl.every(function(v){return v>=-e}),over:sl.reduce(function(t,v){return t+Math.max(0,-v)},0)})});
+ var firstFit=os.filter(function(o){return o.fit})[0],least=os.slice().sort(function(x,y){return x.over-y.over})[0],sel=os.filter(function(o){return o.key==FITSEL})[0]||firstFit||least;
+ var ovTxt=function(o,sep){return o.sl.map(function(v,i){return v<-e?AX[i]+" เกิน "+c2(-v)+" ซม.":""}).filter(Boolean).join(sep||" · ")};
+ var h='<div class="fitbox"><div style="font-weight:700;margin-bottom:6px">วางสินค้า '+dc(a)+' จำนวน '+cnt+' ชิ้น'+(cnt>1?' (เรียง '+n[0]+' × '+n[1]+' × '+n[2]+' ชั้น)':'')+' ในกล่อง '+fu(W)+' × '+fu(L)+' × '+fu(H)+' '+UL[u]+(u!=="cm"?' ('+dc([W,L,H])+')':'')+'</div>';
+ if(!firstFit){var mn=os.slice().sort(function(x,y){return x.need[0]*x.need[1]*x.need[2]-y.need[0]*y.need[1]*y.need[2]})[0];
+  h+='<div class="ask" style="margin-bottom:8px">ใส่ไม่ได้ในทุกท่าวาง · กล่องภายในที่เล็กที่สุดที่ต้องใช้ (รวมเผื่อ) ≈ <b>'+dc(mn.need)+'</b> · ไปแท็บ "ขนาดสินค้า" เพื่อหากล่องที่เหมาะ</div>'}
+ else if(sel.fit)h+='<div class="fee" style="margin-bottom:8px;font-size:.95rem">✓ ใส่ได้ · วางแบบ '+oriLb(sel)+' · ต้องใช้ '+dc(sel.need)+' · เหลือ '+dc(sel.sl)+'</div>';
+ else h+='<div class="ask" style="margin-bottom:8px">ท่าที่เลือกใส่ไม่ได้ · '+ovTxt(sel)+' (มีท่าอื่นที่ใส่ได้ ดูในตาราง)</div>';
+ var Ac=[W-2*cw-kW,L-2*cl-kG,H-tp-kh],cap=null;
+ P.forEach(function(p){var d=[a[p[0]],a[p[1]],a[p[2]]],nn=d.map(function(x,i){return Math.floor((Ac[i]+g+e)/(x+g))}),c=nn.every(function(v){return v>=1})?nn[0]*nn[1]*nn[2]:0;if(!cap||c>cap.c)cap={c:c,nn:nn,p:p}});
+ h+='<div class="otabw"><table class="otab"><thead><tr><th>การวางสินค้า</th><th>ขนาดสินค้าที่วาง</th><th>กล่องที่ต้องใช้ (รวมเผื่อ)</th><th>เทียบกับกล่องนี้</th></tr></thead><tbody>';
+ os.forEach(function(o){h+='<tr data-fk="'+o.key+'" class="frow'+(o===sel?' on':'')+'" title="กดเพื่อดูภาพ 3 มิติ"><td>'+oriLb(o)+(o===sel?'<div class="note" style="margin:2px 0 0">กำลังแสดงใน 3 มิติ</div>':'')+'</td><td>'+dc(o.d)+'</td><td>'+dc(o.need)+'</td><td>'+(o.fit?'<b>✓ ใส่ได้</b><div class="note" style="margin:2px 0 0">เหลือ '+dc(o.sl)+'</div>':'<span class="ask">✗ '+ovTxt(o,"<br>")+'</span>')+'</td></tr>'});
+ h+='</tbody></table></div>';
+ if(cap&&cap.c>0)h+='<div class="note" style="margin-top:6px">ถ้าไม่จำกัดจำนวน กล่องนี้ใส่สินค้าชนิดนี้ได้สูงสุด <b>'+cap.c+' ชิ้น</b> (วางแบบ '+oriLb({p:cap.p})+' · เรียง '+cap.nn.join(" × ")+') ตามช่องว่างและระยะเผื่อที่ตั้งไว้</div>';
+ h+='<div class="note" style="margin-top:4px">ขนาดกล่องที่กรอกถือเป็นขนาดภายใน · ตัวเลขของสินค้าและส่วนต่างแสดงเป็น ซม.</div></div>';
  el.innerHTML=h;
- if(best.cap>0){var n=sel.n,u2=n,cp=n[1]*n[2];
-  if(q<n[0]*n[1]*n[2]){var fw=Math.floor(q/cp),r=q-fw*cp,nW=fw+(r>0?1:0),nL=fw>0?n[1]:Math.ceil(r/n[2]),nH=(fw>0||nL>1)?n[2]:r;u2=[nW,nL,nH]}
-  var d=sel.d;window.__fitPb={a:d,n:u2,g:g,cw:m,cl:m,tp:m,kF:0,kB:0,kL:0,kR:0,kh:0,d:[u2[0]*d[0]+(u2[0]-1)*g,u2[1]*d[1]+(u2[1]-1)*g,u2[2]*d[2]+(u2[2]-1)*g],lim:q};
-  window.__fitLb=" · สินค้า "+q+" ชิ้น วางแบบ "+oriLb(sel)+" (ชิ้นละ "+dm(d)+")"}
+ var p=sel.p;window.__fitPb={a:[a[p[0]],a[p[1]],a[p[2]]],n:[n[p[0]],n[p[1]],n[p[2]]],g:g,cw:cw,cl:cl,tp:tp,kF:kW/2,kB:kW/2,kL:kG/2,kR:kG/2,kh:kh,d:sel.d};
+ window.__fitLb=" · สินค้า "+cnt+" ชิ้น วางแบบ "+oriLb(sel)+" (ชิ้นละ "+dc(window.__fitPb.a)+")"+(sel.fit?" · ใส่ได้":" · ใส่ไม่ได้ (เกินกล่อง)");
 }
 function draw3d(req,po){var prod=$("productMode").classList.contains("active"),d=null,lb="",tp=$("type").value,cand=null,pb=null;
  if(prod){if(req&&po){cand=csz(po.ori);pb=lay3(req,po.ori)}}
@@ -722,8 +741,8 @@ function draw3d(req,po){var prod=$("productMode").classList.contains("active"),d
  if(d){scene(d[0],d[1],d[2],tp,pb);view()}else{$("box").innerHTML="";SC=null;dims3d()}
  $("viewLbl").textContent=d?lb:"กรอกขนาดเพื่อดูภาพกล่อง";
  var lg="";if(pb&&d&&req){lg='<span class="lgi"><i style="background:rgb(30,110,230)"></i>ฟ้า = สินค้า</span>';if(req.cw>0||req.cl>0||req.tp>0)lg+='<span class="lgi"><i style="background:rgb(30,165,80)"></i>เขียว = ระยะเผื่อสินค้า</span>';if(req.kF>0||req.kB>0||req.kL>0||req.kR>0||req.kh>0)lg+='<span class="lgi"><i style="background:rgb(230,40,40)"></i>แดง = ระยะเผื่อปิดกล่อง</span>'}
- if(pb&&d&&pb===window.__fitPb){lg='<span class="lgi"><i style="background:rgb(30,110,230)"></i>ฟ้า = สินค้า</span>'+(pb.cw>0?'<span class="lgi"><i style="background:rgb(30,165,80)"></i>เขียว = ระยะเผื่อ</span>':"")}
- if(d){var dl="";if(dimOn.b)dl+='<span class="lgi"><i style="background:#1f2933"></i>เส้นดำ = ขนาดกล่องรวม (ภายนอก)</span>';if(SC&&SC.g&&dimOn.g)dl+='<span class="lgi"><i style="background:#0f6b33"></i>เส้นเขียว = ขนาดในกรอบสีเขียว</span>';if(SC&&SC.bl&&dimOn.p&&pb)dl+='<span class="lgi"><i style="background:#0b3f9e"></i>เส้นน้ำเงิน = ขนาดสินค้า</span>';lg+=dl}
+ if(pb&&d&&pb===window.__fitPb){lg='<span class="lgi"><i style="background:rgb(30,110,230)"></i>ฟ้า = สินค้า</span>'+((pb.cw>0||pb.cl>0||pb.tp>0)?'<span class="lgi"><i style="background:rgb(30,165,80)"></i>เขียว = ระยะเผื่อสินค้า</span>':"")+((pb.kF+pb.kB+pb.kL+pb.kR+pb.kh>0)?'<span class="lgi"><i style="background:rgb(230,40,40)"></i>แดง = ระยะเผื่อปิดกล่อง</span>':"")}
+ if(d){var dl="";if(dimOn.b)dl+='<span class="lgi"><i style="background:#1f2933"></i>เส้นดำ = ขนาดกล่องรวม (ภายนอก)</span>';if(SC&&SC.g&&dimOn.g)dl+='<span class="lgi"><i style="background:#0f6b33"></i>เส้นเขียว = ระยะเผื่อสินค้า (เขียว)</span>';if(SC&&SC.bl&&dimOn.p&&pb)dl+='<span class="lgi"><i style="background:#0b3f9e"></i>เส้นน้ำเงิน = ขนาดสินค้า</span>';lg+=dl}
  $("lg3").innerHTML=lg}
 function exList(){var tpx=$("type").value;return (tpx=="rsc"||tpx=="mailer"||tpx=="ear"||tpx=="lock"||tpx=="tuck")?EXTRA.filter(function(q){return !STD.some(function(x){return x[1]!=null&&Math.abs(x[1]-q[1])<.06&&Math.abs(x[2]-q[2])<.06&&Math.abs(x[3]-q[3])<.06})}):[]}
 function exoBlock(W,L,H){var EL=exList();EXL=EL;if(!EL.length)return "";var bi=-1,bd=1e9,bw=false;EL.forEach(function(q,i){var d1=Math.abs(q[1]-W)+Math.abs(q[2]-L)+Math.abs(q[3]-H),d2=Math.abs(q[1]-L)+Math.abs(q[2]-W)+Math.abs(q[3]-H),d=Math.min(d1,d2);if(d<bd){bd=d;bi=i;bw=d2<d1}});
@@ -741,7 +760,7 @@ function buildTable(mi,fit,req,ptop){var tpx=$("type").value;
  $("std").innerHTML=allRows.filter(function(h,i){return !STD[i][7]}).join("");
  var cr=allRows.filter(function(h,i){return STD[i][7]});$("stdC").innerHTML=cr.join("");$("stdCwrap").classList.toggle("hidden",!cr.length);$("stdCn").textContent=cr.length;
 }
-function updSplit(){var f=function(id,a,b,out){var v=+$(id).value||0,h=(Math.round(v/2*100)/100).toLocaleString("th-TH");$(out).innerHTML=v>0?"แบ่งให้อัตโนมัติ: "+a+" <b>"+h+"</b> + "+b+" <b>"+h+"</b> "+UL[u]:"แบ่งให้อัตโนมัติ: "+a+" / "+b+" ข้างละครึ่ง"};f("pkW","ซ้าย","ขวา","pkWs");f("pkG","หน้า","หลัง","pkGs")}
+function updSplit(){var f=function(id,a,b,out){var v=+$(id).value||0,h=(Math.round(v/2*100)/100).toLocaleString("th-TH");$(out).innerHTML=v>0?"แบ่งให้อัตโนมัติ: "+a+" <b>"+h+"</b> + "+b+" <b>"+h+"</b> "+"ซม.":"แบ่งให้อัตโนมัติ: "+a+" / "+b+" ข้างละครึ่ง"};f("pkW","ซ้าย","ขวา","pkWs");f("pkG","หน้า","หลัง","pkGs")}
 function render(){updSplit();var ac=$("addCur");if(ac)ac.textContent=$("productMode").classList.contains("active")?"+ เพิ่มขนาดกล่องที่แนะนำจากสินค้า":"+ เพิ่มขนาดที่ตั้งไว้ด้านบน";var tp=$("type").value;if(tp!==lastTp){lastTp=tp;STD=LIST[tp];fillStd();$("stdT").textContent=$("type").options[$("type").selectedIndex].text;pizzaUnit(tp);hlCl(tp)}
  drawCmp();
  $("pup").disabled=!$("rot").checked;var req=prodReq();if(req&&!window.__ps){window.__ps=1}if(!req)window.__ps=0;var pf=req?prodFit(req,STD):[],ptop=pf.length?pf[0]:-1;var po=req?pickOri(req):null;if(po)ptop=po.mi;fitCalc();draw3d(req,po);$("pres").innerHTML=(req?prodHtml(req,po)+(po.exact<0?exoBlock(po.ori.w,po.ori.l,po.ori.h):""):"")||'<div class="note">กรอกขนาดสินค้าก่อน เพื่อดูกล่องที่เหมาะ</div>';
@@ -765,8 +784,8 @@ var tpx=$("type").value;
 var TL={rsc:"ฝาชน",mailer:"ไดคัทไปรษณีย์",ear:"ไดคัทหูช้าง",lock:"ฝาเสียบก้นขัด",tuck:"ฝาเสียบ",handle:"หูหิ้ว",pizza:"พิซซ่า",tele:"ฝาครอบ/เบเกอรี่",doc:"เอกสาร",shoe:"รองเท้า"};
 function fee(q){return q[4]===0?'<div class="fee">ไม่ต้องเก็บค่ามีดไดคัทจากลูกค้า</div>':""}
 function dmq(q){return fu(q[1])+" × "+fu(q[2])+" × "+fu(q[3])+" "+UL[u]}
-function prodReq(){var a=["pw","pl","ph"].map(function(i){return +$(i).value/FU[u]});if(!a.every(function(v){return v>0}))return null;
- var cw=(+$("pcl").value||0)/FU[u],cl=(+$("pcll").value||0)/FU[u],tp=(+$("ptop").value||0)/FU[u],g=(+$("pgap").value||0)/FU[u],kF=(+$("pkW").value||0)/FU[u]/2,kB=(+$("pkW").value||0)/FU[u]/2,kL=(+$("pkG").value||0)/FU[u]/2,kR=(+$("pkG").value||0)/FU[u]/2,kh=(+$("pkh").value||0)/FU[u],n=["nx","ny","nz"].map(function(i){return Math.max(1,Math.floor(+$(i).value||1))}),rot=$("rot").checked,up=$("pup").checked;
+function prodReq(){var a=["pw","pl","ph"].map(function(i){return +$(i).value});if(!a.every(function(v){return v>0}))return null;
+ var cw=(+$("pcl").value||0),cl=(+$("pcll").value||0),tp=(+$("ptop").value||0),g=(+$("pgap").value||0),kF=(+$("pkW").value||0)/2,kB=(+$("pkW").value||0)/2,kL=(+$("pkG").value||0)/2,kR=(+$("pkG").value||0)/2,kh=(+$("pkh").value||0),n=["nx","ny","nz"].map(function(i){return Math.max(1,Math.floor(+$(i).value||1))}),rot=$("rot").checked,up=$("pup").checked;
  var B=[n[0]*a[0]+(n[0]-1)*g,n[1]*a[1]+(n[1]-1)*g,n[2]*a[2]+(n[2]-1)*g];
  var P=!rot?[[0,1,2]]:(up?[[0,1,2],[1,0,2]]:[[0,1,2],[1,0,2],[0,2,1],[2,0,1],[1,2,0],[2,1,0]]),seen={},os=[];
  P.forEach(function(p){var d=[B[p[0]],B[p[1]],B[p[2]]],k=d.map(function(v){return v.toFixed(2)}).join("|");if(seen[k])return;seen[k]=1;os.push({p:p,d:d,key:k,w:d[0]+2*cw+kF+kB,l:d[1]+2*cl+kL+kR,h:d[2]+tp+kh})});
@@ -813,7 +832,7 @@ function useStd(i){var s=STD[i];if(!s||s[1]==null)return;pushHist("ใช้ข�
 function pick(e){if(e.target.closest&&e.target.closest("select"))return;var tr=e.target.closest("tr.row");if(!tr)return;var s=STD[+tr.dataset.i];if(!s||s[1]==null)return;pushHist("ใช้ขนาด "+nm(s)+" ("+dmq(s)+") แล้ว");var c=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=c(s[1]);$("l").value=c(s[2]);$("h").value=c(s[3]);render()}
 $("undoBtn").addEventListener("click",undoHist);$("undoGo").addEventListener("click",undoHist);$("undoX").addEventListener("click",function(){updUndo(null)});
 document.addEventListener("keydown",function(e){if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&e.key==="z"&&!/^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement||{}).tagName||"")&&HIST.length){e.preventDefault();undoHist()}});
-$("clrAll").addEventListener("click",function(){pushHist("ล้างข้อมูลทั้งหมดแล้ว");$("boxMode").click();["w","l","h","pw","pl","ph","cname"].forEach(function(i){$(i).value=""});selKey=null;ndOn=false;$("pcl").value="0";$("pcll").value="0";$("ptop").value="0";$("pgap").value="0";$("pkW").value="0";$("pkG").value="0";$("pkh").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;["fw","fl","fh","fnum"].forEach(function(i){$(i).value=""});$("fgap").value="0";$("fmar").value="0";$("fup").checked=false;FITSEL=null;render()});
+$("clrAll").addEventListener("click",function(){pushHist("ล้างข้อมูลทั้งหมดแล้ว");$("boxMode").click();["w","l","h","pw","pl","ph","cname"].forEach(function(i){$(i).value=""});selKey=null;ndOn=false;$("pcl").value="0";$("pcll").value="0";$("ptop").value="0";$("pgap").value="0";$("pkW").value="0";$("pkG").value="0";$("pkh").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;fitClear();render()});
 $("clrBox").addEventListener("click",function(){["w","l","h"].forEach(function(i){$(i).value=""});render()});
 $("clrProd").addEventListener("click",function(){["pw","pl","ph"].forEach(function(i){$(i).value=""});selKey=null;ndOn=false;$("pcl").value="0";$("pcll").value="0";$("ptop").value="0";$("pgap").value="0";$("pkW").value="0";$("pkG").value="0";$("pkh").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;render()});
 $("std").addEventListener("click",pick);$("stdC").addEventListener("click",pick);$("stdC").addEventListener("keydown",function(e){if(e.key=="Enter")pick(e)});
@@ -823,13 +842,14 @@ $("exwrap").addEventListener("click",function(e){var t=e.target.closest("tr[data
 $("match").addEventListener("click",function(e){if(cardClick(e))return;var nb=e.target.closest("button[data-nd]");if(nb){ndReq=true;if(deg<135)deg=135;rx=-50;render();var sd0=$("stage");if(sd0)sd0.scrollIntoView({behavior:"smooth",block:"center"});return}var b=e.target.closest("button");if(b&&b.dataset.x!==undefined){fillX(+b.dataset.x);return}if(b&&b.dataset.i!==undefined)useStd(+b.dataset.i)});
 $("std").addEventListener("keydown",function(e){if(e.key=="Enter")pick(e)});
 $("unit").addEventListener("change",function(){
- var cm=["w","l","h"].map(function(i){return +$(i).value/FU[u]}),pc=["pw","pl","ph","pcl","pcll","ptop","pgap","pkW","pkG","pkh","fw","fl","fh","fgap","fmar"].map(function(i){var v=$(i).value;return v===""?null:+v/FU[u]});u=this.value;
- ["pw","pl","ph","pcl","pcll","ptop","pgap","pkW","pkG","pkh","fw","fl","fh","fgap","fmar"].forEach(function(i,k){var e=$(i);if(pc[k]!==null)e.value=Math.round(pc[k]*FU[u]*100)/100;e.step={cm:.5,mm:5,in:.25}[u]});
+ var cm=["w","l","h"].map(function(i){return +$(i).value/FU[u]}),pc=[].map(function(i){var v=$(i).value;return v===""?null:+v/FU[u]});u=this.value;
+ [].forEach(function(i,k){var e=$(i);if(pc[k]!==null)e.value=Math.round(pc[k]*FU[u]*100)/100;e.step={cm:.5,mm:5,in:.25}[u]});
  ["w","l","h"].forEach(function(i,k){var e=$(i);e.value=Math.round(cm[k]*FU[u]*100)/100;e.step={cm:.5,mm:5,in:.25}[u];e.min=0.1});
  document.querySelectorAll(".u").forEach(function(e){e.textContent=UL[u]});render()});
-["w","l","h","type","rot","pw","pl","ph","pcl","pcll","ptop","pgap","pkW","pkG","pkh","nx","ny","nz","pup","fw","fl","fh","fgap","fmar","fnum","fup"].forEach(function(i){$(i).addEventListener("input",render)});
+["w","l","h","type","rot","pw","pl","ph","pcl","pcll","ptop","pgap","pkW","pkG","pkh","nx","ny","nz","pup","fw","fl","fh","fnx","fny","fnz","fgap","fcl","fcll","ftop","fkW","fkG","fkh"].forEach(function(i){$(i).addEventListener("input",render)});
  $("fitRes").addEventListener("click",function(e){var tr=e.target.closest("tr[data-fk]");if(tr){FITSEL=tr.dataset.fk;render()}});
- $("clrFit").addEventListener("click",function(){["fw","fl","fh","fnum"].forEach(function(i){$(i).value=""});$("fgap").value="0";$("fmar").value="0";$("fup").checked=false;FITSEL=null;render()});
+ $("clrFit").addEventListener("click",function(){fitClear();render()});
+ $("fCopy").addEventListener("click",function(){[["pw","fw"],["pl","fl"],["ph","fh"],["nx","fnx"],["ny","fny"],["nz","fnz"],["pgap","fgap"],["pcl","fcl"],["pcll","fcll"],["ptop","ftop"],["pkW","fkW"],["pkG","fkG"],["pkh","fkh"]].forEach(function(x){$(x[1]).value=$(x[0]).value});FITSEL=null;render()});
 function fillStd(){$("addStd").innerHTML='<option value="">+ เพิ่มขนาดที่มีของประเภทนี้…</option>';STD.forEach(function(x,i){if(x[1]==null)return;var op=document.createElement("option");op.value=i;op.textContent=nm(x)+" ("+[x[1],x[2],x[3]].map(function(v){return Math.round(v*100)/100}).join("×")+" ซม.)";$("addStd").appendChild(op)})}
 fillStd();
 $("addCur").addEventListener("click",function(){var prod=$("productMode").classList.contains("active"),W,L,H,nn=null;
