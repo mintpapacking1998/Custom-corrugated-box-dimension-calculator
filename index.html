@@ -684,7 +684,7 @@ function nmAll(i){return [i].concat(twins(i)).map(function(j){return nm(STD[j])}
 function sugHtml(o,title,lbl,W,L,H,ns){LBL=lbl;var hh=title,best=o.best,ni=o.ni,nsw=o.nsw,dd=o.dd,rot=o.rot,seen={};
  function add(i,tag,col,top,xt){if(seen[i])return;seen[i]=1;hh+=pcx(STD[i],i,tag,col,top,xt);twins(i).forEach(function(j){if(seen[j])return;seen[j]=1;hh+=pcx(STD[j],j,"ขนาดเดียวกัน · อีกแบบ",col,false,xt)})}
  if(o.exact>=0)add(o.exact,"ตรงพอดี","#2b7a4b",true);
- else if(o.close){if(dd.some(function(v){return v<-.06}))hh+=BAN(ns);add(ni,"ใกล้เคียง — เสนอแทน","#c77a0a",true,dtx(dd,nsw));if(dd.some(function(v){return v<-.06})&&best&&!seen[best.i])add(best.i,"ใช้กระดาษน้อยที่สุด","#66757f",false)}
+ else if(o.close){hh+=BAN(ns);add(ni,"ใกล้เคียง — เสนอแทน","#c77a0a",true,dtx(dd,nsw));if(dd.some(function(v){return v<-.06})&&best&&!seen[best.i])add(best.i,"ใช้กระดาษน้อยที่สุด","#66757f",false)}
  else{hh+=BAN(ns);
   if(best)add(best.i,"ใช้กระดาษน้อยที่สุด","#66757f",false);
   else hh+='<div class="note" style="margin-bottom:8px">ไม่มีขนาดมาตรฐานของประเภทนี้ที่ใส่ได้ครบทุกด้าน</div>';
