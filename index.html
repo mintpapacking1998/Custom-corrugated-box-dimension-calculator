@@ -717,7 +717,7 @@ function sug(W,L,H,rot0,up0){var rot=rot0===undefined?$("rot").checked:rot0,up=u
 function BAN(ns){return '<div class="pc bad">⚙ ต้องเป็นงานสั่งผลิต ออกมีดไดคัทใหม่'+(ns?' <b>ขนาด '+fu(ns[0])+' × '+fu(ns[1])+' × '+fu(ns[2])+' '+UL[u]+'</b> <button type="button" data-nd="1">ดูภาพ 3 มิติ</button>':'')+'</div>'}
 function twins(i){var a=STD[i],r=[];if(!a||a[1]==null)return r;STD.forEach(function(b,j){if(j==i||b[1]==null)return;if(Math.abs(a[3]-b[3])<.06&&((Math.abs(a[1]-b[1])<.06&&Math.abs(a[2]-b[2])<.06)||(Math.abs(a[1]-b[2])<.06&&Math.abs(a[2]-b[1])<.06)))r.push(j)});return r}
 function nmAll(i){return [i].concat(twins(i)).map(function(j){return nm(STD[j])}).join(" / ")}
-function sugHtml(o,title,lbl,W,L,H,ns){LBL=lbl;var hh=title,best=o.best,ni=o.ni,nsw=o.nsw,dd=o.dd,rot=o.rot,seen={};
+function sugHtml(o,title,lbl,W,L,H,ns){LBL=lbl;var bdx=function(i){return o.rot?"":dtx([STD[i][1]-W,STD[i][2]-L,STD[i][3]-H],false)};var hh=title,best=o.best,ni=o.ni,nsw=o.nsw,dd=o.dd,rot=o.rot,seen={};
  function add(i,tag,col,top,xt){if(seen[i])return;seen[i]=1;hh+=pcx(STD[i],i,tag,col,top,xt);twins(i).forEach(function(j){if(seen[j])return;seen[j]=1;hh+=pcx(STD[j],j,"ขนาดเดียวกัน · อีกแบบ",col,false,xt)})}
  if(o.exact>=0)add(o.exact,"ตรงพอดี","#2b7a4b",true);
  else if(o.close){hh+=BAN(ns);add(ni,"ใกล้เคียง — เสนอแทน","#c77a0a",true,dtx(dd,nsw));if(dd.some(function(v){return v<-.06})&&best&&!seen[best.i])add(best.i,"ใช้กระดาษน้อยที่สุด","#66757f",false)}
