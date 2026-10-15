@@ -147,6 +147,23 @@ details.info{margin-top:10px}details.info summary{cursor:pointer;font-size:.8rem
 .otab tr.on td{background:#e3f1e6;font-weight:600}
 .otab tr.orow{cursor:pointer}.otab tr.orow:hover td{background:#eef3f0}
 .pc.bad button{padding:4px 10px;margin-left:8px;font-size:.82rem}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+.pc button.alt{background:#fff;color:#1f3a68;border:1.5px solid #1f3a68;box-shadow:none}
+.pc button.alt:hover{background:#eef3fb}
+.dimgrp{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap}
+.dimgrp b{font-size:.8rem;color:var(--muted,#66757f)}
+.dimgrp button[aria-pressed="false"]{opacity:.5}
+.dimgrp button[aria-pressed="true"],#lay button[aria-pressed="true"]{background:var(--brand);color:#fff;border-color:var(--brand)}
+.stage{touch-action:none!important;user-select:none;-webkit-user-select:none}
+#dimsvg text{user-select:none;-webkit-user-select:none}
+.pre button,#lay button{font:inherit;font-size:.8rem;border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 9px;cursor:pointer}
+.pre button:hover,#lay button:hover{background:#f3f4f2}
+.exo{background:#fffbe3!important;border:1px solid #efe29f!important;border-radius:10px}
+@media(min-width:901px){.layout>.card{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}}
+.undobar{align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px;padding:10px 12px;border-radius:10px;background:#eaf1ff;border:1px solid #b9cdf3;font-weight:600}
+.undobar button{font:inherit;font-size:.85rem;font-weight:700;border-radius:8px;padding:6px 12px;cursor:pointer;border:1.5px solid #1f3a68;background:#1f3a68;color:#fff}
+.undobar button#undoX{background:transparent;color:#1f3a68;border-color:transparent;margin-left:auto}
+#undoBtn:disabled{opacity:.45;cursor:default}
 </style>
 
 
@@ -201,7 +218,7 @@ select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-rad
       <h1>ออกแบบกล่องลูกฟูก</h1>
       <p class="sub">บอกเราว่าจะใส่อะไรในกล่อง แล้วระบบช่วยหาขนาดที่เหมาะให้</p>
     </div>
-    <button class="reset" id="clrAll" type="button">↺ ล้างข้อมูลทั้งหมด</button>
+    <span style="display:inline-flex;gap:8px;flex-wrap:wrap"><button class="secondary" id="undoBtn" type="button" disabled>↶ ย้อนกลับ</button><button class="reset" id="clrAll" type="button">↺ ล้างข้อมูลทั้งหมด</button></span>
   </div>
 
   <div class="layout">
@@ -288,6 +305,24 @@ select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-rad
               <div class="diminput"><label>สูง</label><input id="h" type="number" min="1" step=".5" placeholder="เช่น 9"><span class="unit u">ซม.</span></div>
             </div>
             <div class="helper">ระบบจะตรวจว่าขนาดนี้ตรงกับขนาดมาตรฐานที่มีหรือควรสั่งผลิต</div>
+            <details class="advanced" id="fitBox" open>
+              <summary>ลองวางสินค้าในกล่องนี้</summary>
+              <div style="margin-top:12px">
+                <div class="note" style="margin-bottom:8px">เลือกขนาดกล่องด้านบนก่อน แล้วใส่ขนาดสินค้าที่นี่ เพื่อดูว่าวางในกล่องนี้ได้แบบไหน ใส่ได้กี่ชิ้น (แยกจากแท็บ "ขนาดสินค้า" ที่ใช้หากล่องจากสินค้า)</div>
+                <div class="dims">
+                  <div class="diminput"><label>สินค้า กว้าง</label><input id="fw" type="number" min="0" step=".5" placeholder="เช่น 9"><span class="unit u">ซม.</span></div>
+                  <div class="diminput"><label>สินค้า ยาว</label><input id="fl" type="number" min="0" step=".5" placeholder="เช่น 12"><span class="unit u">ซม.</span></div>
+                  <div class="diminput"><label>สินค้า สูง</label><input id="fh" type="number" min="0" step=".5" placeholder="เช่น 4"><span class="unit u">ซม.</span></div>
+                </div>
+                <div class="grid2c" style="margin-top:10px">
+                  <div class="field"><label for="fgap">ช่องว่างระหว่างชิ้น (<span class="u">ซม.</span>)</label><input id="fgap" type="number" min="0" step=".5" value="0"></div>
+                  <div class="field"><label for="fmar">เผื่อรอบด้านและด้านบน (<span class="u">ซม.</span>)</label><input id="fmar" type="number" min="0" step=".5" value="0"></div>
+                </div>
+                <div class="field" style="margin-top:10px"><label for="fnum">จำนวนชิ้นที่ต้องการวาง (เว้นว่าง = ใส่ให้ได้มากที่สุด)</label><input id="fnum" type="number" min="1" step="1" placeholder="เช่น 6"></div>
+                <label class="checkrow"><input id="fup" type="checkbox"> <span>ต้องตั้งตามแนวสูง (ห้ามนอน/คว่ำ)</span></label>
+                <button id="clrFit" class="secondary" type="button" style="margin-top:8px">ล้างสินค้าที่ลองวาง</button>
+              </div>
+            </details>
             <div id="err"></div>
             <div id="typeNote" style="display:none"></div>
           </div>
@@ -303,8 +338,11 @@ select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-rad
         <h2>ขนาดที่แนะนำ</h2>
         <div class="note">ผลลัพธ์จะอัปเดตตามข้อมูลที่กรอก</div>
       </div>
+      <div id="undoBar" class="undobar" style="display:none"><span id="undoMsg"></span><button id="undoGo" type="button">↶ ย้อนกลับไปข้อมูลเดิม</button><button id="undoX" type="button" aria-label="ปิดข้อความ">✕</button></div>
       <div class="result-main">
         <div id="pres"><div class="note">กรอกขนาดสินค้าก่อน เพื่อดูกล่องที่เหมาะ</div></div>
+
+        <div id="fitRes" style="margin-top:12px"></div>
 
         <div id="match" style="margin-top:12px">
           <div class="note">เมื่อกรอกข้อมูล ระบบจะแสดงขนาดมาตรฐานที่ตรงหรือใกล้เคียงตรงนี้</div>
@@ -321,14 +359,12 @@ select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-rad
           <div class="viewer-controls">
             <button class="main" id="tog" type="button">เปิดกล่อง</button>
             <button id="rst" type="button">รีเซ็ตมุมมอง</button>
-            <button id="bot" type="button">ดูก้นกล่อง</button>
-            <button id="dimBtn" type="button" aria-pressed="true">เส้นวัดระยะ</button>
-            <button id="spin" type="button">หมุนอัตโนมัติ</button>
+                        <span class="dimgrp"><b>เส้นวัดระยะ</b><button id="dimB" type="button" aria-pressed="true">กล่อง</button><button id="dimG" type="button" aria-pressed="true">สีเขียว</button><button id="dimP" type="button" aria-pressed="true">สินค้า (ฟ้า)</button></span>
           </div>
           <div class="ang"><label for="deg">มุมเปิดฝา <b id="degv">0°</b></label><input id="deg" type="range" min="0" max="180" step="5" value="0"><div class="pre"><button type="button" data-d="0">ปิด</button><button type="button" data-d="45">45°</button><button type="button" data-d="90">90°</button><button type="button" data-d="135">135°</button><button type="button" data-d="180">180°</button></div></div>
         </details>
 
-        <details class="comparison">
+        <details class="comparison" id="cmpbox">
           <summary>เปรียบเทียบหลายขนาด</summary>
           <div class="ctl" style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px">
             <input id="cname" placeholder="ชื่อกล่อง (ไม่บังคับ)" style="flex:1;min-width:140px">
@@ -351,10 +387,9 @@ select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-rad
     <div class="tw">
       <table><thead><tr><th>ชื่อ / เบอร์</th><th>กว้าง</th><th>ยาว</th><th>สูง</th><th>มีดไดคัท</th><th>รหัสมีด</th><th>กระดาษ</th><th></th></tr></thead><tbody id="std"></tbody></table>
     </div>
-    <div id="stdCwrap" class="hidden" style="margin-top:20px">
-      <h2>ขนาด Customized</h2><div class="note">งานสั่งทำเฉพาะที่เคยทำ · กดแถวเพื่อใช้ขนาดนั้น · ตอนค้นหาขนาดหรือใส่สินค้า รายการกลุ่มนี้ถูกนำมาเทียบรวมกับขนาดมาตรฐานด้วย</div>
+    <details id="stdCwrap" class="hidden" style="margin-top:16px"><summary>ขนาด Customized (<span id="stdCn">0</span> ขนาด)</summary><div class="note" style="margin-top:8px">งานสั่งทำเฉพาะที่เคยทำ · กดแถวเพื่อใช้ขนาดนั้น · ตอนค้นหาขนาดหรือใส่สินค้า รายการกลุ่มนี้ถูกนำมาเทียบรวมกับขนาดมาตรฐานด้วย</div>
       <div class="tw"><table><thead><tr><th>ชื่อ / เบอร์</th><th>กว้าง</th><th>ยาว</th><th>สูง</th><th>มีดไดคัท</th><th>รหัสมีด</th><th>กระดาษ</th><th></th></tr></thead><tbody id="stdC"></tbody></table></div>
-    </div>
+    </details>
     <div id="exwrap"></div>
   </section>
 </main>
@@ -493,7 +528,7 @@ function scene(W,L,H,type,pb){if(type=="shoe")type="tele";
  }else{
   if(type=="tuck"||type=="lock")o+=flap(w,w*.6,"translate3d("+l/2+"px,"+(-h/2+1)+"px,0) rotateY(90deg) rotateX(var(--ear))",T)+flap(w,w*.6,"translate3d("+(-l/2)+"px,"+(-h/2+1)+"px,0) rotateY(-90deg) rotateX(var(--ear))",T);
   var lipH={mailer:.9*h,ear:.9*h,tuck:2*k,lock:2*k,pizza:h,doc:.9*h}[type],in_="";
-  if(lipH){var lw="";if(type=="ear"||type=="mailer"){var ew=Math.min(.9*h,w/2),lr1=type=="ear"?Math.min(lipH,ew).toFixed(1):Math.min(lipH,18),lr2=type=="ear"?(Math.min(lipH,ew)*.5).toFixed(1):0;lw='<div class="f" style="--c:'+T+';left:100%;top:0;margin:0;width:'+ew+'px;height:100%;border-radius:0 '+lr1+'px '+lr2+'px 0;border-left:0;transform-origin:0 50%;transform:rotateY(var(--ear))"></div><div class="f" style="--c:'+T+';left:auto;right:100%;top:0;margin:0;width:'+ew+'px;height:100%;border-radius:'+lr1+'px 0 0 '+lr2+'px;border-right:0;transform-origin:100% 50%;transform:rotateY(calc(var(--ear) * -1))"></div>'}
+  if(lipH){var lw="";if(type=="ear"){var ew=Math.min(.9*h,w/2),lr1=type=="ear"?Math.min(lipH,ew).toFixed(1):Math.min(lipH,18),lr2=type=="ear"?(Math.min(lipH,ew)*.5).toFixed(1):0;lw='<div class="f" style="--c:'+T+';left:100%;top:0;margin:0;width:'+ew+'px;height:100%;border-radius:0 '+lr1+'px '+lr2+'px 0;border-left:0;transform-origin:0 50%;transform:rotateY(var(--ear))"></div><div class="f" style="--c:'+T+';left:auto;right:100%;top:0;margin:0;width:'+ew+'px;height:100%;border-radius:'+lr1+'px 0 0 '+lr2+'px;border-right:0;transform-origin:100% 50%;transform:rotateY(calc(var(--ear) * -1))"></div>'}
   in_+='<div class="f" style="--c:'+T+';left:0;top:auto;bottom:100%;margin:0;width:100%;height:'+lipH+'px;border-radius:'+(type=='ear'?'0':'8px 8px 0 0')+';transform-origin:50% 100%;transform:translateY(2px) rotateX(var(--lip))">'+lw+'</div>'}
   if(type=="mailer"||type=="ear"||type=="pizza"){var eh=Math.min((type=="ear"?1.05:.9)*h,w/2),r=type=="pizza"?"8px":"45%",rt=type=="ear"?(eh*.95).toFixed(1)+"px":r,rb=type=="ear"?(eh*.6).toFixed(1)+"px":r;
    in_+='<div class="f" style="--c:'+S+';left:100%;top:0;margin:0;width:'+eh+'px;height:100%;transform-origin:0 50%;transform:translateX('+(-2)+'px) rotateY(var(--ear));border-radius:0 '+rt+' '+rb+' 0'+'"></div>'
@@ -507,56 +542,63 @@ function scene(W,L,H,type,pb){if(type=="shoe")type="tele";
   slab=function(w0,w1,l0,l1,h0,h1,col,bd){var a=(w1-w0)*k*.997,b=(l1-l0)*k*.997,c=(h1-h0)*k*.997;if(a<.05||b<.05||c<.05)return"";return cub(a,b,c,(l0+l1)/2*k,(H/2-(h0+h1)/2)*k,(w0+w1)/2*k,col,bd)},
   shell=function(w0,w1,l0,l1,hh,mF,mB,mL,mR,mT,col,bd){return slab(w1,w1+mF,l0,l1,0,hh,col,bd)+slab(w0-mB,w0,l0,l1,0,hh,col,bd)+slab(w0-mB,w1+mF,l0-mL,l0,0,hh,col,bd)+slab(w0-mB,w1+mF,l1,l1+mR,0,hh,col,bd)+slab(w0-mB,w1+mF,l0-mL,l1+mR,hh,hh+mT,col,bd)};
   var pa=pb.a,pn=pb.n,pg=pb.g,gd=pb.d,Wo=gd[0]+2*pb.cw+pb.kF+pb.kB,Lo=gd[1]+2*pb.cl+pb.kL+pb.kR,
-   gw0=-Wo/2+pb.kB,gw1=Wo/2-pb.kF,gl0=-Lo/2+pb.kL,gl1=Lo/2-pb.kR,cw0=gw0+pb.cw,cl0=gl0+pb.cl;SC.g={gw0:gw0,gw1:gw1,gl0:gl0,gl1:gl1,gh:gd[2]+pb.tp};
+   gw0=-Wo/2+pb.kB,gw1=Wo/2-pb.kF,gl0=-Lo/2+pb.kL,gl1=Lo/2-pb.kR,cw0=gw0+pb.cw,cl0=gl0+pb.cl;SC.g=(pb.cw>0||pb.cl>0||pb.tp>0)?{gw0:gw0,gw1:gw1,gl0:gl0,gl1:gl1,gh:gd[2]+pb.tp}:null;SC.bl={w0:cw0,w1:cw0+gd[0],l0:cl0,l1:cl0+gd[1],h:gd[2]};
   o+=shell(gw0,gw1,gl0,gl1,gd[2]+pb.tp,pb.kF,pb.kB,pb.kL,pb.kR,pb.kh,RD,"#a31212");
   o+=shell(cw0,cw0+gd[0],cl0,cl0+gd[1],gd[2],pb.cw,pb.cw,pb.cl,pb.cl,pb.tp,GR,"#0f6b33");
   if(pn[0]*pn[1]*pn[2]>120){o+=slab(cw0,cw0+gd[0],cl0,cl0+gd[1],0,gd[2],BL,"#0b3f9e")}
-  else{for(var ii=0;ii<pn[0];ii++)for(var jj=0;jj<pn[1];jj++)for(var mm=0;mm<pn[2];mm++){
+  else{var dc=0;for(var ii=0;ii<pn[0];ii++)for(var jj=0;jj<pn[1];jj++)for(var mm=0;mm<pn[2];mm++){if(pb.lim!=null&&dc>=pb.lim)continue;dc++;
     var w0=cw0+ii*(pa[0]+pg),l0=cl0+jj*(pa[1]+pg),h0=mm*(pa[2]+pg);
     o+=slab(w0,w0+pa[0],l0,l0+pa[1],h0,h0+pa[2],BL,"#0b3f9e")}}}
  $("box").innerHTML=o;
 }
-var SC=null,dimOn=true;
-function dims3d(){var sv=$("dimsvg");if(!sv)return;if(!SC||!dimOn){sv.innerHTML="";return}
+var SC=null,dimOn={b:true,g:true,p:true};
+function dims3d(){var sv=$("dimsvg");if(!sv)return;var hasG=!!(SC&&SC.g),hasP=!!(SC&&SC.bl);
+ [["dimG",hasG],["dimP",hasP]].forEach(function(x){var e=$(x[0]);if(e)e.style.display=x[1]?"":"none"});
+ if(!SC||!(dimOn.b||(hasG&&dimOn.g)||(hasP&&dimOn.p))){sv.innerHTML="";return}
  var pe=document.querySelector(".persp"),st=$("stage").getBoundingClientRect(),pr=pe.getBoundingClientRect(),bo=$("box").getBoundingClientRect(),P=parseFloat(getComputedStyle(pe).perspective)||900,
   ox=bo.left-st.left,oy=bo.top-st.top,px=pr.left-st.left+pr.width/2,py=pr.top-st.top+pr.height/2,
   ca=Math.cos(ry*Math.PI/180),sa=Math.sin(ry*Math.PI/180),cb=Math.cos(rx*Math.PI/180),sb=Math.sin(rx*Math.PI/180);
  function T(w,l,h){var x=l*SC.k,y=(SC.H/2-h)*SC.k,z=w*SC.k,x1=x*ca+z*sa,z1=-x*sa+z*ca,y2=y*cb-z1*sb,z2=y*sb+z1*cb;return {x:x1*zm,y:y2*zm,z:z2}}
  function S(q){var f=P/(P-q.z);return [px+(ox+q.x-px)*f,py+(oy+q.y-py)*f]}
  var W=SC.W,L=SC.L,H=SC.H,off=Math.max(W,L,H)*.1,
-  sz=T(W/2,0,0).z>T(-W/2,0,0).z?1:-1,sx=T(0,L/2,0).z>T(0,-L/2,0).z?1:-1,cw=1,cl=1,mx=1e9;
+  sz=T(W/2,0,0).z>T(-W/2,0,0).z?1:-1,sx=T(0,L/2,0).z>T(0,-L/2,0).z?1:-1,cw=1,cl=1,mx=1e9,out="",lx=0,ly=0,placed=[],CC=S(T(0,0,H/2));
  [[1,1],[1,-1],[-1,1],[-1,-1]].forEach(function(c){var q=T(c[0]*W/2,c[1]*L/2,0);if(q.x<mx){mx=q.x;cw=c[0];cl=c[1]}});
- var out="",lx=0,ly=0;
- var CC=S(T(0,0,H/2));
  function dim(e1,e2,d1,d2,col,txt,lo){lo=lo||0;var a=S(T.apply(0,e1)),b=S(T.apply(0,e2)),c=S(T.apply(0,d1)),d=S(T.apply(0,d2)),dx=d[0]-c[0],dy=d[1]-c[1],n=Math.sqrt(dx*dx+dy*dy)||1,tx=-dy/n*5,ty=dx/n*5,mxp=(c[0]+d[0])/2,myp=(c[1]+d[1])/2;
-  out+='<g stroke="'+col+'" fill="none"><path d="M'+a[0].toFixed(1)+','+a[1].toFixed(1)+'L'+c[0].toFixed(1)+','+c[1].toFixed(1)+'M'+b[0].toFixed(1)+','+b[1].toFixed(1)+'L'+d[0].toFixed(1)+','+d[1].toFixed(1)+'" stroke-width=".8" stroke-dasharray="2 2" opacity=".7"/><path d="M'+c[0].toFixed(1)+','+c[1].toFixed(1)+'L'+d[0].toFixed(1)+','+d[1].toFixed(1)+'M'+(c[0]-tx).toFixed(1)+','+(c[1]-ty).toFixed(1)+'L'+(c[0]+tx).toFixed(1)+','+(c[1]+ty).toFixed(1)+'M'+(d[0]-tx).toFixed(1)+','+(d[1]-ty).toFixed(1)+'L'+(d[0]+tx).toFixed(1)+','+(d[1]+ty).toFixed(1)+'" stroke-width="1.7"/></g>'
-  +(function(){var vx=mxp-CC[0],vy=myp-CC[1],vn=Math.sqrt(vx*vx+vy*vy)||1;lx=mxp+vx/vn*lo;ly=myp+vy/vn*lo;return lo?'<path d="M'+mxp.toFixed(1)+','+myp.toFixed(1)+'L'+lx.toFixed(1)+','+ly.toFixed(1)+'" stroke="'+col+'" stroke-width=".9" opacity=".7" fill="none"/>':''})()+'<text x="'+lx.toFixed(1)+'" y="'+(ly-5).toFixed(1)+'" text-anchor="middle" font-size="12" font-weight="700" fill="'+col+'" stroke="#fff" stroke-width="3.2" paint-order="stroke" style="font-family:inherit">'+txt+'</text>'}
- var U=" "+UL[u],C1="#1f2933";
- dim([sz*W/2,-L/2,0],[sz*W/2,L/2,0],[sz*(W/2+off),-L/2,0],[sz*(W/2+off),L/2,0],C1,"ยาว "+fu(L)+U);
- dim([-W/2,sx*L/2,0],[W/2,sx*L/2,0],[-W/2,sx*(L/2+off),0],[W/2,sx*(L/2+off),0],C1,"กว้าง "+fu(W)+U);
- dim([cw*W/2,cl*L/2,0],[cw*W/2,cl*L/2,H],[cw*(W/2+off),cl*(L/2+off),0],[cw*(W/2+off),cl*(L/2+off),H],C1,"สูง "+fu(H)+U);
- var g=SC.g;if(g){var C2="#0f6b33",o2=off*.5,we=sz>0?g.gw0:g.gw1,le=sx>0?g.gl0:g.gl1,cwe=cw>0?g.gw0:g.gw1,cle=cl>0?g.gl0:g.gl1;
-  dim([we,g.gl0,0],[we,g.gl1,0],[we-sz*o2,g.gl0,0],[we-sz*o2,g.gl1,0],C2,"ยาว "+fu(g.gl1-g.gl0)+U,34);
-  dim([g.gw0,le,0],[g.gw1,le,0],[g.gw0,le-sx*o2,0],[g.gw1,le-sx*o2,0],C2,"กว้าง "+fu(g.gw1-g.gw0)+U,34);
-  dim([cwe,cle,0],[cwe,cle,g.gh],[cwe-cw*o2,cle-cl*o2,0],[cwe-cw*o2,cle-cl*o2,g.gh],C2,"สูง "+fu(g.gh)+U,34)}
+  var vx=mxp-CC[0],vy=myp-CC[1],vn=Math.sqrt(vx*vx+vy*vy)||1;lx=mxp+vx/vn*lo;ly=myp+vy/vn*lo;var tr0=0;while(tr0<8&&placed.some(function(q){return Math.abs(q[0]-lx)<66&&Math.abs(q[1]-ly)<14})){ly+=14;tr0++}placed.push([lx,ly]);
+  out+='<g stroke="'+col+'" fill="none"><path d="M'+a[0].toFixed(1)+','+a[1].toFixed(1)+'L'+c[0].toFixed(1)+','+c[1].toFixed(1)+'M'+b[0].toFixed(1)+','+b[1].toFixed(1)+'L'+d[0].toFixed(1)+','+d[1].toFixed(1)+'" stroke-width=".8" stroke-dasharray="2 2" opacity=".7"/><path d="M'+c[0].toFixed(1)+','+c[1].toFixed(1)+'L'+d[0].toFixed(1)+','+d[1].toFixed(1)+'M'+(c[0]-tx).toFixed(1)+','+(c[1]-ty).toFixed(1)+'L'+(c[0]+tx).toFixed(1)+','+(c[1]+ty).toFixed(1)+'M'+(d[0]-tx).toFixed(1)+','+(d[1]-ty).toFixed(1)+'L'+(d[0]+tx).toFixed(1)+','+(d[1]+ty).toFixed(1)+'" stroke-width="1.7"/>'+(lo?'<path d="M'+mxp.toFixed(1)+','+myp.toFixed(1)+'L'+lx.toFixed(1)+','+ly.toFixed(1)+'" stroke-width=".9" opacity=".7"/>':'')+'</g>'
+  +'<text x="'+lx.toFixed(1)+'" y="'+(ly-5).toFixed(1)+'" text-anchor="middle" font-size="12" font-weight="700" fill="'+col+'" stroke="#fff" stroke-width="3.2" paint-order="stroke" style="font-family:inherit">'+txt+'</text>'}
+ var U=" "+UL[u];
+ if(dimOn.b){var C1="#1f2933";
+  dim([sz*W/2,-L/2,0],[sz*W/2,L/2,0],[sz*(W/2+off),-L/2,0],[sz*(W/2+off),L/2,0],C1,"ยาว "+fu(L)+U);
+  dim([-W/2,sx*L/2,0],[W/2,sx*L/2,0],[-W/2,sx*(L/2+off),0],[W/2,sx*(L/2+off),0],C1,"กว้าง "+fu(W)+U);
+  dim([cw*W/2,cl*L/2,0],[cw*W/2,cl*L/2,H],[cw*(W/2+off),cl*(L/2+off),0],[cw*(W/2+off),cl*(L/2+off),H],C1,"สูง "+fu(H)+U)}
+ if(hasG&&dimOn.g){var g=SC.g,C2="#0f6b33",o2=off*.5,we=sz>0?g.gw0:g.gw1,le=sx>0?g.gl0:g.gl1,cwe=cw>0?g.gw0:g.gw1,cle=cl>0?g.gl0:g.gl1;
+  dim([we,g.gl0,0],[we,g.gl1,0],[we-sz*o2,g.gl0,0],[we-sz*o2,g.gl1,0],C2,"ยาว "+fu(g.gl1-g.gl0)+U,44);
+  dim([g.gw0,le,0],[g.gw1,le,0],[g.gw0,le-sx*o2,0],[g.gw1,le-sx*o2,0],C2,"กว้าง "+fu(g.gw1-g.gw0)+U,44);
+  dim([cwe,cle,0],[cwe,cle,g.gh],[cwe-cw*o2,cle-cl*o2,0],[cwe-cw*o2,cle-cl*o2,g.gh],C2,"สูง "+fu(g.gh)+U,44)}
+ if(hasP&&dimOn.p){var b=SC.bl,C3="#0b3f9e",o3=off*.35,we3=sz>0?b.w1:b.w0,le3=sx>0?b.l1:b.l0,rw=1,rl=1,mxr=-1e9;
+  [[1,1],[1,-1],[-1,1],[-1,-1]].forEach(function(c){var q=T(c[0]>0?b.w1:b.w0,c[1]>0?b.l1:b.l0,0);if(q.x>mxr){mxr=q.x;rw=c[0];rl=c[1]}});
+  var cw3=rw>0?b.w1:b.w0,cl3=rl>0?b.l1:b.l0;
+  dim([we3,b.l0,b.h],[we3,b.l1,b.h],[we3+sz*o3,b.l0,b.h+o3],[we3+sz*o3,b.l1,b.h+o3],C3,"ยาว "+fu(b.l1-b.l0)+U,70);
+  dim([b.w0,le3,b.h],[b.w1,le3,b.h],[b.w0,le3+sx*o3,b.h+o3],[b.w1,le3+sx*o3,b.h+o3],C3,"กว้าง "+fu(b.w1-b.w0)+U,70);
+  dim([cw3,cl3,0],[cw3,cl3,b.h],[cw3+rw*o3,cl3+rl*o3,0],[cw3+rw*o3,cl3+rl*o3,b.h],C3,"สูง "+fu(b.h)+U,70)}
  sv.innerHTML=out}
 function view(){var d=deg,bx=$("box"),r=Math.min(1,d/45);
  bx.style.transform="scale("+zm+") rotateX("+rx+"deg) rotateY("+ry+"deg)";
- bx.style.setProperty("--a",(90-d)+"deg");var tq=$("type").value,rel=(tq=="ear"||tq=="mailer");bx.style.setProperty("--lip",(rel?90-62*r:90)+"deg");bx.style.setProperty("--ear",(rel?90-70*r:(tq=="lock"?100-70*r:90))+"deg");bx.style.setProperty("--lift",(-d/180*130)+"px");
+ bx.style.setProperty("--a",(90-d)+"deg");var tq=$("type").value,rel=(tq=="ear"||tq=="mailer");bx.style.setProperty("--lip",(rel?90-62*r:90)+"deg");bx.style.setProperty("--ear",(rel?90-70*r:((tq=="lock"||tq=="tuck")?100-145*r:90))+"deg");bx.style.setProperty("--lift",(-d/180*130)+"px");
  $("deg").value=d;$("degv").textContent=d+"°";$("tog").textContent=d>0?"ปิดกล่อง":"เปิดกล่อง";var zv=$("zval");if(zv)zv.textContent=Math.round(zm*100)+"%";dims3d()}
 (function(){
- var st=$("stage"),d=null;
- st.addEventListener("pointerdown",function(e){d=[e.clientX,e.clientY];try{st.setPointerCapture(e.pointerId)}catch(x){}});
- st.addEventListener("pointermove",function(e){if(!d||window.__pinch)return;ry+=(e.clientX-d[0])*0.6;rx=Math.max(-85,Math.min(85,rx-(e.clientY-d[1])*0.6));d=[e.clientX,e.clientY];view()});
- var up=function(){d=null};st.addEventListener("pointerup",up);st.addEventListener("pointercancel",up);
+ var st=$("stage"),d=null,pid=null,raf=0,go=function(){raf=0;view()};
+ st.addEventListener("pointerdown",function(e){if(e.target.closest&&e.target.closest("#zoomc"))return;if(e.pointerType==="mouse"&&e.button!==0)return;d=[e.clientX,e.clientY];pid=e.pointerId;try{st.setPointerCapture(e.pointerId)}catch(x){}});
+ st.addEventListener("pointermove",function(e){if(!d||window.__pinch||e.pointerId!==pid)return;ry+=(e.clientX-d[0])*0.6;rx=Math.max(-89,Math.min(89,rx-(e.clientY-d[1])*0.6));d=[e.clientX,e.clientY];if(!raf)raf=requestAnimationFrame(go)});
+ var up=function(e){if(e&&pid!==null&&e.pointerId!==pid)return;d=null;pid=null};
+ ["pointerup","pointercancel","lostpointercapture"].forEach(function(n){st.addEventListener(n,up)});
+ window.addEventListener("blur",function(){d=null;pid=null});
  $("tog").addEventListener("click",function(){deg=deg>0?0:135;view()});
  $("deg").addEventListener("input",function(){deg=+this.value;view()});
  document.querySelectorAll(".pre button").forEach(function(b){b.addEventListener("click",function(){deg=+b.dataset.d;view()})});
- $("dimBtn").addEventListener("click",function(){dimOn=!dimOn;this.setAttribute("aria-pressed",dimOn);render()});
- $("bot").addEventListener("click",function(){rx=62;ry=-28;view()});
+ [["b","dimB"],["g","dimG"],["p","dimP"]].forEach(function(x){$(x[1]).addEventListener("click",function(){dimOn[x[0]]=!dimOn[x[0]];this.setAttribute("aria-pressed",dimOn[x[0]]);render()})});
  $("rst").addEventListener("click",function(){rx=-32;ry=-28;zm=1;view()});
- $("spin").addEventListener("click",function(){spin=!spin;this.setAttribute("aria-pressed",spin)});
- (function t(){if(spin&&!d){ry+=0.5;view()}requestAnimationFrame(t)})();
 })();
 (function(){var st=$("stage"),ps={},pd0=0;
  function zoom(f){zm=Math.max(.4,Math.min(3.5,zm*f));view()}
@@ -602,10 +644,14 @@ function drawCmp(){
  }
  svg.innerHTML=o;
 }
-var ndReq=false,ndOn=false,ndKey="",selKey=null,LBL="ต่างจากที่กรอก";
+var vwReq=null,vw=null,ndReq=false,ndOn=false,ndKey="",selKey=null,LBL="ต่างจากที่กรอก";
 function dmx(q){return fu(q[1])+" × "+fu(q[2])+" × "+fu(q[3])+" "+UL[u]}
 function sg(v){var r=Math.round(v*FU[u]*100)/100;return r==0?"0":(r>0?"+":"−")+Math.abs(r).toLocaleString("th-TH")}
-function pcx(q,i,tag,col,top,xt){return '<div class="pc'+(top?" top":"")+'"><div><span class="tag" style="background:'+col+'">'+tag+'</span> <span class="nm">'+nm(q)+'</span>'+(q[7]?' <span class="bd un">Customized</span>':'')+' · '+dmx(q)+'</div>'+(xt||"")+'<div style="margin:6px 0">'+dieB(q)+papB(q)+'</div>'+codeTxt(q)+fee(q)+'<button type="button" data-i="'+i+'">ใช้ขนาดนี้</button></div>'}
+function cardClick(e){var vb=e.target.closest("button[data-v3d]"),cb=e.target.closest("button[data-cmp]");
+ if(vb){vwReq=+vb.dataset.v3d;if(deg<135)deg=135;rx=-50;render();var sd=$("stage");if(sd)sd.scrollIntoView({behavior:"smooth",block:"center"});return true}
+ if(cb){var q=STD[+cb.dataset.cmp];if(q){CMP.push({n:nm(q),w:q[1],l:q[2],h:q[3]});sv();drawCmp();var cx=$("cmpbox");if(cx)cx.open=true;cb.textContent="✓ เพิ่มแล้ว"}return true}
+ return false}
+function pcx(q,i,tag,col,top,xt){return '<div class="pc'+(top?" top":"")+'"><div><span class="tag" style="background:'+col+'">'+tag+'</span> <span class="nm">'+nm(q)+'</span>'+(q[7]?' <span class="bd un">Customized</span>':'')+' · '+dmx(q)+'</div>'+(xt||"")+'<div style="margin:6px 0">'+dieB(q)+papB(q)+'</div>'+codeTxt(q)+fee(q)+'<div class="btns"><button type="button" data-i="'+i+'">ใช้ขนาดนี้</button><button type="button" class="alt" data-v3d="'+i+'">ดูภาพ 3 มิติ</button><button type="button" class="alt" data-cmp="'+i+'">+ เปรียบเทียบ</button></div></div>'}
 function dtx(d,sw){return '<div style="font-size:.95rem;margin-top:4px">'+LBL+': กว้าง '+sg(d[0])+' · ยาว '+sg(d[1])+' · สูง '+sg(d[2])+' '+UL[u]+(sw?" (สลับกว้าง↔ยาว)":"")+'</div>'+(d.some(function(v){return v<-.06})?'<div class="warn">⚠ บางด้านเล็กกว่าที่ต้องการ ของอาจใส่ไม่พอ</div>':"")}
 function shLb(q){var r=calc(q[1],q[2],q[3],$("type").value),a=areaOf(q);return fu(r.len)+" × "+fu(r.wid)+" "+UL[u]+(r.lid?" + ฝา "+fu(r.lid[0])+" × "+fu(r.lid[1]):"")+" · ใช้กระดาษ "+(Math.round(a/10)/1000).toLocaleString("th-TH")+" ตร.ม./ใบ"}
 function areaOf(q){var r=calc(q[1],q[2],q[3],$("type").value);return r.len*r.wid+(r.lid?r.lid[0]*r.lid[1]:0)}
@@ -633,20 +679,58 @@ function sugHtml(o,title,lbl,W,L,H,ns){LBL=lbl;var hh=title,best=o.best,ni=o.ni,
 
 function lay3(r,o){var p=o.p;return {a:[r.base[p[0]],r.base[p[1]],r.base[p[2]]],n:[r.n[p[0]],r.n[p[1]],r.n[p[2]]],g:r.g,cw:r.cw,cl:r.cl,tp:r.tp,kF:r.kF||0,kB:r.kB||0,kL:r.kL||0,kR:r.kR||0,kh:r.kh||0,d:o.d}}
 function pcLb(r,o){var p=o.p;return [r.base[p[0]],r.base[p[1]],r.base[p[2]]].map(fu).join(" × ")+" "+UL[u]}
+var FITSEL=null;
+function fitCalc(){
+ var el=$("fitRes");window.__fitPb=null;window.__fitLb="";if(!el)return;
+ var box=$("boxMode").classList.contains("active"),W=+$("w").value/FU[u],L=+$("l").value/FU[u],H=+$("h").value/FU[u],a=["fw","fl","fh"].map(function(i){return +$(i).value/FU[u]});
+ if(!box||!(W>0&&L>0&&H>0)||!a.every(function(v){return v>0})){el.innerHTML="";return}
+ var g=(+$("fgap").value||0)/FU[u],m=(+$("fmar").value||0)/FU[u],up=$("fup").checked,N=Math.floor(+$("fnum").value)||0,e=.001;
+ var P=up?[[0,1,2],[1,0,2]]:[[0,1,2],[1,0,2],[0,2,1],[2,0,1],[1,2,0],[2,1,0]],seen={},os=[],A=[W-2*m,L-2*m,H-m],vol=a[0]*a[1]*a[2];
+ P.forEach(function(p){var d=[a[p[0]],a[p[1]],a[p[2]]],k=d.map(function(v){return v.toFixed(2)}).join("|");if(seen[k])return;seen[k]=1;
+  var n=d.map(function(x,i){return Math.floor((A[i]+g+e)/(x+g))}),c=n.every(function(v){return v>=1})?n[0]*n[1]*n[2]:0;
+  os.push({p:p,d:d,key:k,n:n,cap:c,fill:c*vol/(W*L*H),need:[d[0]+2*m,d[1]+2*m,d[2]+m]})});
+ var best=os.slice().sort(function(x,y){return y.cap-x.cap||((y.p[2]==2)-(x.p[2]==2))||y.fill-x.fill})[0],sel=os.filter(function(o){return o.key==FITSEL&&o.cap>0})[0]||best;
+ var dm=function(v){return fu(v[0])+" × "+fu(v[1])+" × "+fu(v[2])+" "+UL[u]},h='<div class="fitbox"><div style="font-weight:700;margin-bottom:6px">วางสินค้า '+dm(a)+' ในกล่อง '+dm([W,L,H])+'</div>';
+ var q=0;
+ if(best.cap<1){
+  var mn=os.slice().sort(function(x,y){return x.need[0]*x.need[1]*x.need[2]-y.need[0]*y.need[1]*y.need[2]})[0];
+  h+='<div class="ask" style="margin-bottom:8px">ใส่ไม่ได้ — สินค้าใหญ่กว่ากล่องนี้ในทุกการวาง · กล่องที่เล็กที่สุดที่ใส่สินค้า 1 ชิ้นได้ (รวมเผื่อ) ต้องไม่ต่ำกว่า <b>'+dm(mn.need)+'</b> (ไปแท็บ "ขนาดสินค้า" เพื่อหากล่องที่เหมาะ)</div>';
+ }else{
+  q=N>0?Math.min(N,sel.cap):sel.cap;
+  var okN=N>0&&sel.cap>=N;
+  h+='<div class="'+(N>0&&!okN?'ask':'fee')+'" style="margin-bottom:8px;font-size:.95rem">'+(N>0?(okN?'✓ ใส่ครบ <b>'+N+' ชิ้น</b> ได้ (ใส่ได้สูงสุด '+sel.cap+' ชิ้น)':'ใส่ได้สูงสุด <b>'+sel.cap+' ชิ้น</b> ไม่ครบ '+N+' ชิ้น (ขาดอีก '+(N-sel.cap)+' ชิ้น)'):'ใส่ได้สูงสุด <b>'+sel.cap+' ชิ้น</b>')+' · วางแบบ '+oriLb(sel)+' · เรียง กว้าง '+sel.n[0]+' × ยาว '+sel.n[1]+' × ซ้อน '+sel.n[2]+' ชั้น</div>';
+ }
+ h+='<div class="otabw"><table class="otab"><thead><tr><th>การวางสินค้า</th><th>ขนาดสินค้าที่วาง</th><th>เรียงได้ (กว้าง × ยาว × ชั้น)</th><th>ใส่ได้ (ชิ้น)</th><th>ใช้พื้นที่กล่อง</th></tr></thead><tbody>';
+ os.forEach(function(o){h+='<tr data-fk="'+o.key+'" class="frow'+(o===sel&&best.cap>0?' on':'')+'"'+(o.cap>0?' title="กดเพื่อดูภาพ 3 มิติ"':'')+'><td>'+(o===sel&&best.cap>0?'✓ ':'')+oriLb(o)+'</td><td>'+fu(o.d[0])+' × '+fu(o.d[1])+' × '+fu(o.d[2])+'</td><td>'+(o.cap>0?o.n[0]+' × '+o.n[1]+' × '+o.n[2]:'—')+'</td><td><b>'+o.cap+'</b></td><td>'+(o.cap>0?Math.round(o.fill*100)+'%':'—')+'</td></tr>'});
+ h+='</tbody></table></div><div class="note" style="margin-top:6px">คำนวณจากขนาดภายในของกล่องที่กรอกด้านบน · เผื่อรอบด้านใช้กับ ซ้าย/ขวา/หน้า/หลัง และด้านบน</div></div>';
+ el.innerHTML=h;
+ if(best.cap>0){var n=sel.n,u2=n,cp=n[1]*n[2];
+  if(q<n[0]*n[1]*n[2]){var fw=Math.floor(q/cp),r=q-fw*cp,nW=fw+(r>0?1:0),nL=fw>0?n[1]:Math.ceil(r/n[2]),nH=(fw>0||nL>1)?n[2]:r;u2=[nW,nL,nH]}
+  var d=sel.d;window.__fitPb={a:d,n:u2,g:g,cw:m,cl:m,tp:m,kF:0,kB:0,kL:0,kR:0,kh:0,d:[u2[0]*d[0]+(u2[0]-1)*g,u2[1]*d[1]+(u2[1]-1)*g,u2[2]*d[2]+(u2[2]-1)*g],lim:q};
+  window.__fitLb=" · สินค้า "+q+" ชิ้น วางแบบ "+oriLb(sel)+" (ชิ้นละ "+dm(d)+")"}
+}
 function draw3d(req,po){var prod=$("productMode").classList.contains("active"),d=null,lb="",tp=$("type").value,cand=null,pb=null;
  if(prod){if(req&&po){cand=csz(po.ori);pb=lay3(req,po.ori)}}
  else{var w=+$("w").value/FU[u],l=+$("l").value/FU[u],h=+$("h").value/FU[u];if(w>0&&l>0&&h>0)cand=[w,l,h]}
- var ck=cand?cand.join(","):"";if(ndReq){ndKey=ck;ndOn=!!cand;ndReq=false}if(ndOn&&ck!==ndKey)ndOn=false;
+ var ck=cand?cand.join(","):"";if(ndReq){ndKey=ck;ndOn=!!cand;ndReq=false;vw=null}var ck2=ck+"|"+tp;if(vwReq!==null){vw={i:vwReq,key:ck2};vwReq=null;ndOn=false}if(vw&&vw.key!==ck2)vw=null;if(ndOn&&ck!==ndKey)ndOn=false;
  var pl=(prod&&req&&po)?" · สินค้า"+(req.cnt>1?" "+req.cnt+" ชิ้น":"")+" วางแบบ "+oriLb(po.ori)+" (ชิ้นละ "+pcLb(req,po.ori)+")":"";
- if(ndOn){d=cand;lb="แสดงกล่องขนาดที่ต้องออกมีดไดคัทใหม่ · "+fu(d[0])+" × "+fu(d[1])+" × "+fu(d[2])+" "+UL[u]+pl}
+ if(vw&&STD[vw.i]){var qv=STD[vw.i];d=[qv[1],qv[2],qv[3]];lb="แสดงกล่อง "+nm(qv)+" · "+dmx(qv)+pl}
+ else if(ndOn){d=cand;lb="แสดงกล่องขนาดที่ต้องออกมีดไดคัทใหม่ · "+fu(d[0])+" × "+fu(d[1])+" × "+fu(d[2])+" "+UL[u]+pl}
  else if(prod){if(req&&po){if(po.mi>=0){var q=STD[po.mi];d=[q[1],q[2],q[3]];lb="แสดงกล่อง "+nm(q)+" · "+dmx(q)+pl}else{d=cand;lb="แสดงกล่องขนาดที่ควรสั่งผลิต · "+fu(d[0])+" × "+fu(d[1])+" × "+fu(d[2])+" "+UL[u]+pl}}}
  else if(cand){d=cand;lb="แสดงกล่องตามขนาดที่กรอก · "+fu(d[0])+" × "+fu(d[1])+" × "+fu(d[2])+" "+UL[u]}
+ if(!prod&&window.__fitPb&&d&&cand&&d[0]===cand[0]&&d[1]===cand[1]&&d[2]===cand[2]){pb=window.__fitPb;lb+=window.__fitLb}
  if(d){scene(d[0],d[1],d[2],tp,pb);view()}else{$("box").innerHTML="";SC=null;dims3d()}
  $("viewLbl").textContent=d?lb:"กรอกขนาดเพื่อดูภาพกล่อง";
  var lg="";if(pb&&d&&req){lg='<span class="lgi"><i style="background:rgb(30,110,230)"></i>ฟ้า = สินค้า</span>';if(req.cw>0||req.cl>0||req.tp>0)lg+='<span class="lgi"><i style="background:rgb(30,165,80)"></i>เขียว = ระยะเผื่อสินค้า</span>';if(req.kF>0||req.kB>0||req.kL>0||req.kR>0||req.kh>0)lg+='<span class="lgi"><i style="background:rgb(230,40,40)"></i>แดง = ระยะเผื่อปิดกล่อง</span>'}
- if(d&&dimOn)lg+='<span class="lgi"><i style="background:#1f2933"></i>เส้นดำ = ขนาดกล่องรวม (ภายนอก)</span>'+((pb&&req)?'<span class="lgi"><i style="background:#0f6b33"></i>เส้นเขียว = ขนาดในกรอบสีเขียว</span>':"");$("lg3").innerHTML=lg}
+ if(pb&&d&&pb===window.__fitPb){lg='<span class="lgi"><i style="background:rgb(30,110,230)"></i>ฟ้า = สินค้า</span>'+(pb.cw>0?'<span class="lgi"><i style="background:rgb(30,165,80)"></i>เขียว = ระยะเผื่อ</span>':"")}
+ if(d){var dl="";if(dimOn.b)dl+='<span class="lgi"><i style="background:#1f2933"></i>เส้นดำ = ขนาดกล่องรวม (ภายนอก)</span>';if(SC&&SC.g&&dimOn.g)dl+='<span class="lgi"><i style="background:#0f6b33"></i>เส้นเขียว = ขนาดในกรอบสีเขียว</span>';if(SC&&SC.bl&&dimOn.p&&pb)dl+='<span class="lgi"><i style="background:#0b3f9e"></i>เส้นน้ำเงิน = ขนาดสินค้า</span>';lg+=dl}
+ $("lg3").innerHTML=lg}
+function exList(){var tpx=$("type").value;return (tpx=="rsc"||tpx=="mailer"||tpx=="ear"||tpx=="lock"||tpx=="tuck")?EXTRA.filter(function(q){return !STD.some(function(x){return x[1]!=null&&Math.abs(x[1]-q[1])<.06&&Math.abs(x[2]-q[2])<.06&&Math.abs(x[3]-q[3])<.06})}):[]}
+function exoBlock(W,L,H){var EL=exList();EXL=EL;if(!EL.length)return "";var bi=-1,bd=1e9,bw=false;EL.forEach(function(q,i){var d1=Math.abs(q[1]-W)+Math.abs(q[2]-L)+Math.abs(q[3]-H),d2=Math.abs(q[1]-L)+Math.abs(q[2]-W)+Math.abs(q[3]-H),d=Math.min(d1,d2);if(d<bd){bd=d;bi=i;bw=d2<d1}});
+ var qq=EL[bi],d3=[qq[1]-(bw?L:W),qq[2]-(bw?W:L),qq[3]-H],mx=Math.max.apply(0,d3.map(Math.abs));if(mx>1.5)return "";
+ return '<div class="exo"><div class="lb">'+(mx<.06?"ตรงกับ":"ใกล้เคียง")+' ขนาดมาตรฐานทั่วไป (ไปรษณีย์ไทย) ที่ไม่อยู่ในรายการของเรา</div><div style="margin:4px 0 8px"><b>เบอร์ '+qq[0]+'</b> '+dmx(qq)+(mx<.06?"":' · ต่างจากที่กรอก: กว้าง '+sg(d3[0])+' · ยาว '+sg(d3[1])+' · สูง '+sg(d3[2])+' '+UL[u])+'</div><div style="margin:0 0 6px"><span class="tag" style="background:#b26a00">ไม่มีมีดไดคัท</span></div><div class="ask" style="margin-bottom:8px">สอบถามเรื่องการเก็บเงินค่ามีดไดคัทอีกครั้ง</div><button type="button" data-x="'+bi+'">ใช้ขนาดนี้</button></div>'}
 function buildTable(mi,fit,req,ptop){var tpx=$("type").value;
- EXL=(tpx=="rsc"||tpx=="mailer"||tpx=="ear"||tpx=="lock"||tpx=="tuck")?EXTRA.filter(function(q){return !STD.some(function(x){return x[1]!=null&&Math.abs(x[1]-q[1])<.06&&Math.abs(x[2]-q[2])<.06&&Math.abs(x[3]-q[3])<.06})}):[];
+ EXL=exList();
  var k2=tpx+"|"+u;
  if(k2!=exKey){exKey=k2;$("exwrap").innerHTML=EXL.length?'<details style="margin-top:14px"><summary>ขนาดมาตรฐานทั่วไปอื่น ที่ไม่อยู่ในรายการของเรา ('+EXL.length+' ขนาด · ไปรษณีย์ไทย)</summary><table><thead><tr><th>เบอร์</th><th>กว้าง</th><th>ยาว</th><th>สูง</th><th>สถานะ</th></tr></thead><tbody>'+EXL.map(function(q,i){return '<tr class="row" data-x="'+i+'" tabindex="0"><td><b>'+q[0]+'</b></td><td>'+fu(q[1])+'</td><td>'+fu(q[2])+'</td><td>'+fu(q[3])+'</td><td><span class="tag" style="background:#b26a00">ไม่มีมีดไดคัท</span></td></tr>'}).join("")+'</tbody></table><div class="ask" style="margin:8px 0 4px">ทุกขนาดในตารางนี้ไม่มีมีดไดคัท — สอบถามเรื่องการเก็บเงินค่ามีดไดคัทอีกครั้ง</div><div class="note">กดแถวเพื่อใช้ขนาดนี้ · ที่มา: ตารางกล่องไปรษณีย์ไทยมาตรฐาน 20 ขนาด (LazBlog)</div></details>':""}
  var allRows=STD.map(function(s,i){
@@ -655,12 +739,12 @@ function buildTable(mi,fit,req,ptop){var tpx=$("type").value;
   return '<tr class="'+cls+'" data-i="'+i+'" tabindex="0"><td><b>'+s[0]+'</b></td><td>'+fu(s[1])+'</td><td>'+fu(s[2])+'</td><td>'+fu(s[3])+'</td><td>'+dieB(s)+'</td><td>'+codeSel(s)+'</td><td>'+papB(s)+'</td><td>'+(req?((fitsP(s,req)||i==ptop)?'<span class="tag">'+(i==ptop?'แนะนำสำหรับสินค้า':'ใส่สินค้าได้')+'</span>':''):(fit.indexOf(i)>=0?'<span class="tag">ใส่ของได้</span>':''))+'</td></tr>';
  });
  $("std").innerHTML=allRows.filter(function(h,i){return !STD[i][7]}).join("");
- var cr=allRows.filter(function(h,i){return STD[i][7]});$("stdC").innerHTML=cr.join("");$("stdCwrap").classList.toggle("hidden",!cr.length);
+ var cr=allRows.filter(function(h,i){return STD[i][7]});$("stdC").innerHTML=cr.join("");$("stdCwrap").classList.toggle("hidden",!cr.length);$("stdCn").textContent=cr.length;
 }
 function updSplit(){var f=function(id,a,b,out){var v=+$(id).value||0,h=(Math.round(v/2*100)/100).toLocaleString("th-TH");$(out).innerHTML=v>0?"แบ่งให้อัตโนมัติ: "+a+" <b>"+h+"</b> + "+b+" <b>"+h+"</b> "+UL[u]:"แบ่งให้อัตโนมัติ: "+a+" / "+b+" ข้างละครึ่ง"};f("pkW","ซ้าย","ขวา","pkWs");f("pkG","หน้า","หลัง","pkGs")}
-function render(){updSplit();var tp=$("type").value;if(tp!==lastTp){lastTp=tp;STD=LIST[tp];fillStd();$("stdT").textContent=$("type").options[$("type").selectedIndex].text;pizzaUnit(tp);hlCl(tp)}
+function render(){updSplit();var ac=$("addCur");if(ac)ac.textContent=$("productMode").classList.contains("active")?"+ เพิ่มขนาดกล่องที่แนะนำจากสินค้า":"+ เพิ่มขนาดที่ตั้งไว้ด้านบน";var tp=$("type").value;if(tp!==lastTp){lastTp=tp;STD=LIST[tp];fillStd();$("stdT").textContent=$("type").options[$("type").selectedIndex].text;pizzaUnit(tp);hlCl(tp)}
  drawCmp();
- $("pup").disabled=!$("rot").checked;var req=prodReq();if(req&&!window.__ps){window.__ps=1}if(!req)window.__ps=0;var pf=req?prodFit(req,STD):[],ptop=pf.length?pf[0]:-1;var po=req?pickOri(req):null;if(po)ptop=po.mi;draw3d(req,po);$("pres").innerHTML=(req?prodHtml(req,po):"")||'<div class="note">กรอกขนาดสินค้าก่อน เพื่อดูกล่องที่เหมาะ</div>';
+ $("pup").disabled=!$("rot").checked;var req=prodReq();if(req&&!window.__ps){window.__ps=1}if(!req)window.__ps=0;var pf=req?prodFit(req,STD):[],ptop=pf.length?pf[0]:-1;var po=req?pickOri(req):null;if(po)ptop=po.mi;fitCalc();draw3d(req,po);$("pres").innerHTML=(req?prodHtml(req,po)+(po.exact<0?exoBlock(po.ori.w,po.ori.l,po.ori.h):""):"")||'<div class="note">กรอกขนาดสินค้าก่อน เพื่อดูกล่องที่เหมาะ</div>';
  var W=+$("w").value/FU[u],L=+$("l").value/FU[u],H=+$("h").value/FU[u],type=$("type").value;
  var ok=W>0&&L>0&&H>0;
  var emp=[$("w").value,$("l").value,$("h").value].every(function(v){return v===""});$("err").textContent=(ok||emp)?"":"กรอกขนาดกว้าง ยาว สูง ให้มากกว่า 0";
@@ -675,9 +759,7 @@ function render(){updSplit();var tp=$("type").value;if(tp!==lastTp){lastTp=tp;ST
  m.className="";m.innerHTML=sugHtml(o,'<div style="font-weight:700;margin-bottom:6px">กล่องขนาด '+fu(W)+" × "+fu(L)+" × "+fu(H)+" "+UL[u]+' เหมาะกับ</div>',"ต่างจากที่กรอก",W,L,H,[W,L,H]);
 var tpx=$("type").value;
  EXL=(tpx=="rsc"||tpx=="mailer"||tpx=="ear"||tpx=="lock"||tpx=="tuck")?EXTRA.filter(function(q){return !STD.some(function(x){return x[1]!=null&&Math.abs(x[1]-q[1])<.06&&Math.abs(x[2]-q[2])<.06&&Math.abs(x[3]-q[3])<.06})}):[];
- if(EXL.length&&exact<0){var bi=-1,bd=1e9,bw=false;EXL.forEach(function(q,i){var d1=Math.abs(q[1]-W)+Math.abs(q[2]-L)+Math.abs(q[3]-H),d2=Math.abs(q[1]-L)+Math.abs(q[2]-W)+Math.abs(q[3]-H),d=Math.min(d1,d2);if(d<bd){bd=d;bi=i;bw=d2<d1}});
-  var qq=EXL[bi],d3=[qq[1]-(bw?L:W),qq[2]-(bw?W:L),qq[3]-H],mx=Math.max.apply(0,d3.map(Math.abs));
-  if(mx<=1.5)m.innerHTML+='<div class="exo"><div class="lb">'+(mx<.06?"ตรงกับ":"ใกล้เคียง")+' ขนาดมาตรฐานทั่วไป (ไปรษณีย์ไทย) ที่ไม่อยู่ในรายการของเรา</div><div style="margin:4px 0 8px"><b>เบอร์ '+qq[0]+'</b> '+dmx(qq)+(mx<.06?"":' · ต่างจากที่กรอก: กว้าง '+sg(d3[0])+' · ยาว '+sg(d3[1])+' · สูง '+sg(d3[2])+' '+UL[u])+'</div><div style="margin:0 0 6px"><span class="tag" style="background:#b26a00">ไม่มีมีดไดคัท</span></div><div class="ask" style="margin-bottom:8px">สอบถามเรื่องการเก็บเงินค่ามีดไดคัทอีกครั้ง</div><button type="button" data-x="'+bi+'">ใช้ขนาดนี้</button></div>'}
+ if(exact<0)m.innerHTML+=exoBlock(W,L,H);
  buildTable(mi,fit,req,ptop);
 }
 var TL={rsc:"ฝาชน",mailer:"ไดคัทไปรษณีย์",ear:"ไดคัทหูช้าง",lock:"ฝาเสียบก้นขัด",tuck:"ฝาเสียบ",handle:"หูหิ้ว",pizza:"พิซซ่า",tele:"ฝาครอบ/เบเกอรี่",doc:"เอกสาร",shoe:"รองเท้า"};
@@ -717,26 +799,43 @@ function prodHtml(r,o){if(!r)return "";var ch=o.ori,cs=csz(ch),
  Object.keys(LIST).forEach(function(k){if(k==cur)return;var l=LIST[k],f=prodFit(r,l);if(f.length)alt.push(TL[k]+" "+nm(l[f[0]])+" ("+dmq(l[f[0]])+")")});
  if(alt.length)h+='<div class="note">ประเภทอื่นที่มีขนาดใส่ได้: '+alt.slice(0,4).join(" · ")+'</div>';
  return h}
-function pick(e){if(e.target.closest&&e.target.closest("select"))return;var tr=e.target.closest("tr.row");if(!tr)return;var s=STD[+tr.dataset.i];if(!s||s[1]==null)return;var c=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=c(s[1]);$("l").value=c(s[2]);$("h").value=c(s[3]);render()}
-$("clrAll").addEventListener("click",function(){$("boxMode").click();["w","l","h","pw","pl","ph","cname"].forEach(function(i){$(i).value=""});selKey=null;ndOn=false;$("pcl").value="0";$("pcll").value="0";$("ptop").value="0";$("pgap").value="0";$("pkW").value="0";$("pkG").value="0";$("pkh").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;render()});
+var HIST=[];
+function snapHist(){var o={u:u,type:$("type").value,mode:$("productMode").classList.contains("active")?"product":"box",v:{}};document.querySelectorAll(".panel input[id],.panel select[id]").forEach(function(e){if(e.id==="type"||e.id==="unit")return;o.v[e.id]=e.type==="checkbox"?e.checked:e.value});return o}
+function updUndo(msg){var b=$("undoBtn");if(b){b.disabled=!HIST.length;b.textContent="↶ ย้อนกลับ"+(HIST.length?" ("+HIST.length+")":"")}var bar=$("undoBar");if(bar){if(msg){bar.style.display="flex";$("undoMsg").textContent=msg}else bar.style.display="none"}}
+function pushHist(msg){HIST.push(snapHist());if(HIST.length>20)HIST.shift();updUndo(msg)}
+function undoHist(){var o=HIST.pop();if(!o){updUndo(null);return}
+ if(o.u!==u){u=o.u;$("unit").value=u;document.querySelectorAll(".u").forEach(function(e){e.textContent=UL[u]})}
+ vw=null;ndOn=false;selKey=null;
+ var c=document.querySelector('[data-type="'+o.type+'"]');if(c)c.click();var m=$(o.mode==="product"?"productMode":"boxMode");if(m)m.click();
+ Object.keys(o.v).forEach(function(id){var e=$(id);if(!e)return;if(e.type==="checkbox")e.checked=o.v[id];else e.value=o.v[id]});
+ render();updUndo(null)}
+function useStd(i){var s=STD[i];if(!s||s[1]==null)return;pushHist("ใช้ขนาด "+nm(s)+" ("+dmq(s)+") แล้ว");var bm=$("boxMode");if(bm&&!bm.classList.contains("active"))bm.click();var c=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=c(s[1]);$("l").value=c(s[2]);$("h").value=c(s[3]);render()}
+function pick(e){if(e.target.closest&&e.target.closest("select"))return;var tr=e.target.closest("tr.row");if(!tr)return;var s=STD[+tr.dataset.i];if(!s||s[1]==null)return;pushHist("ใช้ขนาด "+nm(s)+" ("+dmq(s)+") แล้ว");var c=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=c(s[1]);$("l").value=c(s[2]);$("h").value=c(s[3]);render()}
+$("undoBtn").addEventListener("click",undoHist);$("undoGo").addEventListener("click",undoHist);$("undoX").addEventListener("click",function(){updUndo(null)});
+document.addEventListener("keydown",function(e){if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&e.key==="z"&&!/^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement||{}).tagName||"")&&HIST.length){e.preventDefault();undoHist()}});
+$("clrAll").addEventListener("click",function(){pushHist("ล้างข้อมูลทั้งหมดแล้ว");$("boxMode").click();["w","l","h","pw","pl","ph","cname"].forEach(function(i){$(i).value=""});selKey=null;ndOn=false;$("pcl").value="0";$("pcll").value="0";$("ptop").value="0";$("pgap").value="0";$("pkW").value="0";$("pkG").value="0";$("pkh").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;["fw","fl","fh","fnum"].forEach(function(i){$(i).value=""});$("fgap").value="0";$("fmar").value="0";$("fup").checked=false;FITSEL=null;render()});
 $("clrBox").addEventListener("click",function(){["w","l","h"].forEach(function(i){$(i).value=""});render()});
 $("clrProd").addEventListener("click",function(){["pw","pl","ph"].forEach(function(i){$(i).value=""});selKey=null;ndOn=false;$("pcl").value="0";$("pcll").value="0";$("ptop").value="0";$("pgap").value="0";$("pkW").value="0";$("pkG").value="0";$("pkh").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;render()});
 $("std").addEventListener("click",pick);$("stdC").addEventListener("click",pick);$("stdC").addEventListener("keydown",function(e){if(e.key=="Enter")pick(e)});
-$("pres").addEventListener("click",function(e){var nb=e.target.closest("button[data-nd]");if(nb){ndReq=true;if(deg<135)deg=135;rx=-50;render();var sd0=$("stage");if(sd0)sd0.scrollIntoView({behavior:"smooth",block:"center"});return}var tr=e.target.closest("tr[data-k]");if(tr){selKey=tr.dataset.k;if(deg<135)deg=135;rx=-50;render();var sd=$("stage");if(sd)sd.scrollIntoView({behavior:"smooth",block:"center"});return}var b=e.target.closest("button");if(b&&b.dataset.c){var v=b.dataset.c.split(",").map(Number),f=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=f(v[0]);$("l").value=f(v[1]);$("h").value=f(v[2]);render();return}if(b)pick({target:{closest:function(){return{dataset:{i:b.dataset.i}}}}})});
-function fillX(i){var q=EXL[i];if(!q)return;var c=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=c(q[1]);$("l").value=c(q[2]);$("h").value=c(q[3]);render()}
+$("pres").addEventListener("click",function(e){if(cardClick(e))return;var nb=e.target.closest("button[data-nd]");if(nb){ndReq=true;if(deg<135)deg=135;rx=-50;render();var sd0=$("stage");if(sd0)sd0.scrollIntoView({behavior:"smooth",block:"center"});return}var tr=e.target.closest("tr[data-k]");if(tr){selKey=tr.dataset.k;if(deg<135)deg=135;rx=-50;render();var sd=$("stage");if(sd)sd.scrollIntoView({behavior:"smooth",block:"center"});return}var b=e.target.closest("button");if(b&&b.dataset.c){pushHist("ใช้ขนาดที่ต้องสั่งผลิตแล้ว");var bm0=$("boxMode");if(bm0&&!bm0.classList.contains("active"))bm0.click();var v=b.dataset.c.split(",").map(Number),f=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=f(v[0]);$("l").value=f(v[1]);$("h").value=f(v[2]);render();return}if(b&&b.dataset.i!==undefined)useStd(+b.dataset.i)});
+function fillX(i){var q=EXL[i];if(!q)return;pushHist("ใช้ขนาด เบอร์ "+q[0]+" ("+dmq(q)+") แล้ว");var bm=$("boxMode");if(bm&&!bm.classList.contains("active"))bm.click();var c=function(x){return Math.round(x*FU[u]*100)/100};$("w").value=c(q[1]);$("l").value=c(q[2]);$("h").value=c(q[3]);render()}
 $("exwrap").addEventListener("click",function(e){var t=e.target.closest("tr[data-x]");if(t)fillX(+t.dataset.x)});
-$("match").addEventListener("click",function(e){var nb=e.target.closest("button[data-nd]");if(nb){ndReq=true;if(deg<135)deg=135;rx=-50;render();var sd0=$("stage");if(sd0)sd0.scrollIntoView({behavior:"smooth",block:"center"});return}var b=e.target.closest("button");if(b&&b.dataset.x!==undefined){fillX(+b.dataset.x);return}if(b)pick({target:{closest:function(){return{dataset:{i:b.dataset.i}}}}})});
+$("match").addEventListener("click",function(e){if(cardClick(e))return;var nb=e.target.closest("button[data-nd]");if(nb){ndReq=true;if(deg<135)deg=135;rx=-50;render();var sd0=$("stage");if(sd0)sd0.scrollIntoView({behavior:"smooth",block:"center"});return}var b=e.target.closest("button");if(b&&b.dataset.x!==undefined){fillX(+b.dataset.x);return}if(b&&b.dataset.i!==undefined)useStd(+b.dataset.i)});
 $("std").addEventListener("keydown",function(e){if(e.key=="Enter")pick(e)});
 $("unit").addEventListener("change",function(){
- var cm=["w","l","h"].map(function(i){return +$(i).value/FU[u]}),pc=["pw","pl","ph","pcl","pcll","ptop","pgap","pkW","pkG","pkh"].map(function(i){var v=$(i).value;return v===""?null:+v/FU[u]});u=this.value;
- ["pw","pl","ph","pcl","pcll","ptop","pgap","pkW","pkG","pkh"].forEach(function(i,k){var e=$(i);if(pc[k]!==null)e.value=Math.round(pc[k]*FU[u]*100)/100;e.step={cm:.5,mm:5,in:.25}[u]});
+ var cm=["w","l","h"].map(function(i){return +$(i).value/FU[u]}),pc=["pw","pl","ph","pcl","pcll","ptop","pgap","pkW","pkG","pkh","fw","fl","fh","fgap","fmar"].map(function(i){var v=$(i).value;return v===""?null:+v/FU[u]});u=this.value;
+ ["pw","pl","ph","pcl","pcll","ptop","pgap","pkW","pkG","pkh","fw","fl","fh","fgap","fmar"].forEach(function(i,k){var e=$(i);if(pc[k]!==null)e.value=Math.round(pc[k]*FU[u]*100)/100;e.step={cm:.5,mm:5,in:.25}[u]});
  ["w","l","h"].forEach(function(i,k){var e=$(i);e.value=Math.round(cm[k]*FU[u]*100)/100;e.step={cm:.5,mm:5,in:.25}[u];e.min=0.1});
  document.querySelectorAll(".u").forEach(function(e){e.textContent=UL[u]});render()});
-["w","l","h","type","rot","pw","pl","ph","pcl","pcll","ptop","pgap","pkW","pkG","pkh","nx","ny","nz","pup"].forEach(function(i){$(i).addEventListener("input",render)});
+["w","l","h","type","rot","pw","pl","ph","pcl","pcll","ptop","pgap","pkW","pkG","pkh","nx","ny","nz","pup","fw","fl","fh","fgap","fmar","fnum","fup"].forEach(function(i){$(i).addEventListener("input",render)});
+ $("fitRes").addEventListener("click",function(e){var tr=e.target.closest("tr[data-fk]");if(tr){FITSEL=tr.dataset.fk;render()}});
+ $("clrFit").addEventListener("click",function(){["fw","fl","fh","fnum"].forEach(function(i){$(i).value=""});$("fgap").value="0";$("fmar").value="0";$("fup").checked=false;FITSEL=null;render()});
 function fillStd(){$("addStd").innerHTML='<option value="">+ เพิ่มขนาดที่มีของประเภทนี้…</option>';STD.forEach(function(x,i){if(x[1]==null)return;var op=document.createElement("option");op.value=i;op.textContent=nm(x)+" ("+[x[1],x[2],x[3]].map(function(v){return Math.round(v*100)/100}).join("×")+" ซม.)";$("addStd").appendChild(op)})}
 fillStd();
-$("addCur").addEventListener("click",function(){var W=+$("w").value/FU[u],L=+$("l").value/FU[u],H=+$("h").value/FU[u];if(!(W>0&&L>0&&H>0))return;
- CMP.push({n:$("cname").value.trim()||("กล่อง "+(CMP.length+1)),w:W,l:L,h:H});$("cname").value="";sv();drawCmp()});
+$("addCur").addEventListener("click",function(){var prod=$("productMode").classList.contains("active"),W,L,H,nn=null;
+ if(prod){var rq=prodReq();if(!rq)return;var p2=pickOri(rq);if(p2.mi>=0){var q=STD[p2.mi];W=q[1];L=q[2];H=q[3];nn=nm(q)}else{var cs=csz(p2.ori);W=cs[0];L=cs[1];H=cs[2];nn="สั่งผลิต"}}
+ else{W=+$("w").value/FU[u];L=+$("l").value/FU[u];H=+$("h").value/FU[u];if(!(W>0&&L>0&&H>0))return}
+ CMP.push({n:$("cname").value.trim()||nn||("กล่อง "+(CMP.length+1)),w:W,l:L,h:H});$("cname").value="";sv();drawCmp()});
 $("addStd").addEventListener("change",function(){if(this.value==="")return;var x=STD[+this.value];CMP.push({n:nm(x),w:x[1],l:x[2],h:x[3]});this.value="";sv();drawCmp()});
 $("clr").addEventListener("click",function(){CMP=[];sv();drawCmp()});
 $("lay").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;mode=b.dataset.m;this.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});drawCmp()});
