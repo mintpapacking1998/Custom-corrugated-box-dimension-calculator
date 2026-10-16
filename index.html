@@ -2,6 +2,7 @@
 <html lang="th" data-theme="auto">
 <head>
 <meta charset="utf-8">
+<script>document.documentElement.classList.add("locked")</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ออกแบบกล่องลูกฟูก — UX Preview V2</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700;800&display=swap">
@@ -202,6 +203,23 @@ details.info{margin-top:10px}details.info summary{cursor:pointer;font-size:.8rem
 .sum3 tr[data-g]:hover td{background:#f3f5f2}
 .sum3 tr.off td{opacity:.42}
 .sum3 .dot{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:8px;vertical-align:-1px}
+html.locked main,html.locked #vmodal{display:none!important}
+html.locked body{overflow:hidden}
+.gate{display:none;position:fixed;inset:0;z-index:3000;align-items:center;justify-content:center;background:#eceee9;padding:24px;overflow:auto}
+html.locked .gate{display:flex}
+.gate-card{width:min(440px,100%);background:#fff;border-radius:22px;padding:38px 36px 30px;box-shadow:0 1px 2px rgba(0,0,0,.06),0 18px 48px rgba(31,41,51,.14)}
+.gate-card h1{margin:0 0 4px;font-size:1.7rem;font-weight:800}
+.gate-card .gs{color:#5a6772;margin:0 0 22px}
+.gate-card label{display:block;font-weight:600;margin:14px 0 6px}
+.gate-card input{width:100%;height:52px;box-sizing:border-box;border:1px solid #cfd6d2;border-radius:12px;padding:0 14px;font:inherit;font-size:1.05rem}
+.gate-card .pw{position:relative}
+.gate-card .pw button{position:absolute;right:8px;top:8px;height:36px;padding:0 12px;border-radius:8px;border:0;background:#eef0ec;font:inherit;cursor:pointer}
+.gate-card .gbtn{width:100%;height:54px;margin-top:22px;border-radius:12px;border:0;background:#1f3a68;color:#fff;font:inherit;font-size:1.1rem;font-weight:700;cursor:pointer}
+.gate-card .gbtn:disabled{opacity:.6;cursor:default}
+.gate-card .glink{display:block;margin:14px auto 0;background:none;border:0;color:#1f3a68;text-decoration:underline;font:inherit;cursor:pointer}
+#gateMsg{min-height:1.5em;margin-top:14px;color:#b3261e;font-weight:600}
+#gateMsg.ok{color:#2e7d4f}
+.userchip{font-size:.9rem;color:#5a6772;align-self:center}
 </style>
 
 
@@ -249,6 +267,19 @@ select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-rad
 </style>
 <style>.clinfo .otab td,.clinfo .otab th{padding:6px 8px;text-align:center}.clinfo .otab td:first-child,.clinfo .otab th:first-child{text-align:left;min-width:190px}.clinfo .otab tr.on td{background:var(--green-bg);font-weight:700}.clinfo{margin-top:6px;min-width:0;max-width:100%}.advanced>div{grid-template-columns:minmax(0,1fr)}.clinfo>div{max-width:100%}</style></head>
 <body>
+<div id="loginGate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+  <form id="gateForm" class="gate-card" autocomplete="on" novalidate>
+    <h1 id="gateTitle">เข้าสู่ระบบ</h1>
+    <p class="gs">สำหรับทีมงานที่ได้รับสิทธิ์เท่านั้น · บัญชีสร้างโดยผู้ดูแลระบบ</p>
+    <label for="gateEmail">อีเมล</label>
+    <input id="gateEmail" type="email" name="email" autocomplete="username" inputmode="email" required>
+    <label for="gatePw">รหัสผ่าน</label>
+    <div class="pw"><input id="gatePw" type="password" name="password" autocomplete="current-password" required><button id="gateEye" type="button" aria-label="แสดงหรือซ่อนรหัสผ่าน">แสดง</button></div>
+    <button id="gateGo" class="gbtn" type="submit">เข้าสู่ระบบ</button>
+    <button id="gateForgot" class="glink" type="button">ลืมรหัสผ่าน?</button>
+    <div id="gateMsg" role="alert" aria-live="polite"></div>
+  </form>
+</div>
 
 <main>
   <div class="topbar">
@@ -256,7 +287,7 @@ select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-rad
       <h1>ออกแบบกล่องลูกฟูก</h1>
       <p class="sub">บอกเราว่าจะใส่อะไรในกล่อง แล้วระบบช่วยหาขนาดที่เหมาะให้</p>
     </div>
-    <span style="display:inline-flex;gap:8px;flex-wrap:wrap"><button class="secondary" id="undoBtn" type="button" disabled>↶ ย้อนกลับ</button><button class="reset" id="clrAll" type="button">↺ ล้างข้อมูลทั้งหมด</button></span>
+    <span style="display:inline-flex;gap:8px;flex-wrap:wrap"><span id="userChip" class="userchip"></span><button class="secondary" id="outBtn" type="button" hidden>ออกจากระบบ</button><button class="secondary" id="undoBtn" type="button" disabled>↶ ย้อนกลับ</button><button class="reset" id="clrAll" type="button">↺ ล้างข้อมูลทั้งหมด</button></span>
   </div>
 
   <div class="layout">
@@ -942,7 +973,7 @@ render();
 
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import {getAuth,onAuthStateChanged,signInWithPopup,GoogleAuthProvider,signOut} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,sendPasswordResetEmail,signOut} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import {getFirestore,collection,doc,onSnapshot,setDoc,getDoc} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 /* ===== ใส่ค่าจาก Firebase Console → Project settings → Your apps (Web) ===== */
@@ -955,7 +986,7 @@ const firebaseConfig={
 /* ========================================================================= */
 
 const DEF=JSON.parse(JSON.stringify(LIST));
-let fdb=null,auth=null,isAdmin=false,draft=null;
+let fdb=null,auth=null,isAdmin=false,draft=null,unsub=null;
 let remoteKeys=new Set(),snapReady=false;
 function updSeed(){const miss=Object.keys(DEF).filter(k=>!remoteKeys.has(k)).length;$("seedBtn").classList.toggle("hidden",!(isAdmin&&snapReady&&miss>0))}
 const note=t=>{const e=$("syncNote");if(e)e.textContent=t||""};
@@ -971,7 +1002,7 @@ function applyRemote(key,rows){
 }
 
 function startSync(){
-  onSnapshot(collection(fdb,"sizes"),snap=>{
+  return onSnapshot(collection(fdb,"sizes"),snap=>{
     let n=0,t=0;remoteKeys=new Set();snapReady=true;
     snap.forEach(d=>{remoteKeys.add(d.id);const v=d.data()||{};if(v.rows){applyRemote(d.id,v.rows);n++;if(v.updatedAt>t)t=v.updatedAt}});
     note(n?("ข้อมูลส่วนกลาง · อัปเดตล่าสุด "+new Date(t).toLocaleString("th-TH")):"ยังไม่มีข้อมูลส่วนกลาง — ใช้ค่าเริ่มต้นของหน้า");
@@ -1149,29 +1180,45 @@ document.addEventListener("click",e=>{
   else if(b.id==="edPasteApp")doPaste(false);
   else if(b.id==="edPasteCode")doCodes();
   else if(b.id==="seedBtn")seed();
-  else if(b.id==="loginBtn"){
-    if(auth.currentUser)signOut(auth);
-    else signInWithPopup(auth,new GoogleAuthProvider()).catch(()=>note("เข้าสู่ระบบไม่สำเร็จ"));
-  }
+  else if(b.id==="outBtn"||b.id==="loginBtn"){if(auth)signOut(auth)}
 });
 
+const gm=(t,ok)=>{const e=$("gateMsg");e.textContent=t||"";e.className=ok?"ok":""};
+const lockUI=()=>{document.documentElement.classList.add("locked");if(unsub){unsub();unsub=null}isAdmin=false;snapReady=false;$("edBtn").classList.add("hidden");$("seedBtn").classList.add("hidden");$("outBtn").hidden=true;$("userChip").textContent="";$("gatePw").value=""};
+const unlockUI=u=>{document.documentElement.classList.remove("locked");$("outBtn").hidden=false;$("userChip").textContent=u.email;$("loginBtn").classList.remove("hidden");$("loginBtn").textContent="ออกจากระบบ ("+u.email+")";gm("")};
+const errTh=c=>({"auth/invalid-credential":"อีเมลหรือรหัสผ่านไม่ถูกต้อง","auth/wrong-password":"อีเมลหรือรหัสผ่านไม่ถูกต้อง","auth/user-not-found":"อีเมลหรือรหัสผ่านไม่ถูกต้อง","auth/invalid-email":"รูปแบบอีเมลไม่ถูกต้อง","auth/too-many-requests":"ลองผิดหลายครั้ง รอสักครู่แล้วลองใหม่","auth/network-request-failed":"เชื่อมต่ออินเทอร์เน็ตไม่ได้","auth/user-disabled":"บัญชีนี้ถูกปิดการใช้งาน"})[c]||"เข้าสู่ระบบไม่สำเร็จ ลองใหม่อีกครั้ง";
 if(/^YOUR_/.test(firebaseConfig.apiKey)){
-  note("ยังไม่ได้ตั้งค่า Firebase — ใช้ค่าเริ่มต้นของหน้า");
+  gm("ยังไม่ได้ตั้งค่า Firebase — ระบบล็อกอินใช้งานไม่ได้");
 }else{
   const app=initializeApp(firebaseConfig);
-  fdb=getFirestore(app);auth=getAuth(app);
-  startSync();
-  $("loginBtn").classList.remove("hidden");
+  fdb=getFirestore(app);auth=getAuth(app);window.__fbReady=1;
+  let busy=false;
+  $("gateForm").addEventListener("submit",async e=>{
+    e.preventDefault();if(busy)return;busy=true;const b=$("gateGo");b.disabled=true;gm("กำลังตรวจสอบ…",true);
+    try{await signInWithEmailAndPassword(auth,$("gateEmail").value.trim(),$("gatePw").value)}
+    catch(er){gm(errTh(er&&er.code))}
+    finally{busy=false;b.disabled=false}
+  });
+  $("gateForgot").addEventListener("click",async()=>{
+    const em=$("gateEmail").value.trim();if(!em){gm("กรอกอีเมลก่อน แล้วกด “ลืมรหัสผ่าน”");return}
+    try{await sendPasswordResetEmail(auth,em)}catch(er){if(er&&er.code==="auth/invalid-email"){gm("รูปแบบอีเมลไม่ถูกต้อง");return}}
+    gm("ถ้าอีเมลนี้อยู่ในระบบ จะมีลิงก์ตั้งรหัสผ่านใหม่ส่งไปให้ (เช็กกล่องจดหมายและสแปม)",true);
+  });
+  $("gateEye").addEventListener("click",()=>{const p=$("gatePw");p.type=p.type==="password"?"text":"password";$("gateEye").textContent=p.type==="password"?"แสดง":"ซ่อน"});
   onAuthStateChanged(auth,async u=>{
     isAdmin=false;
-    if(u&&u.email){
-      try{isAdmin=(await getDoc(doc(fdb,"admins",u.email.toLowerCase()))).exists()}catch(e){}
-    }
-    $("loginBtn").textContent=u?("ออกจากระบบ ("+u.email+")"):"🔑 เข้าสู่ระบบเพื่อแก้ไข";
-    $("edBtn").classList.toggle("hidden",!isAdmin);
-    updSeed();
+    if(!u||!u.email){lockUI();return}
+    const em=u.email.toLowerCase();let adm=false,stf=false;
+    try{adm=(await getDoc(doc(fdb,"admins",em))).exists()}catch(e){}
+    try{stf=adm||(await getDoc(doc(fdb,"staff",em))).exists()}catch(e){}
+    if(!stf){gm("บัญชีนี้ยังไม่ได้รับสิทธิ์ใช้งาน ติดต่อผู้ดูแลระบบ");await signOut(auth);return}
+    if(!u.emailVerified){gm("อีเมลนี้ยังไม่ได้ยืนยัน — กด “ลืมรหัสผ่าน” เพื่อตั้งรหัสผ่านใหม่ผ่านอีเมล แล้วเข้าสู่ระบบอีกครั้ง");await signOut(auth);return}
+    isAdmin=adm;unlockUI(u);
+    if(!unsub)unsub=startSync();
+    $("edBtn").classList.toggle("hidden",!isAdmin);updSeed();
   });
 }
 </script>
+<script>setTimeout(function(){if(!window.__fbReady&&document.documentElement.classList.contains("locked")){var m=document.getElementById("gateMsg");if(m&&!m.textContent)m.textContent="เชื่อมต่อระบบล็อกอินไม่ได้ ลองรีเฟรชหน้าหรือเช็กอินเทอร์เน็ต"}},8000)</script>
 </body>
 </html>
