@@ -193,6 +193,15 @@ details.info{margin-top:10px}details.info summary{cursor:pointer;font-size:.8rem
  .diminput input{height:64px;font-size:1.4rem}
  .step h2{font-size:1.45rem}
 }
+.dimgrp{display:none!important}
+.sum3{width:100%;border-collapse:collapse;font-size:.88rem;margin:8px 0 4px}
+.sum3 th{text-align:left;color:var(--muted);font-weight:600;padding:4px 8px;border-bottom:1px solid var(--line)}
+.sum3 th small{font-weight:400}
+.sum3 td{padding:7px 8px;border-bottom:1px solid var(--line)}
+.sum3 tr[data-g]{cursor:pointer}
+.sum3 tr[data-g]:hover td{background:#f3f5f2}
+.sum3 tr.off td{opacity:.42}
+.sum3 .dot{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:8px;vertical-align:-1px}
 </style>
 
 
@@ -404,7 +413,7 @@ select.cs{width:auto;max-width:150px;padding:4px 6px;font-size:.82rem;border-rad
           <div class="viewer-controls">
             <button class="main" id="tog" type="button">เปิดกล่อง</button>
             <button id="rst" type="button">รีเซ็ตมุมมอง</button>
-                        <span class="dimgrp"><b>เส้นวัดระยะ</b><button id="dimB" type="button" aria-pressed="true">กล่อง</button><button id="dimG" type="button" aria-pressed="true">ระยะเผื่อสินค้า (เขียว)</button><button id="dimP" type="button" aria-pressed="true">สินค้า (ฟ้า)</button></span>
+                        <span class="dimgrp"><b>เส้นวัดระยะ</b><button id="dimB" type="button" aria-pressed="true">กล่อง</button><button id="dimG" type="button" aria-pressed="true">ระยะเผื่อสินค้า (เขียว)</button><button id="dimP" type="button" aria-pressed="true">สินค้า (ฟ้า)</button><button id="dimQ" type="button" aria-pressed="true">พื้นที่คงเหลือ (ส้ม)</button></span>
           </div>
           <div class="ang"><label for="deg">มุมเปิดฝา <b id="degv">0°</b></label><input id="deg" type="range" min="0" max="180" step="5" value="0"><div class="pre"><button type="button" data-d="0">ปิด</button><button type="button" data-d="45">45°</button><button type="button" data-d="90">90°</button><button type="button" data-d="135">135°</button><button type="button" data-d="180">180°</button></div></div>
         </details>
@@ -593,8 +602,10 @@ function scene(W,L,H,type,pb){if(type=="shoe")type="tele";
   slab=function(w0,w1,l0,l1,h0,h1,col,bd){var a=(w1-w0)*k*.997,b=(l1-l0)*k*.997,c=(h1-h0)*k*.997;if(a<.05||b<.05||c<.05)return"";return cub(a,b,c,(l0+l1)/2*k,(H/2-(h0+h1)/2)*k,(w0+w1)/2*k,col,bd)},
   shell=function(w0,w1,l0,l1,hh,mF,mB,mL,mR,mT,col,bd){return slab(w1,w1+mF,l0,l1,0,hh,col,bd)+slab(w0-mB,w0,l0,l1,0,hh,col,bd)+slab(w0-mB,w1+mF,l0-mL,l0,0,hh,col,bd)+slab(w0-mB,w1+mF,l1,l1+mR,0,hh,col,bd)+slab(w0-mB,w1+mF,l0-mL,l1+mR,hh,hh+mT,col,bd)};
   var pa=pb.a,pn=pb.n,pg=pb.g,gd=pb.d,rw0=-W/2+pb.kB,rw1=W/2-pb.kF,rl0=-L/2+pb.kL,rl1=L/2-pb.kR,Gw=gd[0]+2*pb.cw,Gl=gd[1]+2*pb.cl,
-   gw0=(rw0+rw1)/2-Gw/2,gw1=gw0+Gw,gl0=(rl0+rl1)/2-Gl/2,gl1=gl0+Gl,cw0=gw0+pb.cw,cl0=gl0+pb.cl;SC.g=(pb.cw>0||pb.cl>0||pb.tp>0)?{gw0:gw0,gw1:gw1,gl0:gl0,gl1:gl1,gh:gd[2]+pb.tp}:null;SC.bl={w0:cw0,w1:cw0+gd[0],l0:cl0,l1:cl0+gd[1],h:gd[2]};
-  o+=shell(rw0,rw1,rl0,rl1,H,pb.kF,pb.kB,pb.kL,pb.kR,0,RD,"#a31212");
+   gw0=(rw0+rw1)/2-Gw/2,gw1=gw0+Gw,gl0=(rl0+rl1)/2-Gl/2,gl1=gl0+Gl,cw0=gw0+pb.cw,cl0=gl0+pb.cl;SC.g=(pb.cw>0||pb.cl>0||pb.tp>0)?{gw0:gw0,gw1:gw1,gl0:gl0,gl1:gl1,gh:gd[2]+pb.tp}:null;SC.bl={w0:cw0,w1:cw0+gd[0],l0:cl0,l1:cl0+gd[1],h:gd[2]};SC.gp={gw0:gw0,gw1:gw1,gl0:gl0,gl1:gl1,rw0:rw0,rw1:rw1,rl0:rl0,rl1:rl1,gh:gd[2]+pb.tp,H:H-pb.kh};
+  var hk=Math.min(Math.max(pb.kh,0),H);o+=shell(rw0,rw1,rl0,rl1,H-hk,pb.kF,pb.kB,pb.kL,pb.kR,0,RD,"#a31212");
+  if(hk>0){var RT="rgba(150,15,15,.55)",tF=Math.max(pb.kF,.4),tB=Math.max(pb.kB,.4),tL=Math.max(pb.kL,.4),tR=Math.max(pb.kR,.4);
+   o+=slab(W/2-tF,W/2,-L/2,L/2,H-hk,H,RT,"#7a0f0f")+slab(-W/2,-W/2+tB,-L/2,L/2,H-hk,H,RT,"#7a0f0f")+slab(-W/2+tB,W/2-tF,-L/2,-L/2+tL,H-hk,H,RT,"#7a0f0f")+slab(-W/2+tB,W/2-tF,L/2-tR,L/2,H-hk,H,RT,"#7a0f0f")}
   o+=shell(cw0,cw0+gd[0],cl0,cl0+gd[1],gd[2],pb.cw,pb.cw,pb.cl,pb.cl,pb.tp,GR,"#0f6b33");
   if(pn[0]*pn[1]*pn[2]>120){o+=slab(cw0,cw0+gd[0],cl0,cl0+gd[1],0,gd[2],BL,"#0b3f9e")}
   else{var dc=0;for(var ii=0;ii<pn[0];ii++)for(var jj=0;jj<pn[1];jj++)for(var mm=0;mm<pn[2];mm++){if(pb.lim!=null&&dc>=pb.lim)continue;dc++;
@@ -602,10 +613,10 @@ function scene(W,L,H,type,pb){if(type=="shoe")type="tele";
     o+=slab(w0,w0+pa[0],l0,l0+pa[1],h0,h0+pa[2],BL,"#0b3f9e")}}}
  $("box").innerHTML=o;
 }
-var SC=null,dimOn={b:true,g:true,p:true};
-function dims3d(){var sv=$("dimsvg");if(!sv)return;var hasG=!!(SC&&SC.g),hasP=!!(SC&&SC.bl);
- [["dimG",hasG],["dimP",hasP]].forEach(function(x){var e=$(x[0]);if(e)e.style.display=x[1]?"":"none"});
- if(!SC||!(dimOn.b||(hasG&&dimOn.g)||(hasP&&dimOn.p))){sv.innerHTML="";return}
+var SC=null,dimOn={b:true,g:false,p:true,q:false};
+function dims3d(){var sv=$("dimsvg");if(!sv)return;var hasG=!!(SC&&SC.g),hasP=!!(SC&&SC.bl),hasQ=!!(SC&&SC.gp);
+ [["dimG",hasG],["dimP",hasP],["dimQ",hasQ]].forEach(function(x){var e=$(x[0]);if(e)e.style.display=x[1]?"":"none"});
+ if(!SC||!(dimOn.b||(hasG&&dimOn.g)||(hasP&&dimOn.p)||(hasQ&&dimOn.q))){sv.innerHTML="";return}
  var pe=document.querySelector(".persp"),st=$("stage").getBoundingClientRect(),pr=pe.getBoundingClientRect(),bo=$("box").getBoundingClientRect(),P=parseFloat(getComputedStyle(pe).perspective)||900,
   ox=bo.left-st.left,oy=bo.top-st.top,px=pr.left-st.left+pr.width/2,py=pr.top-st.top+pr.height/2,
   ca=Math.cos(ry*Math.PI/180),sa=Math.sin(ry*Math.PI/180),cb=Math.cos(rx*Math.PI/180),sb=Math.sin(rx*Math.PI/180);
@@ -618,7 +629,7 @@ function dims3d(){var sv=$("dimsvg");if(!sv)return;var hasG=!!(SC&&SC.g),hasP=!!
   var vx=mxp-CC[0],vy=myp-CC[1],vn=Math.sqrt(vx*vx+vy*vy)||1;lx=mxp+vx/vn*lo;ly=myp+vy/vn*lo;var tr0=0;while(tr0<8&&placed.some(function(q){return Math.abs(q[0]-lx)<66&&Math.abs(q[1]-ly)<14})){ly+=14;tr0++}placed.push([lx,ly]);
   out+='<g stroke="'+col+'" fill="none"><path d="M'+a[0].toFixed(1)+','+a[1].toFixed(1)+'L'+c[0].toFixed(1)+','+c[1].toFixed(1)+'M'+b[0].toFixed(1)+','+b[1].toFixed(1)+'L'+d[0].toFixed(1)+','+d[1].toFixed(1)+'" stroke-width=".8" stroke-dasharray="2 2" opacity=".7"/><path d="M'+c[0].toFixed(1)+','+c[1].toFixed(1)+'L'+d[0].toFixed(1)+','+d[1].toFixed(1)+'M'+(c[0]-tx).toFixed(1)+','+(c[1]-ty).toFixed(1)+'L'+(c[0]+tx).toFixed(1)+','+(c[1]+ty).toFixed(1)+'M'+(d[0]-tx).toFixed(1)+','+(d[1]-ty).toFixed(1)+'L'+(d[0]+tx).toFixed(1)+','+(d[1]+ty).toFixed(1)+'" stroke-width="1.7"/>'+(lo?'<path d="M'+mxp.toFixed(1)+','+myp.toFixed(1)+'L'+lx.toFixed(1)+','+ly.toFixed(1)+'" stroke-width=".9" opacity=".7"/>':'')+'</g>'
   +'<text x="'+lx.toFixed(1)+'" y="'+(ly-5).toFixed(1)+'" text-anchor="middle" font-size="12" font-weight="700" fill="'+col+'" stroke="#fff" stroke-width="3.2" paint-order="stroke" style="font-family:inherit">'+txt+'</text>'}
- var U=" "+UL[u];
+ var U="";
  if(dimOn.b){var C1="#1f2933";
   dim([sz*W/2,-L/2,0],[sz*W/2,L/2,0],[sz*(W/2+off),-L/2,0],[sz*(W/2+off),L/2,0],C1,"ยาว "+fu(L)+U);
   dim([-W/2,sx*L/2,0],[W/2,sx*L/2,0],[-W/2,sx*(L/2+off),0],[W/2,sx*(L/2+off),0],C1,"กว้าง "+fu(W)+U);
@@ -633,6 +644,13 @@ function dims3d(){var sv=$("dimsvg");if(!sv)return;var hasG=!!(SC&&SC.g),hasP=!!
   dim([we3,b.l0,b.h],[we3,b.l1,b.h],[we3+sz*o3,b.l0,b.h+o3],[we3+sz*o3,b.l1,b.h+o3],C3,"ยาว "+fu(b.l1-b.l0)+U,70);
   dim([b.w0,le3,b.h],[b.w1,le3,b.h],[b.w0,le3+sx*o3,b.h+o3],[b.w1,le3+sx*o3,b.h+o3],C3,"กว้าง "+fu(b.w1-b.w0)+U,70);
   dim([cw3,cl3,0],[cw3,cl3,b.h],[cw3+rw*o3,cl3+rl*o3,0],[cw3+rw*o3,cl3+rl*o3,b.h],C3,"สูง "+fu(b.h)+U,70)}
+ if(hasQ&&dimOn.q){var gp=SC.gp,wc=(gp.gw0+gp.gw1)/2,lc=(gp.gl0+gp.gl1)/2,C4="#c05a00",CR="#b3261e",
+   gW=sz>0?gp.rw1-gp.gw1:gp.gw0-gp.rw0,gL=sx>0?gp.rl1-gp.gl1:gp.gl0-gp.rl0,gT=gp.H-gp.gh,
+   wA=sz>0?gp.gw1:gp.gw0,wB=sz>0?gp.rw1:gp.rw0,lA=sx>0?gp.gl1:gp.gl0,lB=sx>0?gp.rl1:gp.rl0,
+   tx=function(n,v){return v>0?"เหลือ"+n+" "+fu(v):"ซ้อนทับ "+fu(-v)};
+  if(Math.abs(gW)>.01)dim([wA,lc,0],[wB,lc,0],[wA,lc,0],[wB,lc,0],gW>0?C4:CR,tx(sz>0?"หน้า":"หลัง",gW),26);
+  if(Math.abs(gL)>.01)dim([wc,lA,0],[wc,lB,0],[wc,lA,0],[wc,lB,0],gL>0?C4:CR,tx(sx>0?"ขวา":"ซ้าย",gL),26);
+  if(Math.abs(gT)>.01)dim([wc,lc,gp.gh],[wc,lc,gp.H],[wc,lc,gp.gh],[wc,lc,gp.H],gT>0?C4:CR,tx("ด้านบน",gT),26)}
  sv.innerHTML=out}
 function view(){var d=deg,bx=$("box"),r=Math.min(1,d/45);
  bx.style.transform="scale("+zm+") rotateX("+rx+"deg) rotateY("+ry+"deg)";
@@ -648,7 +666,7 @@ function view(){var d=deg,bx=$("box"),r=Math.min(1,d/45);
  $("tog").addEventListener("click",function(){deg=deg>0?0:135;view()});
  $("deg").addEventListener("input",function(){deg=+this.value;view()});
  document.querySelectorAll(".pre button").forEach(function(b){b.addEventListener("click",function(){deg=+b.dataset.d;view()})});
- [["b","dimB"],["g","dimG"],["p","dimP"]].forEach(function(x){$(x[1]).addEventListener("click",function(){dimOn[x[0]]=!dimOn[x[0]];this.setAttribute("aria-pressed",dimOn[x[0]]);render()})});
+ [["b","dimB"],["g","dimG"],["p","dimP"],["q","dimQ"]].forEach(function(x){$(x[1]).addEventListener("click",function(){dimOn[x[0]]=!dimOn[x[0]];this.setAttribute("aria-pressed",dimOn[x[0]]);render()})});
  $("rst").addEventListener("click",function(){rx=-32;ry=-28;zm=1;view()});
 })();
 (function(){var st=$("stage"),ps={},pd0=0;
@@ -720,9 +738,9 @@ function nmAll(i){return [i].concat(twins(i)).map(function(j){return nm(STD[j])}
 function sugHtml(o,title,lbl,W,L,H,ns){LBL=lbl;var bdx=function(i){return o.rot?"":dtx([STD[i][1]-W,STD[i][2]-L,STD[i][3]-H],false)};var hh=title,best=o.best,ni=o.ni,nsw=o.nsw,dd=o.dd,rot=o.rot,seen={};
  function add(i,tag,col,top,xt){if(seen[i])return;seen[i]=1;hh+=pcx(STD[i],i,tag,col,top,xt);twins(i).forEach(function(j){if(seen[j])return;seen[j]=1;hh+=pcx(STD[j],j,"ขนาดเดียวกัน · อีกแบบ",col,false,xt)})}
  if(o.exact>=0)add(o.exact,"ตรงพอดี","#2b7a4b",true);
- else if(o.close){hh+=BAN(ns);add(ni,"ใกล้เคียง — เสนอแทน","#c77a0a",true,dtx(dd,nsw));if(dd.some(function(v){return v<-.06})&&best&&!seen[best.i])add(best.i,"ใช้กระดาษน้อยที่สุด","#66757f",false)}
+ else if(o.close){hh+=BAN(ns);add(ni,"ใกล้เคียง — เสนอแทน","#c77a0a",true,dtx(dd,nsw));if(dd.some(function(v){return v<-.06})&&best&&!seen[best.i])add(best.i,"ใช้กระดาษน้อยที่สุด","#66757f",false,bdx(best.i))}
  else{hh+=BAN(ns);
-  if(best)add(best.i,"ใช้กระดาษน้อยที่สุด","#66757f",false);
+  if(best)add(best.i,"ใช้กระดาษน้อยที่สุด","#66757f",false,bdx(best.i));
   else hh+='<div class="note" style="margin-bottom:8px">ไม่มีขนาดมาตรฐานของประเภทนี้ที่ใส่ได้ครบทุกด้าน</div>';
   if(ni>=0){var nf=-1,nfd=1e9;o.fit.forEach(function(i){var s=STD[i],d=Math.abs(s[1]-W)+Math.abs(s[2]-L)+Math.abs(s[3]-H);if(d<nfd){nfd=d;nf=i}});var fiv=(!rot&&nf>=0)?nf:ni;
    if(!seen[fiv]){var q1=STD[fiv],ddn=(fiv==ni)?dd:[q1[1]-W,q1[2]-L,q1[3]-H];add(fiv,"ใกล้ที่สุด","#66757f",false,dtx(ddn,(fiv==ni)&&nsw))}}}
@@ -764,6 +782,12 @@ function fitCalc(){
  var p=sel.p;window.__fitPb={a:[a[p[0]],a[p[1]],a[p[2]]],n:[n[p[0]],n[p[1]],n[p[2]]],g:g,cw:cw,cl:cl,tp:tp,kF:kW/2,kB:kW/2,kL:kG/2,kR:kG/2,kh:kh,d:sel.d};
  window.__fitLb=" · สินค้า "+cnt+" ชิ้น วางแบบ "+oriLb(sel)+" (ชิ้นละ "+dc(window.__fitPb.a)+")"+(sel.fit?" · ใส่ได้":" · ใส่ไม่ได้ (เกินกล่อง)");
 }
+function sumTbl(){var rows=[["b","#1f2933","กล่องรวม (ภายนอก)",[SC.W,SC.L,SC.H]]],g=SC.g,b=SC.bl,gp=SC.gp;
+ if(g)rows.push(["g","#0f6b33","กรอบเขียว (สินค้า+เผื่อ)",[g.gw1-g.gw0,g.gl1-g.gl0,g.gh]]);
+ if(b)rows.push(["p","#0b3f9e","สินค้า",[b.w1-b.w0,b.l1-b.l0,b.h]]);
+ if(gp)rows.push(["q","#c05a00","พื้นที่คงเหลือ",[gp.rw1-gp.gw1,gp.rl1-gp.gl1,gp.H-gp.gh]]);
+ var f=function(v){return v<-.005?"ซ้อนทับ "+fu(-v):fu(Math.max(0,v))};
+ return '<table class="sum3"><thead><tr><th>เส้นวัด <small>(กดแถวเพื่อเปิด/ปิด)</small></th><th>กว้าง</th><th>ยาว</th><th>สูง <small>('+UL[u]+')</small></th></tr></thead><tbody>'+rows.map(function(r){return '<tr data-g="'+r[0]+'"'+(dimOn[r[0]]?'':' class="off"')+'><td><i class="dot" style="background:'+r[1]+'"></i>'+r[2]+'</td><td>'+f(r[3][0])+'</td><td>'+f(r[3][1])+'</td><td>'+f(r[3][2])+'</td></tr>'}).join("")+'</tbody></table>'}
 function draw3d(req,po){var prod=$("productMode").classList.contains("active"),d=null,lb="",tp=$("type").value,cand=null,pb=null;
  if(prod){if(req&&po){cand=csz(po.ori);pb=lay3(req,po.ori)}}
  else{var w=+$("w").value/FU[u],l=+$("l").value/FU[u],h=+$("h").value/FU[u];if(w>0&&l>0&&h>0)cand=[w,l,h]}
@@ -775,10 +799,10 @@ function draw3d(req,po){var prod=$("productMode").classList.contains("active"),d
  else if(cand){d=cand;lb="แสดงกล่องตามขนาดที่กรอก · "+fu(d[0])+" × "+fu(d[1])+" × "+fu(d[2])+" "+UL[u]}
  if(!prod&&window.__fitPb&&d&&cand&&d[0]===cand[0]&&d[1]===cand[1]&&d[2]===cand[2]){pb=window.__fitPb;lb+=window.__fitLb}
  if(d){scene(d[0],d[1],d[2],tp,pb);view()}else{$("box").innerHTML="";SC=null;dims3d()}
- $("viewLbl").textContent=d?lb:"กรอกขนาดเพื่อดูภาพกล่อง";
+ $("viewLbl").textContent=d?lb:"กรอกขนาดเพื่อดูภาพกล่อง";if(d&&pb&&SC&&SC.gp){var gq=SC.gp,fg=function(v){return v>.005?fu(v):(v<-.005?"ซ้อนทับ "+fu(-v):"0")};$("viewLbl").textContent+=" · พื้นที่คงเหลือ: กว้าง "+fg(gq.rw1-gq.gw1)+" / ยาว "+fg(gq.rl1-gq.gl1)+" / บน "+fg(gq.H-gq.gh)+" "+UL[u]};
  var lg="";if(pb&&d&&req){lg='<span class="lgi"><i style="background:rgb(30,110,230)"></i>ฟ้า = สินค้า</span>';if(req.cw>0||req.cl>0||req.tp>0)lg+='<span class="lgi"><i style="background:rgb(30,165,80)"></i>เขียว = ระยะเผื่อสินค้า</span>';if(req.kF>0||req.kB>0||req.kL>0||req.kR>0||req.kh>0)lg+='<span class="lgi"><i style="background:rgb(230,40,40)"></i>แดง = ระยะเผื่อปิดกล่อง</span>'}
  if(pb&&d&&pb===window.__fitPb){lg='<span class="lgi"><i style="background:rgb(30,110,230)"></i>ฟ้า = สินค้า</span>'+((pb.cw>0||pb.cl>0||pb.tp>0)?'<span class="lgi"><i style="background:rgb(30,165,80)"></i>เขียว = ระยะเผื่อสินค้า</span>':"")+((pb.kF+pb.kB+pb.kL+pb.kR+pb.kh>0)?'<span class="lgi"><i style="background:rgb(230,40,40)"></i>แดง = ระยะเผื่อปิดกล่อง</span>':"")}
- if(d){var dl="";if(dimOn.b)dl+='<span class="lgi"><i style="background:#1f2933"></i>เส้นดำ = ขนาดกล่องรวม (ภายนอก)</span>';if(SC&&SC.g&&dimOn.g)dl+='<span class="lgi"><i style="background:#0f6b33"></i>เส้นเขียว = ระยะเผื่อสินค้า (เขียว)</span>';if(SC&&SC.bl&&dimOn.p&&pb)dl+='<span class="lgi"><i style="background:#0b3f9e"></i>เส้นน้ำเงิน = ขนาดสินค้า</span>';lg+=dl}
+ if(d&&SC)lg+=sumTbl();
  $("lg3").innerHTML=lg}
 function exList(){var tpx=$("type").value;return (tpx=="rsc"||tpx=="mailer"||tpx=="ear"||tpx=="lock"||tpx=="tuck")?EXTRA.filter(function(q){return !STD.some(function(x){return x[1]!=null&&Math.abs(x[1]-q[1])<.06&&Math.abs(x[2]-q[2])<.06&&Math.abs(x[3]-q[3])<.06})}):[]}
 function exoBlock(W,L,H){var EL=exList();EXL=EL;if(!EL.length)return "";var bi=-1,bd=1e9,bw=false;EL.forEach(function(q,i){var d1=Math.abs(q[1]-W)+Math.abs(q[2]-L)+Math.abs(q[3]-H),d2=Math.abs(q[1]-L)+Math.abs(q[2]-W)+Math.abs(q[3]-H),d=Math.min(d1,d2);if(d<bd){bd=d;bi=i;bw=d2<d1}});
@@ -880,6 +904,7 @@ function pick(e){if(e.target.closest&&e.target.closest("select"))return;var tr=e
  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!vm.hidden)closeVM()});
  new MutationObserver(function(){if(!vm.hidden)$("vmSub").textContent=$("viewLbl").textContent}).observe($("viewLbl"),{childList:true,characterData:true,subtree:true});
 })();
+$("lg3").addEventListener("click",function(e){var tr=e.target.closest("tr[data-g]");if(!tr)return;dimOn[tr.dataset.g]=!dimOn[tr.dataset.g];render()});
 $("undoBtn").addEventListener("click",undoHist);$("undoGo").addEventListener("click",undoHist);$("undoX").addEventListener("click",function(){updUndo(null)});
 document.addEventListener("keydown",function(e){if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&e.key==="z"&&!/^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement||{}).tagName||"")&&HIST.length){e.preventDefault();undoHist()}});
 $("clrAll").addEventListener("click",function(){pushHist("ล้างข้อมูลทั้งหมดแล้ว");$("boxMode").click();["w","l","h","pw","pl","ph","cname"].forEach(function(i){$(i).value=""});selKey=null;ndOn=false;$("pcl").value="0";$("pcll").value="0";$("ptop").value="0";$("pgap").value="0";$("pkW").value="0";$("pkG").value="0";$("pkh").value="0";["nx","ny","nz"].forEach(function(i){$(i).value="1"});$("pup").checked=false;$("rot").checked=false;fitClear();render()});
